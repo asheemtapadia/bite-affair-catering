@@ -41,6 +41,11 @@ const CTASection = () => {
             </Button>
           </div>
         </ScrollReveal>
+        <ScrollReveal delay={0.3}>
+          <p className="font-body text-sm text-navy-foreground/50 mt-8">
+            Tag us in your party reel and get instant cashback.
+          </p>
+        </ScrollReveal>
       </div>
     </section>
   );

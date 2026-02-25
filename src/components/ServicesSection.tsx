@@ -1,5 +1,5 @@
 import ScrollReveal from "@/components/ScrollReveal";
-import { UtensilsCrossed, Home, Building2, PartyPopper, ClipboardList, Users } from "lucide-react";
+import { UtensilsCrossed, Home, Building2, PartyPopper, ClipboardList, Users, MessageCircle } from "lucide-react";
 
 const services = [
   { icon: UtensilsCrossed, label: "Bulk Party Catering" },
@@ -8,6 +8,9 @@ const services = [
   { icon: PartyPopper, label: "Festive Catering" },
   { icon: ClipboardList, label: "Custom Menu Planning" },
   { icon: Users, label: "On-Site Servers Available" },
+  { icon: Home, label: "Home Buffet Setup" },
+  { icon: MessageCircle, label: "Direct WhatsApp Ordering" },
+  { icon: ClipboardList, label: "Customized Menu Options" },
 ];
 
 const ServicesSection = () => {
