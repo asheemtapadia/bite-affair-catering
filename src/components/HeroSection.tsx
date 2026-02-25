@@ -31,12 +31,21 @@ const HeroSection = () => {
         </motion.h1>
 
         <motion.p
-          className="font-body text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-10 font-light"
+          className="font-body text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-4 font-light"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
         >
           Premium bulk catering for house parties, birthdays, baby showers, corporate events and festive gatherings across Delhi NCR.
+        </motion.p>
+
+        <motion.p
+          className="font-body text-sm text-primary-foreground/60 max-w-xl mx-auto mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          Bulk party food delivery with optional server service. Order directly via WhatsApp or DM.
         </motion.p>
 
         <motion.div

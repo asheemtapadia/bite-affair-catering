@@ -1,10 +1,11 @@
 import { useParams, Link } from "react-router-dom";
 import { menuPackages, othersInfo } from "@/data/menuData";
-import { ArrowLeft, Leaf, Drumstick } from "lucide-react";
+import { ArrowLeft, Leaf, Drumstick, MessageCircle, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
 const MenuDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -90,11 +91,25 @@ const MenuDetailPage = () => {
             </div>
           </ScrollReveal>
 
+          {/* Ordering Note */}
+          <ScrollReveal delay={0.15}>
+            <p className="mt-12 text-center font-body text-sm text-muted-foreground">
+              To order, select your package and contact us directly via WhatsApp or Call.
+            </p>
+          </ScrollReveal>
+
           {/* CTA */}
-          <div className="mt-12 text-center">
+          <div className="mt-6 text-center flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" asChild className="transition-transform duration-200 hover:scale-[1.02]">
               <a href="https://wa.me/919211570030" target="_blank" rel="noopener noreferrer">
-                Book This Package on WhatsApp
+                <MessageCircle size={18} className="mr-2" />
+                Order on WhatsApp
+              </a>
+            </Button>
+            <Button size="lg" variant="outline" asChild className="transition-transform duration-200 hover:scale-[1.02]">
+              <a href="tel:+919211570030">
+                <Phone size={18} className="mr-2" />
+                Call to Order
               </a>
             </Button>
           </div>
@@ -102,6 +117,7 @@ const MenuDetailPage = () => {
       </div>
 
       <Footer />
+      <FloatingWhatsApp />
     </div>
   );
 };
