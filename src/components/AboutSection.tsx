@@ -10,8 +10,11 @@ const AboutSection = () => {
           </h2>
         </ScrollReveal>
         <ScrollReveal delay={0.1}>
+          <p className="font-body text-lg leading-relaxed text-foreground/80 mb-4">
+            Food aggregators cap out at 4–5 people. Traditional caterers start at 100+. For gatherings of 15–50 pax, neither works well — portions are inconsistent, pricing is opaque, and quality is unpredictable.
+          </p>
           <p className="font-body text-lg leading-relaxed text-foreground/80">
-            Bite Affair specializes in bulk party catering across Gurugram and Delhi NCR. From intimate home gatherings to large corporate celebrations, we deliver curated menus with quality ingredients, generous portions and seamless service.
+            Bite Affair fills that gap. We deliver bulk party food across Gurugram and Delhi NCR with curated menus, generous portions and consistent quality — without the overhead of a full catering setup. Order directly. No middleman. No app markup.
           </p>
         </ScrollReveal>
       </div>

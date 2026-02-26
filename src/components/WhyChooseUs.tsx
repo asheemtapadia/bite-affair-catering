@@ -2,12 +2,12 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { ShieldCheck, Settings, Leaf, Clock, Users, ChefHat } from "lucide-react";
 
 const reasons = [
-  { icon: ShieldCheck, label: "Premium quality ingredients" },
-  { icon: Settings, label: "Flexible package options" },
-  { icon: Leaf, label: "Veg & Non Veg selections" },
-  { icon: Clock, label: "On-time delivery" },
-  { icon: Users, label: "Server support available" },
-  { icon: ChefHat, label: "Customizable menus" },
+  { icon: Clock, label: "7+ years catering infrastructure" },
+  { icon: Settings, label: "Scalable kitchen for 15–50+ pax" },
+  { icon: ShieldCheck, label: "Bulk order specialization" },
+  { icon: Leaf, label: "Eco-friendly premium packaging" },
+  { icon: ChefHat, label: "Complimentary add-ons included" },
+  { icon: Users, label: "Consistent quality, every order" },
 ];
 
 const WhyChooseUs = () => {
