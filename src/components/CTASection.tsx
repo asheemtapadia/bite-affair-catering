@@ -8,12 +8,12 @@ const CTASection = () => {
       <div className="container mx-auto px-4 text-center">
         <ScrollReveal>
           <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy-foreground mb-6">
-            Plan Your Celebration With Us
+            Order Directly. No Cart. No Checkout.
           </h2>
         </ScrollReveal>
         <ScrollReveal delay={0.1}>
           <p className="font-body text-navy-foreground/70 text-lg mb-10">
-            +91 92115 70030
+            WhatsApp or Call — +91 92115 70030
           </p>
         </ScrollReveal>
         <ScrollReveal delay={0.2}>

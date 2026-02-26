@@ -27,7 +27,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          Your Party's Secret Ingredient
+          Bulk Food Delivery — Reimagined.
         </motion.h1>
 
         <motion.p
@@ -36,7 +36,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          Premium bulk catering for house parties, birthdays, baby showers, corporate events and festive gatherings across Delhi NCR.
+          Not app-based retail food. Not full-scale catering. The smart middle solution for 15–50 pax — house parties, birthdays, corporate events and festive gatherings across Delhi NCR.
         </motion.p>
 
         <motion.p
@@ -45,7 +45,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          Bulk party food delivery with optional server service. Order directly via WhatsApp or DM.
+          Order directly via WhatsApp or Call. No app. No cart. No middleman.
         </motion.p>
 
         <motion.div

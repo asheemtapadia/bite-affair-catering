@@ -1,16 +1,13 @@
 import ScrollReveal from "@/components/ScrollReveal";
-import { UtensilsCrossed, Home, Building2, PartyPopper, ClipboardList, Users, MessageCircle } from "lucide-react";
+import { UtensilsCrossed, Home, ClipboardList, Users, MessageCircle, ChefHat } from "lucide-react";
 
 const services = [
-  { icon: UtensilsCrossed, label: "Bulk Party Catering" },
-  { icon: Home, label: "House Party Catering" },
-  { icon: Building2, label: "Corporate Catering" },
-  { icon: PartyPopper, label: "Festive Catering" },
-  { icon: ClipboardList, label: "Custom Menu Planning" },
-  { icon: Users, label: "On-Site Servers Available" },
-  { icon: Home, label: "Home Buffet Setup" },
-  { icon: MessageCircle, label: "Direct WhatsApp Ordering" },
-  { icon: ClipboardList, label: "Customized Menu Options" },
+  { icon: Users, label: "Dedicated Teams per Order" },
+  { icon: Home, label: "In-House Kitchen Operations" },
+  { icon: ChefHat, label: "Trained Professional Chefs" },
+  { icon: MessageCircle, label: "Direct Ordering — WhatsApp & Call" },
+  { icon: UtensilsCrossed, label: "Optional On-Site Servers" },
+  { icon: ClipboardList, label: "Premium Eco-Friendly Packaging" },
 ];
 
 const ServicesSection = () => {
