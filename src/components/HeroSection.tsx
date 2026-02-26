@@ -36,7 +36,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          Not app-based retail food. Not full-scale catering. The smart middle solution for 15–50 pax — house parties, birthdays, corporate events and festive gatherings across Delhi NCR.
+          Dedicated kitchen infrastructure built for bulk. Designed for 15–50 pax — house parties, birthdays, corporate events and festive gatherings across Delhi NCR.
         </motion.p>
 
         <motion.p
@@ -45,7 +45,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          Order directly via WhatsApp or Call. No app. No cart. No middleman.
+          Scalable kitchen. Trained teams. Order directly via WhatsApp or Call — no aggregators, no middlemen.
         </motion.p>
 
         <motion.div
