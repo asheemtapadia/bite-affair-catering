@@ -13,7 +13,7 @@ const HeroSection = () => {
       <div className="absolute inset-0">
         <img
           src={heroImage}
-          alt="Premium Indian catering spread by Bite Affair"
+          alt="Bulk food delivery spread by Bite Affair"
           className="w-full h-full object-cover animate-hero-zoom"
         />
         <div className="absolute inset-0 bg-navy/60" />
@@ -36,16 +36,18 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          Dedicated kitchen infrastructure built for bulk. Designed for 15–50 pax — house parties, birthdays, corporate events and festive gatherings across Delhi NCR.
+          Built for gatherings of 15–50 guests across Delhi NCR. 
+          Restaurant-level variety. Catering-scale portions.
         </motion.p>
 
         <motion.p
-          className="font-body text-sm text-primary-foreground/60 max-w-xl mx-auto mb-10"
+          className="font-body text-sm text-primary-foreground/70 max-w-xl mx-auto mb-10"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          Scalable kitchen. Trained teams. Order directly via WhatsApp or Call — no aggregators, no middlemen.
+          Powered by a dedicated production kitchen and trained teams. 
+          Order directly via WhatsApp or Call — no aggregators, no middlemen.
         </motion.p>
 
         <motion.div
