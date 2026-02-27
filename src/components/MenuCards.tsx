@@ -78,6 +78,6 @@ const MenuCards = () => {
 };
 
 export default MenuCards;
-};
+
 
 export default MenuCards;
