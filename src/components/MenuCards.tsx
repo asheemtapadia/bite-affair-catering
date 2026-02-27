@@ -14,7 +14,7 @@ return (
 Our Menu Packages  
 </h2>  
 <p className="font-body text-muted-foreground text-lg max-w-xl mx-auto">  
-Curated menus for every occasion. Choose your package and customize your spread.  
+  Designed for gatherings of 15–50 guests. Structured bulk menus with generous portions and consistent quality across Delhi NCR.  
 </p>  
 </div>  
 </ScrollReveal>  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">    
