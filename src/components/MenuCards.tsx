@@ -10,10 +10,10 @@ const MenuCards = () => {
         <ScrollReveal>
           <div className="text-center mb-16">
             <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy mb-4">
-              Our Menu Packages
+              Curated Bulk Menu Packages
             </h2>
             <p className="font-body text-muted-foreground text-lg max-w-xl mx-auto">
-              Curated menus for every occasion. Choose your package and customize your spread.
+              Designed for gatherings of 15–50 guests. Structured bulk menus with generous portions and consistent quality across Delhi NCR.
             </p>
           </div>
         </ScrollReveal>
@@ -47,12 +47,18 @@ const MenuCards = () => {
                   {pkg.name}
                 </h3>
                 <p className="font-heading text-2xl font-bold text-primary mb-4">
-                  ₹{pkg.price}<span className="text-sm font-body font-normal text-muted-foreground">/- per person</span>
+                  ₹{pkg.price}
+                  <span className="text-sm font-body font-normal text-muted-foreground">
+                    /- per person
+                  </span>
                 </p>
 
                 <ul className="space-y-1.5 mb-6">
                   {pkg.previewItems.map((item) => (
-                    <li key={item} className="text-sm font-body text-foreground/80 flex items-start gap-2">
+                    <li
+                      key={item}
+                      className="text-sm font-body text-foreground/80 flex items-start gap-2"
+                    >
                       <span className="text-primary mt-1 text-xs">●</span>
                       {item}
                     </li>
@@ -69,6 +75,9 @@ const MenuCards = () => {
       </div>
     </section>
   );
+};
+
+export default MenuCards;
 };
 
 export default MenuCards;
