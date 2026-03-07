@@ -1,4 +1,4 @@
-import { useState } from "react";
+importimport { useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -34,7 +34,7 @@ const EventInquiry = () => {
     }
 
     const message = encodeURIComponent(
-      `Hi, I'd like to check availability.\n\nName: ${name}\nPhone: ${phone}\nEvent Date: ${format(date, "PPP")}\nGuests: ${guests}\nLocation: ${location}${notes ? `\nNotes: ${notes}` : ""}`
+      `Hi, I'd like to check package availability.\n\nName: ${name}\nPhone: ${phone}\nDelivery Date: ${format(date, "PPP")}\nGuests: ${guests}\nDelivery Location: ${location}${notes ? `\nNotes: ${notes}` : ""}`
     );
 
     window.open(`https://wa.me/919211570030?text=${message}`, "_blank");
@@ -47,12 +47,12 @@ const EventInquiry = () => {
       <div className="container mx-auto px-4">
         <ScrollReveal>
           <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground text-center mb-4">
-            Check Availability for Your Event
+            Check Package Availability
           </h2>
         </ScrollReveal>
         <ScrollReveal delay={0.1}>
           <p className="font-body text-muted-foreground text-center text-lg mb-12 max-w-2xl mx-auto">
-            Share your event details and we'll confirm availability directly.
+            Planning a gathering? Share your details and we'll confirm food delivery availability for your date.
           </p>
         </ScrollReveal>
 
@@ -65,6 +65,70 @@ const EventInquiry = () => {
                     <Label htmlFor="name" className="font-body font-medium text-foreground">Full Name *</Label>
                     <Input id="name" name="name" placeholder="Your full name" maxLength={100} required />
                   </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="font-body font-medium text-foreground">Phone Number *</Label>
+                    <Input id="phone" name="phone" type="tel" placeholder="+91 XXXXX XXXXX" maxLength={15} required />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label className="font-body font-medium text-foreground">Delivery Date *</Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !date && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {date ? format(date, "PPP") : "Pick a date"}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={date}
+                          onSelect={setDate}
+                          disabled={(d) => d < new Date()}
+                          initialFocus
+                          className="p-3 pointer-events-auto"
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="guests" className="font-body font-medium text-foreground">Number of Guests *</Label>
+                    <Input id="guests" name="guests" type="number" placeholder="e.g. 30 people" min={1} max={500} required />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="location" className="font-body font-medium text-foreground">Delivery Location *</Label>
+                  <Input id="location" name="location" placeholder="Sector, city or full delivery address" maxLength={200} required />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="notes" className="font-body font-medium text-foreground">Additional Notes</Label>
+                  <Textarea id="notes" name="notes" placeholder="Any preferences or special requests…" maxLength={500} rows={4} />
+                </div>
+
+                <Button type="submit" size="lg" className="w-full text-base py-6" disabled={isSubmitting}>
+                  <Send size={18} className="mr-2" />
+                  Check Availability
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </ScrollReveal>
+      </div>
+    </section>
+  );
+};
+
+export default EventInquiry;
                   <div className="space-y-2">
                     <Label htmlFor="phone" className="font-body font-medium text-foreground">Phone Number *</Label>
                     <Input id="phone" name="phone" type="tel" placeholder="+91 XXXXX XXXXX" maxLength={15} required />
