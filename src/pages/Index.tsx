@@ -10,6 +10,7 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import Testimonials from "@/components/Testimonials";
 import HowOrderingWorks from "@/components/HowOrderingWorks";
 import CTASection from "@/components/CTASection";
+import EventInquiry from "@/components/EventInquiry";
 import LocationSection from "@/components/LocationSection";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
