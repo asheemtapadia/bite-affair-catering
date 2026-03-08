@@ -69,7 +69,7 @@ toast({ title: "Redirecting to WhatsApp…" });
 setTimeout(() => {
   setIsSubmitting(false);
 }, 1500);
-
+};
   return (
     <section id="inquiry" className="py-20 lg:py-28 bg-background">
       <div className="container mx-auto px-4">
