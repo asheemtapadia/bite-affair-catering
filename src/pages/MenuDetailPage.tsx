@@ -11,6 +11,20 @@ const MenuDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const pkg = menuPackages.find((p) => p.slug === slug);
 
+  const whatsappMessage = encodeURIComponent(
+`Hi Bite Affair,
+
+I'm interested in the ${pkg?.name} package.
+
+Event Date:
+Number of Guests:
+Location:
+
+Please share availability and details.`
+  );
+
+  const whatsappLink = `https://wa.me/919211570030?text=${whatsappMessage}`;
+
   if (!pkg) {
     return (
       <div className="min-h-screen flex items-center justify-center section-white">
@@ -101,7 +115,7 @@ const MenuDetailPage = () => {
           {/* CTA */}
           <div className="mt-6 text-center flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" asChild className="transition-transform duration-200 hover:scale-[1.02]">
-              <a href="https://wa.me/919211570030" target="_blank" rel="noopener noreferrer">
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
                 <MessageCircle size={18} className="mr-2" />
                 Order on WhatsApp
               </a>
