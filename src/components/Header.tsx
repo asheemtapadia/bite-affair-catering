@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/bite-affair-logo.png";
 
 const navLinks = [
   { label: "Home", href: "/#home" },
@@ -45,10 +46,14 @@ const Header = () => {
       }`}
     >
       <div className="container mx-auto flex items-center justify-between py-4 px-4 lg:px-8">
-        <Link to="/" className="font-heading text-2xl font-bold tracking-tight">
-          <span className={scrolled || !isHome ? "text-navy" : "text-primary-foreground"}>
-            Bite Affair
-          </span>
+        
+        {/* Logo */}
+        <Link to="/" className="flex items-center">
+          <img
+            src={logo}
+            alt="Bite Affair"
+            className="h-10 w-auto object-contain"
+          />
         </Link>
 
         {/* Desktop Nav */}
