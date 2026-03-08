@@ -1,5 +1,5 @@
 import ScrollReveal from "@/components/ScrollReveal";
-import { MapPin } from "lucide-react";
+import { MapPin, Instagram } from "lucide-react";
 
 const LocationSection = () => {
   return (
@@ -11,13 +11,37 @@ const LocationSection = () => {
             Our Location
           </h2>
         </ScrollReveal>
+
         <ScrollReveal delay={0.1}>
           <p className="font-body text-foreground/80 leading-relaxed mb-4">
             Basement-1, F-28, Saraswati Kunj II, Ardee City, Sector 52, Gurugram, Haryana 122003
           </p>
-          <p className="font-body text-sm font-medium text-primary">
+
+          <p className="font-body text-sm font-medium text-primary mb-10">
             Serving Gurugram & Delhi NCR
           </p>
+
+          {/* Instagram */}
+          <div className="text-center">
+            <h3 className="font-heading text-xl font-semibold text-navy mb-3">
+              See Real Catering Moments
+            </h3>
+
+            <p className="font-body text-sm text-foreground/70 mb-5">
+              Follow us on Instagram for real party setups and food spreads.
+            </p>
+
+            <a
+              href="https://www.instagram.com/bite_affair"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-white font-body font-medium hover:opacity-90 transition"
+            >
+              <Instagram size={18} />
+              Follow @bite_affair
+            </a>
+          </div>
+
         </ScrollReveal>
       </div>
     </section>
