@@ -16,10 +16,12 @@ const HeroSection = () => {
       {/* Background with slow zoom */}
       <div className="absolute inset-0">
         <img
-          src={heroImage}
-          alt="Bulk food delivery spread by Bite Affair"
-          className="w-full h-full object-cover animate-hero-zoom"
-        />
+  src={heroImage}
+  alt="Bulk food delivery spread by Bite Affair"
+  className="w-full h-full object-cover animate-hero-zoom"
+  loading="eager"
+  decoding="async"
+/>
         <div className="absolute inset-0 bg-navy/60" />
       </div>
 
