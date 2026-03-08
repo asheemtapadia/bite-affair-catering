@@ -13,6 +13,7 @@ import HowOrderingWorks from "@/components/HowOrderingWorks";
 import CTASection from "@/components/CTASection";
 import EventInquiry from "@/components/EventInquiry";
 import LocationSection from "@/components/LocationSection";
+import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
@@ -34,6 +35,7 @@ const Index = () => {
       <CTASection />
       <EventInquiry />
       <LocationSection />
+      <FAQSection />
       <Footer />
       <FloatingWhatsApp />
     </div>
