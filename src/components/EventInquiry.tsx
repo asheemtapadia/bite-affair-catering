@@ -64,9 +64,11 @@ Source: Website`
     );
 
     window.open(`https://wa.me/919211570030?text=${message}`, "_blank");
-    toast({ title: "Redirecting to WhatsApp…" });
-    setIsSubmitting(false);
-  };
+toast({ title: "Redirecting to WhatsApp…" });
+
+setTimeout(() => {
+  setIsSubmitting(false);
+}, 1500);
 
   return (
     <section id="inquiry" className="py-20 lg:py-28 bg-background">
