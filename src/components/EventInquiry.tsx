@@ -15,6 +15,7 @@ import { toast } from "@/hooks/use-toast";
 const EventInquiry = () => {
   const [date, setDate] = useState<Date>();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [guestError, setGuestError] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,6 +33,14 @@ const EventInquiry = () => {
 
     if (!name || !phone || !guests || !landmark || !city || !date) {
       toast({ title: "Please fill in all required fields.", variant: "destructive" });
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (Number(guests) < 15 || Number(guests) > 50) {
+      setGuestError(
+        "We currently accept orders for 15–50 guests only. Please enter a number within this range or contact us directly on WhatsApp for special requests."
+      );
       setIsSubmitting(false);
       return;
     }
@@ -125,15 +134,21 @@ Source: Website`
                       name="guests"
                       type="number"
                       placeholder="15–50 guests"
-                      min={15}
-                      max={50}
                       required
-                      onInput={(e) => {
-                        const value = Number((e.target as HTMLInputElement).value);
-                        if (value < 15) (e.target as HTMLInputElement).value = "15";
-                        if (value > 50) (e.target as HTMLInputElement).value = "50";
+                      onChange={(e) => {
+                        const value = Number(e.target.value);
+                        if (value < 15 || value > 50) {
+                          setGuestError(
+                            "We currently accept orders for 15–50 guests only. Please enter a number within this range or contact us directly on WhatsApp for special requests."
+                          );
+                        } else {
+                          setGuestError("");
+                        }
                       }}
                     />
+                    {guestError && (
+                      <p className="text-sm text-red-500">{guestError}</p>
+                    )}
                   </div>
                 </div>
 
