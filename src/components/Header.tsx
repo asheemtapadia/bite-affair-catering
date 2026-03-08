@@ -38,11 +38,12 @@ const Header = () => {
   };
 
   return (
-    className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-  scrolled || !isHome
-    ? "bg-warm-white/95 backdrop-blur-sm shadow-sm"
-    : "bg-gradient-to-b from-black/40 to-transparent"
-}`}
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled || !isHome
+          ? "bg-warm-white/95 backdrop-blur-sm shadow-sm"
+          : "bg-gradient-to-b from-black/40 to-transparent"
+      }`}
     >
       <div className="container mx-auto flex items-center justify-between py-5 px-4 lg:px-8">
 
