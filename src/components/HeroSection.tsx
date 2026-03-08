@@ -22,8 +22,7 @@ const HeroSection = () => {
   loading="eager"
   decoding="async"
 />
-        <div className="absolute inset-0 bg-navy/60" />
-      </div>
+        <div className="absolute inset-0 overflow-hidden">
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 text-center">
