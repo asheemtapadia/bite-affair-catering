@@ -34,7 +34,16 @@ const EventInquiry = () => {
     }
 
     const message = encodeURIComponent(
-      `Hi, I'd like to check package availability.\n\nName: ${name}\nPhone: ${phone}\nDelivery Date: ${format(date, "PPP")}\nGuests: ${guests}\nDelivery Location: ${location}${notes ? `\nNotes: ${notes}` : ""}`
+`📝 WEBSITE INQUIRY – Bite Affair
+
+Name: ${name}
+Phone: ${phone}
+Guests: ${guests}
+Delivery Date: ${format(date, "PPP")}
+Delivery Location: ${location}
+${notes ? `Message: ${notes}` : ""}
+
+Source: Website`
     );
 
     window.open(`https://wa.me/919211570030?text=${message}`, "_blank");
