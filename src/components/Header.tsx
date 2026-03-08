@@ -45,14 +45,14 @@ const Header = () => {
           : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto flex items-center justify-between py-4 px-4 lg:px-8">
-        
+      <div className="container mx-auto flex items-center justify-between py-5 px-4 lg:px-8">
+
         {/* Logo */}
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center transition-transform duration-300 hover:scale-105">
           <img
             src={logo}
             alt="Bite Affair"
-            className="h-12 w-auto object-contain drop-shadow-[0_6px_20px_rgba(0,0,0,0.35)]"
+            className="h-16 w-auto object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
           />
         </Link>
 
