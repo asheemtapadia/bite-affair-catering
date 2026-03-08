@@ -14,15 +14,16 @@ const HeroSection = () => {
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background with slow zoom */}
-      <div className="absolute inset-0">
-        <img
-  src={heroImage}
-  alt="Bulk food delivery spread by Bite Affair"
-  className="w-full h-full object-cover animate-hero-zoom"
-  loading="eager"
-  decoding="async"
-/>
-        <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden">
+  <img
+    src={heroImage}
+    alt="Bulk food delivery spread by Bite Affair"
+    className="w-full h-full object-cover animate-hero-zoom"
+    loading="eager"
+    decoding="async"
+  />
+  <div className="absolute inset-0 bg-navy/60" />
+</div>
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 text-center">
