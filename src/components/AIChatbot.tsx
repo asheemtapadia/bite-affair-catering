@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MessageCircle, X, Send } from "lucide-react";
+import { Bot, X, Send } from "lucide-react";
 
 const AIChatbot = () => {
   const [open, setOpen] = useState(false);
@@ -46,7 +46,7 @@ const AIChatbot = () => {
         onClick={() => setOpen(!open)}
         className="fixed bottom-24 right-6 z-50 bg-primary text-white p-4 rounded-full shadow-lg"
       >
-        {open ? <X size={22} /> : <MessageCircle size={22} />}
+        {open ? <X size={22} /> : <Bot size={22} />}
       </button>
 
       {/* Chat Window */}
