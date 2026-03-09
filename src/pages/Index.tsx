@@ -16,6 +16,7 @@ import LocationSection from "@/components/LocationSection";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import AIChatbot from "@/components/AIChatbot";
 
 const Index = () => {
   return (
@@ -38,6 +39,7 @@ const Index = () => {
       <FAQSection />
       <Footer />
       <FloatingWhatsApp />
+      <AIChatbot />
     </div>
   );
 };
