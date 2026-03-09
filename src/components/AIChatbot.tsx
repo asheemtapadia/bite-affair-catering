@@ -3,13 +3,17 @@ import { Bot, X, Send } from "lucide-react";
 
 const AIChatbot = () => {
   const [open, setOpen] = useState(false);
+
   const [messages, setMessages] = useState([
     {
       role: "bot",
       text: "Hi 👋 I'm Bite Affair assistant. Ask me about catering packages, pricing, or availability."
     }
   ]);
+
   const [input, setInput] = useState("");
+
+  const [typing, setTyping] = useState(false);
 
   const getBotReply = (message: string) => {
     const text = message.toLowerCase();
@@ -33,10 +37,23 @@ const AIChatbot = () => {
     if (!input.trim()) return;
 
     const userMessage = { role: "user", text: input };
-    const botMessage = { role: "bot", text: getBotReply(input) };
 
-    setMessages([...messages, userMessage, botMessage]);
+    setMessages([...messages, userMessage]);
+
     setInput("");
+
+    setTyping(true);
+
+    setTimeout(() => {
+      const botMessage = {
+        role: "bot",
+        text: getBotReply(userMessage.text)
+      };
+
+      setMessages((prev) => [...prev, botMessage]);
+
+      setTyping(false);
+    }, 900);
   };
 
   return (
@@ -67,6 +84,7 @@ const AIChatbot = () => {
 
             {/* Messages */}
             <div className="p-3 h-72 overflow-y-auto text-sm space-y-3">
+
               {messages.map((msg, i) => (
                 <div
                   key={i}
@@ -79,10 +97,18 @@ const AIChatbot = () => {
                   {msg.text}
                 </div>
               ))}
+
+              {typing && (
+                <div className="p-2 rounded-lg bg-gray-100 max-w-[80%] text-sm text-gray-600">
+                  Bite Affair Assistant is typing...
+                </div>
+              )}
+
             </div>
 
             {/* Input */}
             <div className="flex border-t">
+
               <input
                 className="flex-1 p-2 text-sm outline-none"
                 placeholder="Ask something..."
@@ -94,12 +120,14 @@ const AIChatbot = () => {
                   }
                 }}
               />
+
               <button
                 onClick={sendMessage}
                 className="p-2 text-primary"
               >
                 <Send size={18} />
               </button>
+
             </div>
 
           </div>
