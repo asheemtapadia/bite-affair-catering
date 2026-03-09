@@ -1,19 +1,23 @@
-export default async function handler(req: any, res: any) {
+let lastRequestTime = 0;
+
+export default async function handler(req, res) {
 
   if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method not allowed" });
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { message } = req.body;
+  // Simple rate limit (1 request every 2 seconds)
+  const now = Date.now();
 
-  const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-
-  // If API key not added yet
-  if (!OPENAI_API_KEY) {
-    return res.status(200).json({
-      reply: "AI assistant is not connected yet. The Bite Affair team will enable it soon."
+  if (now - lastRequestTime < 2000) {
+    return res.status(429).json({
+      reply: "Please wait a moment before sending another message."
     });
   }
+
+  lastRequestTime = now;
+
+  const { message } = req.body;
 
   try {
 
@@ -21,26 +25,15 @@ export default async function handler(req: any, res: any) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENAI_API_KEY}`
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
         messages: [
           {
             role: "system",
-            content: `
-You are the AI assistant for Bite Affair catering service.
-
-Important information about Bite Affair:
-- Catering service based in Gurugram
-- Serves Delhi NCR
-- Orders for 15 to 50 guests
-- Packages start around ₹499 per person
-- Veg and Non-veg catering available
-- Orders placed mainly through WhatsApp
-
-Be polite, short, and helpful.
-`
+            content:
+              "You are the Bite Affair catering assistant. Help users with catering packages, pricing, menu options, guest limits (15–50 people), and delivery in Gurugram and Delhi NCR."
           },
           {
             role: "user",
@@ -52,16 +45,15 @@ Be polite, short, and helpful.
 
     const data = await response.json();
 
-    const reply =
-      data?.choices?.[0]?.message?.content ||
-      "Sorry, something went wrong.";
-
-    return res.status(200).json({ reply });
+    res.status(200).json({
+      reply: data.choices?.[0]?.message?.content || "Sorry, I couldn't respond."
+    });
 
   } catch (error) {
-    return res.status(500).json({
-      reply: "Server error while contacting AI."
-    });
-  }
 
+    res.status(500).json({
+      reply: "AI assistant is not available right now."
+    });
+
+  }
 }
