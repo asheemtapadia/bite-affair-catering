@@ -15,45 +15,43 @@ const AIChatbot = () => {
 
   const [typing, setTyping] = useState(false);
 
-  const getBotReply = (message: string) => {
-    const text = message.toLowerCase();
-
-    if (text.includes("price") || text.includes("cost"))
-      return "Our catering packages start from ₹499 per person.";
-
-    if (text.includes("guest"))
-      return "We currently accept catering orders for 15–50 guests.";
-
-    if (text.includes("location") || text.includes("deliver"))
-      return "We deliver across Gurugram and major areas of Delhi NCR.";
-
-    if (text.includes("menu"))
-      return "You can explore our menu section on the website or message us on WhatsApp for the full menu.";
-
-    return "You can ask about catering packages, menu options, pricing, or delivery availability.";
-  };
-
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (!input.trim()) return;
 
     const userMessage = { role: "user", text: input };
 
     setMessages([...messages, userMessage]);
-
     setInput("");
-
     setTyping(true);
 
-    setTimeout(() => {
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: userMessage.text
+        })
+      });
+
+      const data = await response.json();
+
       const botMessage = {
         role: "bot",
-        text: getBotReply(userMessage.text)
+        text: data.reply
       };
 
       setMessages((prev) => [...prev, botMessage]);
 
-      setTyping(false);
-    }, 900);
+    } catch (error) {
+      setMessages((prev) => [
+        ...prev,
+        { role: "bot", text: "AI server is not responding." }
+      ]);
+    }
+
+    setTyping(false);
   };
 
   return (
