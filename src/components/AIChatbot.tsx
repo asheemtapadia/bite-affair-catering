@@ -51,46 +51,59 @@ const AIChatbot = () => {
 
       {/* Chat Window */}
       {open && (
-        <div className="fixed bottom-36 right-6 w-80 bg-white rounded-xl shadow-2xl border z-50 flex flex-col">
-          
-          {/* Header */}
-          <div className="bg-primary text-white p-3 rounded-t-xl font-semibold">
-            Bite Affair Assistant
-          </div>
+        <>
+          {/* Click outside overlay */}
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setOpen(false)}
+          />
 
-          {/* Messages */}
-          <div className="p-3 h-72 overflow-y-auto text-sm space-y-3">
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`p-2 rounded-lg max-w-[80%] ${
-                  msg.role === "user"
-                    ? "ml-auto bg-primary text-white"
-                    : "bg-gray-100"
-                }`}
+          <div className="fixed bottom-36 right-6 w-80 bg-white rounded-xl shadow-2xl border z-50 flex flex-col">
+
+            {/* Header */}
+            <div className="bg-primary text-white p-3 rounded-t-xl font-semibold">
+              Bite Affair Assistant
+            </div>
+
+            {/* Messages */}
+            <div className="p-3 h-72 overflow-y-auto text-sm space-y-3">
+              {messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`p-2 rounded-lg max-w-[80%] ${
+                    msg.role === "user"
+                      ? "ml-auto bg-primary text-white"
+                      : "bg-gray-100"
+                  }`}
+                >
+                  {msg.text}
+                </div>
+              ))}
+            </div>
+
+            {/* Input */}
+            <div className="flex border-t">
+              <input
+                className="flex-1 p-2 text-sm outline-none"
+                placeholder="Ask something..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    sendMessage();
+                  }
+                }}
+              />
+              <button
+                onClick={sendMessage}
+                className="p-2 text-primary"
               >
-                {msg.text}
-              </div>
-            ))}
-          </div>
+                <Send size={18} />
+              </button>
+            </div>
 
-          {/* Input */}
-          <div className="flex border-t">
-            <input
-              className="flex-1 p-2 text-sm outline-none"
-              placeholder="Ask something..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-            />
-            <button
-              onClick={sendMessage}
-              className="p-2 text-primary"
-            >
-              <Send size={18} />
-            </button>
           </div>
-
-        </div>
+        </>
       )}
     </>
   );
