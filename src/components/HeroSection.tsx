@@ -12,55 +12,64 @@ const HeroSection = () => {
     "https://wa.me/919211570030?text=Hi%20Bite%20Affair,%0A%0AI%20want%20to%20place%20a%20bulk%20food%20order.%0A%0AEvent%20Date:%0ANumber%20of%20Guests:%0ALocation:%0A%0APlease%20share%20menu%20options%20and%20availability.";
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background with slow zoom */}
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+    >
+      {/* Background */}
       <div className="absolute inset-0 overflow-hidden">
-  <img
-    src={heroImage}
-    alt="Bulk food delivery spread by Bite Affair"
-    className="w-full h-full object-cover animate-hero-zoom"
-    loading="eager"
-    decoding="async"
-  />
-  <div className="absolute inset-0 bg-navy/60" />
-</div>
+        <img
+          src={heroImage}
+          alt="Bulk food delivery spread by Bite Affair"
+          className="w-full h-full object-cover animate-hero-zoom"
+          loading="eager"
+          decoding="async"
+        />
+
+        {/* Premium Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/55 to-black/70" />
+      </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 text-center">
+      <div className="relative z-10 container mx-auto px-6 text-center">
+
         <motion.h1
-          className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-primary-foreground leading-tight mb-6"
+          style={{ textShadow: "0 2px 12px rgba(0,0,0,0.6)" }}
+          className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 0.8, delay: 0.2 }}
         >
           Bulk Food Delivery — Reimagined.
         </motion.h1>
 
         <motion.p
-          className="font-body text-lg md:text-xl text-primary-foreground/85 max-w-2xl mx-auto mb-4 font-light"
+          className="font-body text-lg md:text-xl text-white/95 max-w-xl mx-auto mb-4 font-light"
+          style={{ textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 0.8, delay: 0.4 }}
         >
-          Built for gatherings of 15–50 guests across Delhi NCR. 
+          Built for gatherings of 15–50 guests across Delhi NCR.
           Restaurant-level variety. Catering-scale portions.
         </motion.p>
 
         <motion.p
-          className="font-body text-sm text-primary-foreground/70 max-w-xl mx-auto mb-10"
+          className="font-body text-sm text-white/80 max-w-lg mx-auto mb-12"
+          style={{ textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 0.8, delay: 0.5 }}
         >
-          Powered by a dedicated production kitchen and trained teams. 
+          Powered by a dedicated production kitchen and trained teams.
           Order directly via WhatsApp or Call — no aggregators, no middlemen.
         </motion.p>
 
         <motion.div
-          className="flex flex-col sm:flex-row gap-4 justify-center"
+          className="flex flex-col sm:flex-row gap-6 justify-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 0.8, delay: 0.6 }}
         >
           <Button
             size="lg"
@@ -74,7 +83,7 @@ const HeroSection = () => {
             size="lg"
             variant="outline"
             onClick={() => scrollTo("packages")}
-            className="text-base px-8 py-6 border-primary-foreground/40 text-primary-foreground bg-transparent hover:bg-primary-foreground/10 hover:text-primary-foreground transition-transform duration-200 hover:scale-[1.02]"
+            className="text-base px-8 py-6 border-white/40 text-white bg-transparent hover:bg-white/10 hover:text-white transition-transform duration-200 hover:scale-[1.02]"
           >
             View Packages
           </Button>
@@ -90,6 +99,7 @@ const HeroSection = () => {
             </a>
           </Button>
         </motion.div>
+
       </div>
     </section>
   );
