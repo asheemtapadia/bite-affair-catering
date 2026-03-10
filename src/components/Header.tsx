@@ -47,22 +47,22 @@ const Header = () => {
     >
       <div className="container mx-auto flex items-center justify-between py-5 px-4 lg:px-8">
 
-        {/* LEFT : Logo + Desktop Buttons */}
-        <div className="flex items-center gap-4">
+        {/* LEFT */}
+        <div className="flex items-center gap-6">
 
           {/* Logo */}
           <Link to="/" className="flex items-center transition-transform duration-300 hover:scale-105">
             <img
               src={logo}
               alt="Bite Affair"
-              className="h-20 lg:h-28 xl:h-32 w-auto object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
+              className="h-20 lg:h-32 xl:h-36 w-auto object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
             />
           </Link>
 
           {/* Desktop Call */}
           <a
-            href="tel:+919999999999"
-            className="hidden lg:flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg border border-border hover:bg-muted transition"
+            href="tel:+919211570030"
+            className="hidden lg:flex items-center gap-2 text-sm font-medium px-5 py-2.5 rounded-lg border border-border hover:bg-muted transition"
           >
             <Phone size={16} />
             Call
@@ -70,17 +70,17 @@ const Header = () => {
 
           {/* Desktop WhatsApp */}
           <a
-            href="https://wa.me/919999999999"
+            href="https://wa.me/919211570030"
             target="_blank"
-            className="hidden lg:flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition"
+            className="hidden lg:flex items-center gap-2 text-sm font-medium px-5 py-2.5 rounded-lg bg-green-500 text-white hover:bg-green-600 transition"
           >
             <MessageCircle size={16} />
             WhatsApp
           </a>
         </div>
 
-        {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-8">
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex items-center gap-10">
           {navLinks.map((link) => (
             <button
               key={link.label}
@@ -92,6 +92,7 @@ const Header = () => {
               {link.label}
             </button>
           ))}
+
           <Button
             size="sm"
             onClick={() => handleNavClick("/#contact")}
@@ -104,24 +105,21 @@ const Header = () => {
         {/* MOBILE RIGHT */}
         <div className="flex items-center gap-3 lg:hidden">
 
-          {/* Call Circle */}
           <a
-            href="tel:+919999999999"
+            href="tel:+919211570030"
             className="flex items-center justify-center w-10 h-10 rounded-full bg-navy text-white shadow-md"
           >
             <Phone size={18} />
           </a>
 
-          {/* WhatsApp Circle */}
           <a
-            href="https://wa.me/919999999999"
+            href="https://wa.me/919211570030"
             target="_blank"
             className="flex items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white shadow-md"
           >
             <MessageCircle size={18} />
           </a>
 
-          {/* Burger */}
           <button
             className={`${scrolled || !isHome ? "text-navy" : "text-primary-foreground"}`}
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -129,11 +127,11 @@ const Header = () => {
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
+
         </div>
 
       </div>
 
-      {/* Mobile Nav */}
       {mobileOpen && (
         <div className="lg:hidden bg-card border-t border-border px-4 pb-6 pt-2">
           {navLinks.map((link) => (
@@ -145,6 +143,7 @@ const Header = () => {
               {link.label}
             </button>
           ))}
+
           <Button
             className="mt-4 w-full transition-transform duration-200 hover:scale-[1.02]"
             onClick={() => handleNavClick("/#contact")}
