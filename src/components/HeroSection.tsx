@@ -14,7 +14,7 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 md:pt-32 lg:pt-36"
     >
       {/* Background */}
       <div className="absolute inset-0 overflow-hidden">
@@ -43,26 +43,17 @@ const HeroSection = () => {
           Bulk Food Delivery — Reimagined.
         </motion.h1>
 
+        {/* Client requested text */}
         <motion.p
-          className="font-body text-lg md:text-xl text-white/95 max-w-xl mx-auto mb-4 font-light"
+          className="font-body text-lg md:text-xl text-white/95 max-w-xl mx-auto mb-10 font-light"
           style={{ textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          Built for gatherings of 15–50 guests across Delhi NCR.
-          Restaurant-level variety. Catering-scale portions.
-        </motion.p>
-
-        <motion.p
-          className="font-body text-sm text-white/80 max-w-lg mx-auto mb-12"
-          style={{ textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          Powered by a dedicated production kitchen and trained teams.
-          Order directly via WhatsApp or Call — no aggregators, no middlemen.
+          For house parties, office lunches, and special events
+          <br />
+          Serving 15–100+ guests, Delivered across Delhi NCR
         </motion.p>
 
         <motion.div
@@ -76,7 +67,7 @@ const HeroSection = () => {
             onClick={() => scrollTo("menu")}
             className="text-base px-8 py-6 transition-transform duration-200 hover:scale-[1.02]"
           >
-            Explore Menu
+            Browse Menu
           </Button>
 
           <Button
@@ -85,7 +76,7 @@ const HeroSection = () => {
             onClick={() => scrollTo("packages")}
             className="text-base px-8 py-6 border-white/40 text-white bg-transparent hover:bg-white/10 hover:text-white transition-transform duration-200 hover:scale-[1.02]"
           >
-            View Packages
+            Plan My Event
           </Button>
 
           <Button
