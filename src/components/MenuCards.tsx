@@ -6,7 +6,7 @@ import { Leaf, Drumstick } from "lucide-react";
 
 const MenuCards = () => {
 
-  const [typeFilter, setTypeFilter] = useState<"veg" | "nonveg">("veg");
+  const [typeFilter, setTypeFilter] = useState<"veg" | "nonveg" | null>(null);
   const [priceFilter, setPriceFilter] = useState("all");
 
   const filteredPackages = menuPackages.filter((pkg) => {
@@ -18,10 +18,21 @@ const MenuCards = () => {
     // Price filter
     if (priceFilter === "under500" && pkg.price >= 500) return false;
     if (priceFilter === "500to900" && (pkg.price < 500 || pkg.price > 900)) return false;
-    if (priceFilter === "above900" && pkg.price <= 900) return false;
+    if (priceFilter === "above900" && pkg.price < 899) return false;
 
     return true;
   });
+
+  // Only two cards initially (Veg + Non-Veg)
+  const mainCards = [
+    menuPackages.find(pkg => pkg.isVeg),
+    menuPackages.find(pkg => !pkg.isVeg)
+  ].filter(Boolean);
+
+  const cardsToRender =
+    typeFilter === null && priceFilter === "all"
+      ? mainCards
+      : filteredPackages;
 
   return (
     <section id="menu" className="py-20 lg:py-28 section-beige">
@@ -41,7 +52,6 @@ const MenuCards = () => {
             {/* FILTER BAR */}
             <div className="flex flex-wrap justify-center gap-4 mb-8">
 
-              {/* Veg / Non Veg */}
               <button
                 onClick={() => setTypeFilter("veg")}
                 className={`px-5 py-2 rounded-md text-sm ${
@@ -64,7 +74,6 @@ const MenuCards = () => {
                 Non-Veg
               </button>
 
-              {/* Price filter */}
               <select
                 value={priceFilter}
                 onChange={(e) => setPriceFilter(e.target.value)}
@@ -84,7 +93,7 @@ const MenuCards = () => {
         {/* CARDS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-          {filteredPackages.map((pkg, i) => (
+          {cardsToRender.map((pkg, i) => (
             <ScrollReveal key={pkg.slug} delay={0.08 * i}>
 
               <Link
@@ -123,7 +132,7 @@ const MenuCards = () => {
                   </span>
                 </p>
 
-                {/* Only show 2 dishes to reduce scroll */}
+                {/* show only 2 dishes */}
                 <ul className="space-y-1.5 mb-6">
                   {pkg.previewItems.slice(0,2).map((item) => (
                     <li
