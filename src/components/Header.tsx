@@ -55,10 +55,10 @@ const Header = () => {
             <img
               src={logo}
               alt="Bite Affair"
-              className={`h-20 lg:h-32 xl:h-36 w-auto object-contain ${
+              className={`h-20 w-auto object-contain transition-all duration-300 ${
                 scrolled || !isHome
-                  ? "drop-shadow-[0_6px_15px_rgba(0,0,0,0.25)]"
-                  : "drop-shadow-[0_0_25px_rgba(255,255,255,0.7)] drop-shadow-[0_12px_40px_rgba(0,0,0,0.9)]"
+                  ? "lg:h-[160px] drop-shadow-[0_6px_15px_rgba(0,0,0,0.25)]"
+                  : "lg:h-[184px] drop-shadow-[0_0_25px_rgba(255,255,255,0.7)] drop-shadow-[0_12px_40px_rgba(0,0,0,0.9)]"
               }`}
             />
           </Link>
