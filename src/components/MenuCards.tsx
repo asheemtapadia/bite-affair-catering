@@ -28,9 +28,11 @@ const MenuCards = () => {
   ].filter(Boolean);
 
   const cardsToRender =
-    typeFilter === null && priceFilter === "all"
-      ? mainCards
-      : filteredPackages;
+  typeFilter === null && priceFilter === "all"
+    ? mainCards
+    : filteredPackages.length > 0
+    ? filteredPackages
+    : [];
 
   return (
     <section id="menu" className="py-20 lg:py-28 section-beige">
