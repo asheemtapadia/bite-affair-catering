@@ -15,10 +15,9 @@ const MenuCards = () => {
     if (typeFilter === "veg" && !pkg.isVeg) return false;
     if (typeFilter === "nonveg" && pkg.isVeg) return false;
 
-    // Price filter
-    if (priceFilter === "under500" && pkg.price >= 500) return false;
-    if (priceFilter === "500to900" && (pkg.price < 500 || pkg.price > 900)) return false;
-    if (priceFilter === "above900" && pkg.price < 899) return false;
+    // Price filter (FIXED)
+    if (priceFilter === "under500" && pkg.price > 500) return false;
+    if (priceFilter === "500to900" && (pkg.price <= 500 || pkg.price > 900)) return false;
 
     return true;
   });
@@ -82,7 +81,6 @@ const MenuCards = () => {
                 <option value="all">All Prices</option>
                 <option value="under500">Under ₹500</option>
                 <option value="500to900">₹500 – ₹900</option>
-                <option value="above900">Above ₹900</option>
               </select>
 
             </div>
