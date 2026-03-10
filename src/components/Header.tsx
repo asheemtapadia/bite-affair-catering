@@ -47,7 +47,7 @@ const Header = () => {
     >
       <div className="container mx-auto flex items-center justify-between py-5 px-4 lg:px-8">
 
-        {/* Left Section: Logo + Call + WhatsApp */}
+        {/* LEFT : Logo + Desktop Buttons */}
         <div className="flex items-center gap-4">
 
           {/* Logo */}
@@ -55,29 +55,28 @@ const Header = () => {
             <img
               src={logo}
               alt="Bite Affair"
-              className="h-20 lg:h-24 xl:h-28 w-auto object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
+              className="h-20 lg:h-28 xl:h-32 w-auto object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
             />
           </Link>
 
-          {/* Call Button */}
+          {/* Desktop Call */}
           <a
             href="tel:+919999999999"
-            className="hidden sm:flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg border border-border hover:bg-muted transition"
+            className="hidden lg:flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg border border-border hover:bg-muted transition"
           >
             <Phone size={16} />
             Call
           </a>
 
-          {/* WhatsApp Button */}
+          {/* Desktop WhatsApp */}
           <a
             href="https://wa.me/919999999999"
             target="_blank"
-            className="hidden sm:flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition"
+            className="hidden lg:flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition"
           >
             <MessageCircle size={16} />
             WhatsApp
           </a>
-
         </div>
 
         {/* Desktop Nav */}
@@ -102,17 +101,24 @@ const Header = () => {
           </Button>
         </nav>
 
-        {/* Mobile Right */}
+        {/* MOBILE RIGHT */}
         <div className="flex items-center gap-3 lg:hidden">
 
-          {/* Call */}
-          <a href="tel:+919999999999" className="text-foreground">
-            <Phone size={20} />
+          {/* Call Circle */}
+          <a
+            href="tel:+919999999999"
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-navy text-white shadow-md"
+          >
+            <Phone size={18} />
           </a>
 
-          {/* WhatsApp */}
-          <a href="https://wa.me/919999999999" target="_blank" className="text-green-500">
-            <MessageCircle size={20} />
+          {/* WhatsApp Circle */}
+          <a
+            href="https://wa.me/919999999999"
+            target="_blank"
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white shadow-md"
+          >
+            <MessageCircle size={18} />
           </a>
 
           {/* Burger */}
@@ -123,8 +129,8 @@ const Header = () => {
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
-
         </div>
+
       </div>
 
       {/* Mobile Nav */}
