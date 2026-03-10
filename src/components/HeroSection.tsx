@@ -1,15 +1,11 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { MessageCircle } from "lucide-react";
 import heroImage from "@/assets/hero-catering.jpg";
 
 const HeroSection = () => {
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
-
-  const whatsappLink =
-    "https://wa.me/919211570030?text=Hi%20Bite%20Affair,%0A%0AI%20want%20to%20place%20a%20bulk%20food%20order.%0A%0AEvent%20Date:%0ANumber%20of%20Guests:%0ALocation:%0A%0APlease%20share%20menu%20options%20and%20availability.";
 
   return (
     <section
@@ -43,10 +39,10 @@ const HeroSection = () => {
           Bulk Food Delivery — Reimagined.
         </motion.h1>
 
-        {/* Client requested text */}
+        {/* Improved Visibility Text */}
         <motion.p
-          className="font-body text-lg md:text-xl text-white/95 max-w-xl mx-auto mb-10 font-light"
-          style={{ textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}
+          className="font-body text-xl md:text-2xl text-white max-w-2xl mx-auto mb-12 font-medium leading-relaxed"
+          style={{ textShadow: "0 3px 14px rgba(0,0,0,0.85)" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
@@ -79,16 +75,6 @@ const HeroSection = () => {
             Plan My Event
           </Button>
 
-          <Button
-            size="lg"
-            asChild
-            className="text-base px-8 py-6 transition-transform duration-200 hover:scale-[1.02]"
-          >
-            <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-              <MessageCircle size={18} className="mr-2" />
-              Order on WhatsApp
-            </a>
-          </Button>
         </motion.div>
 
       </div>
