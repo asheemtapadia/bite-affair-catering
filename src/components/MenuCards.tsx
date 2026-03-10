@@ -15,8 +15,7 @@ const MenuCards = () => {
     if (typeFilter === "veg" && !pkg.isVeg) return false;
     if (typeFilter === "nonveg" && pkg.isVeg) return false;
 
-    // Price filter (FIXED)
-    if (priceFilter === "under500" && pkg.price > 500) return false;
+    // Price filter (FIXED)if (priceFilter === "under500" && pkg.price >= 500) return false;
     if (priceFilter === "500to900" && (pkg.price <= 500 || pkg.price > 900)) return false;
 
     return true;
