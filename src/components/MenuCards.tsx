@@ -155,6 +155,14 @@ const MenuCards = () => {
           ))}
 
         </div>
+
+        {/* Empty result message */}
+        {cardsToRender.length === 0 && (
+          <p className="text-center text-muted-foreground mt-10 text-lg">
+            No packages available in this price range.
+          </p>
+        )}
+
       </div>
     </section>
   );
