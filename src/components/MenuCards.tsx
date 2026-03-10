@@ -1,13 +1,31 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { menuPackages } from "@/data/menuData";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Leaf, Drumstick } from "lucide-react";
 
 const MenuCards = () => {
+
+  const [vegFilter, setVegFilter] = useState("all");
+  const [priceFilter, setPriceFilter] = useState("all");
+
+  const filteredPackages = menuPackages.filter((pkg) => {
+
+    if (vegFilter === "veg" && !pkg.isVeg) return false;
+    if (vegFilter === "nonveg" && pkg.isVeg) return false;
+
+    if (priceFilter === "low" && pkg.price > 500) return false;
+    if (priceFilter === "mid" && (pkg.price < 500 || pkg.price > 900)) return false;
+    if (priceFilter === "high" && pkg.price < 900) return false;
+
+    return true;
+  });
+
 return (
 
 <section id="menu" className="py-20 lg:py-28 section-beige">  
 <div className="container mx-auto px-4">  
+
 <ScrollReveal>  
 <div className="text-center mb-16">  
 <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy mb-4">  
@@ -17,15 +35,60 @@ Our Menu Packages
   Designed for gatherings of 15–50 guests. Structured bulk menus with generous portions and consistent quality across Delhi NCR.  
 </p>  
 </div>  
-</ScrollReveal>  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">    
-      {menuPackages.map((pkg, i) => (    
-        <ScrollReveal key={pkg.slug} delay={0.08 * i}>    
-          <Link    
-            to={`/menu/${pkg.slug}`}    
-            className="group block bg-card rounded-lg border border-border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md relative overflow-hidden h-full"    
-          >    
-            {/* Accent line */}    
-            <div className="absolute top-0 left-0 h-1 bg-primary transition-all duration-300 w-0 group-hover:w-full" />    <div className="flex items-center gap-2 mb-3">    
+</ScrollReveal>  
+
+{/* Filters */}
+<div className="flex flex-wrap justify-center gap-4 mb-12">
+
+<button
+  onClick={() => setVegFilter("all")}
+  className={`px-4 py-2 rounded border text-sm ${
+    vegFilter === "all" ? "bg-primary text-white" : "bg-white"
+  }`}
+>
+All
+</button>
+
+<button
+  onClick={() => setVegFilter("veg")}
+  className={`px-4 py-2 rounded border text-sm ${
+    vegFilter === "veg" ? "bg-green-600 text-white" : "bg-white"
+  }`}
+>
+Veg
+</button>
+
+<button
+  onClick={() => setVegFilter("nonveg")}
+  className={`px-4 py-2 rounded border text-sm ${
+    vegFilter === "nonveg" ? "bg-red-600 text-white" : "bg-white"
+  }`}
+>
+Non-Veg
+</button>
+
+<select
+  onChange={(e) => setPriceFilter(e.target.value)}
+  className="px-4 py-2 rounded border text-sm"
+>
+  <option value="all">All Prices</option>
+  <option value="low">Under ₹500</option>
+  <option value="mid">₹500 – ₹900</option>
+  <option value="high">Above ₹900</option>
+</select>
+
+</div>
+
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">    
+  {filteredPackages.map((pkg, i) => (    
+    <ScrollReveal key={pkg.slug} delay={0.08 * i}>    
+      <Link    
+        to={`/menu/${pkg.slug}`}    
+        className="group block bg-card rounded-lg border border-border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md relative overflow-hidden h-full"    
+      >    
+        <div className="absolute top-0 left-0 h-1 bg-primary transition-all duration-300 w-0 group-hover:w-full" />    
+
+        <div className="flex items-center gap-2 mb-3">    
           {pkg.isVeg ? (    
             <span className="inline-flex items-center gap-1 text-xs font-body font-medium px-2 py-0.5 rounded border border-green-600 text-green-700">    
               <Leaf size={12} /> Veg    
@@ -64,10 +127,9 @@ Our Menu Packages
   ))}    
 </div>
 
-  </div>    
-</section>  );
+</div>    
+</section>  
+);
 };
 
 export default MenuCards;
-
-
