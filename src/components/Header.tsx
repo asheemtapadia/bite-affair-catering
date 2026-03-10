@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Phone, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/bite-affair-logo.png";
 
@@ -47,14 +47,38 @@ const Header = () => {
     >
       <div className="container mx-auto flex items-center justify-between py-5 px-4 lg:px-8">
 
-        {/* Logo */}
-        <Link to="/" className="flex items-center transition-transform duration-300 hover:scale-105">
-          <img
-            src={logo}
-            alt="Bite Affair"
-            className="h-16 lg:h-20 xl:h-24 w-auto object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
-          />
-        </Link>
+        {/* Left Section: Logo + Call + WhatsApp */}
+        <div className="flex items-center gap-4">
+
+          {/* Logo */}
+          <Link to="/" className="flex items-center transition-transform duration-300 hover:scale-105">
+            <img
+              src={logo}
+              alt="Bite Affair"
+              className="h-20 lg:h-24 xl:h-28 w-auto object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
+            />
+          </Link>
+
+          {/* Call Button */}
+          <a
+            href="tel:+919999999999"
+            className="hidden sm:flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg border border-border hover:bg-muted transition"
+          >
+            <Phone size={16} />
+            Call
+          </a>
+
+          {/* WhatsApp Button */}
+          <a
+            href="https://wa.me/919999999999"
+            target="_blank"
+            className="hidden sm:flex items-center gap-2 text-sm font-medium px-3 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition"
+          >
+            <MessageCircle size={16} />
+            WhatsApp
+          </a>
+
+        </div>
 
         {/* Desktop Nav */}
         <nav className="hidden lg:flex items-center gap-8">
@@ -78,14 +102,29 @@ const Header = () => {
           </Button>
         </nav>
 
-        {/* Mobile toggle */}
-        <button
-          className={`lg:hidden ${scrolled || !isHome ? "text-navy" : "text-primary-foreground"}`}
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Mobile Right */}
+        <div className="flex items-center gap-3 lg:hidden">
+
+          {/* Call */}
+          <a href="tel:+919999999999" className="text-foreground">
+            <Phone size={20} />
+          </a>
+
+          {/* WhatsApp */}
+          <a href="https://wa.me/919999999999" target="_blank" className="text-green-500">
+            <MessageCircle size={20} />
+          </a>
+
+          {/* Burger */}
+          <button
+            className={`${scrolled || !isHome ? "text-navy" : "text-primary-foreground"}`}
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+        </div>
       </div>
 
       {/* Mobile Nav */}
