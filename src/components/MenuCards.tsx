@@ -6,19 +6,19 @@ import { Leaf, Drumstick } from "lucide-react";
 
 const MenuCards = () => {
 
-  const [typeFilter, setTypeFilter] = useState<"all" | "veg" | "nonveg">("all");
+  const [typeFilter, setTypeFilter] = useState<"veg" | "nonveg">("veg");
   const [priceFilter, setPriceFilter] = useState("all");
 
   const filteredPackages = menuPackages.filter((pkg) => {
 
-    // PRICE FILTER (independent)
-    if (priceFilter === "under500" && pkg.price >= 500) return false;
-    if (priceFilter === "500to900" && (pkg.price < 500 || pkg.price > 900)) return false;
-    if (priceFilter === "above900" && pkg.price <= 900) return false;
-
     // Veg / NonVeg filter
     if (typeFilter === "veg" && !pkg.isVeg) return false;
     if (typeFilter === "nonveg" && pkg.isVeg) return false;
+
+    // Price filter
+    if (priceFilter === "under500" && pkg.price >= 500) return false;
+    if (priceFilter === "500to900" && (pkg.price < 500 || pkg.price > 900)) return false;
+    if (priceFilter === "above900" && pkg.price <= 900) return false;
 
     return true;
   });
@@ -39,21 +39,15 @@ const MenuCards = () => {
             </p>
 
             {/* FILTER BAR */}
-            <div className="flex flex-wrap justify-center gap-3 mb-6">
+            <div className="flex flex-wrap justify-center gap-4 mb-8">
 
-              <button
-                onClick={() => setTypeFilter("all")}
-                className={`px-4 py-2 rounded-md text-sm ${
-                  typeFilter === "all" ? "bg-primary text-white" : "bg-white border"
-                }`}
-              >
-                All
-              </button>
-
+              {/* Veg / Non Veg */}
               <button
                 onClick={() => setTypeFilter("veg")}
-                className={`px-4 py-2 rounded-md text-sm ${
-                  typeFilter === "veg" ? "bg-green-600 text-white" : "bg-white border"
+                className={`px-5 py-2 rounded-md text-sm ${
+                  typeFilter === "veg"
+                    ? "bg-green-600 text-white"
+                    : "bg-white border"
                 }`}
               >
                 Veg
@@ -61,13 +55,16 @@ const MenuCards = () => {
 
               <button
                 onClick={() => setTypeFilter("nonveg")}
-                className={`px-4 py-2 rounded-md text-sm ${
-                  typeFilter === "nonveg" ? "bg-red-600 text-white" : "bg-white border"
+                className={`px-5 py-2 rounded-md text-sm ${
+                  typeFilter === "nonveg"
+                    ? "bg-red-600 text-white"
+                    : "bg-white border"
                 }`}
               >
                 Non-Veg
               </button>
 
+              {/* Price filter */}
               <select
                 value={priceFilter}
                 onChange={(e) => setPriceFilter(e.target.value)}
@@ -80,9 +77,9 @@ const MenuCards = () => {
               </select>
 
             </div>
+
           </div>
         </ScrollReveal>
-
 
         {/* CARDS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -126,8 +123,9 @@ const MenuCards = () => {
                   </span>
                 </p>
 
+                {/* Only show 2 dishes to reduce scroll */}
                 <ul className="space-y-1.5 mb-6">
-                  {pkg.previewItems.slice(0,3).map((item) => (
+                  {pkg.previewItems.slice(0,2).map((item) => (
                     <li
                       key={item}
                       className="text-sm font-body text-foreground/80 flex items-start gap-2"
@@ -139,7 +137,7 @@ const MenuCards = () => {
                 </ul>
 
                 <span className="inline-block font-body text-sm font-medium text-primary group-hover:underline">
-                  View Complete Menu →
+                  See Full Menu →
                 </span>
 
               </Link>
