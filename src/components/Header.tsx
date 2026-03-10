@@ -52,7 +52,7 @@ const Header = () => {
           <img
             src={logo}
             alt="Bite Affair"
-            className="h-16 w-auto object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
+            className="h-16 lg:h-20 xl:h-24 w-auto object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
           />
         </Link>
 
