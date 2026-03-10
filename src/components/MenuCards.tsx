@@ -6,130 +6,151 @@ import { Leaf, Drumstick } from "lucide-react";
 
 const MenuCards = () => {
 
-  const [vegFilter, setVegFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState<"all" | "veg" | "nonveg">("all");
   const [priceFilter, setPriceFilter] = useState("all");
 
   const filteredPackages = menuPackages.filter((pkg) => {
 
-    if (vegFilter === "veg" && !pkg.isVeg) return false;
-    if (vegFilter === "nonveg" && pkg.isVeg) return false;
+    // Veg / NonVeg filter
+    if (typeFilter === "veg" && !pkg.isVeg) return false;
+    if (typeFilter === "nonveg" && pkg.isVeg) return false;
 
-    if (priceFilter === "low" && pkg.price > 500) return false;
-    if (priceFilter === "mid" && (pkg.price < 500 || pkg.price > 900)) return false;
-    if (priceFilter === "high" && pkg.price < 900) return false;
+    // Price filter
+    if (priceFilter === "under500" && pkg.price >= 500) return false;
+    if (priceFilter === "500to900" && (pkg.price < 500 || pkg.price > 900)) return false;
+    if (priceFilter === "above900" && pkg.price <= 900) return false;
 
     return true;
   });
 
-return (
+  return (
+    <section id="menu" className="py-20 lg:py-28 section-beige">
+      <div className="container mx-auto px-4">
 
-<section id="menu" className="py-20 lg:py-28 section-beige">  
-<div className="container mx-auto px-4">  
+        <ScrollReveal>
+          <div className="text-center mb-12">
 
-<ScrollReveal>  
-<div className="text-center mb-16">  
-<h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy mb-4">  
-Our Menu Packages  
-</h2>  
-<p className="font-body text-muted-foreground text-lg max-w-xl mx-auto">  
-  Designed for gatherings of 15–50 guests. Structured bulk menus with generous portions and consistent quality across Delhi NCR.  
-</p>  
-</div>  
-</ScrollReveal>  
+            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy mb-4">
+              Our Menu Packages
+            </h2>
 
-{/* Filters */}
-<div className="flex flex-wrap justify-center gap-4 mb-12">
+            <p className="font-body text-muted-foreground text-lg max-w-xl mx-auto mb-8">
+              Designed for gatherings of 15–50 guests. Structured bulk menus with generous portions and consistent quality across Delhi NCR.
+            </p>
 
-<button
-  onClick={() => setVegFilter("all")}
-  className={`px-4 py-2 rounded border text-sm ${
-    vegFilter === "all" ? "bg-primary text-white" : "bg-white"
-  }`}
->
-All
-</button>
+            {/* FILTER BAR */}
+            <div className="flex flex-wrap justify-center gap-3 mb-6">
 
-<button
-  onClick={() => setVegFilter("veg")}
-  className={`px-4 py-2 rounded border text-sm ${
-    vegFilter === "veg" ? "bg-green-600 text-white" : "bg-white"
-  }`}
->
-Veg
-</button>
+              <button
+                onClick={() => setTypeFilter("all")}
+                className={`px-4 py-2 rounded-md text-sm ${
+                  typeFilter === "all" ? "bg-primary text-white" : "bg-white border"
+                }`}
+              >
+                All
+              </button>
 
-<button
-  onClick={() => setVegFilter("nonveg")}
-  className={`px-4 py-2 rounded border text-sm ${
-    vegFilter === "nonveg" ? "bg-red-600 text-white" : "bg-white"
-  }`}
->
-Non-Veg
-</button>
+              <button
+                onClick={() => setTypeFilter("veg")}
+                className={`px-4 py-2 rounded-md text-sm ${
+                  typeFilter === "veg" ? "bg-green-600 text-white" : "bg-white border"
+                }`}
+              >
+                Veg
+              </button>
 
-<select
-  onChange={(e) => setPriceFilter(e.target.value)}
-  className="px-4 py-2 rounded border text-sm"
->
-  <option value="all">All Prices</option>
-  <option value="low">Under ₹500</option>
-  <option value="mid">₹500 – ₹900</option>
-  <option value="high">Above ₹900</option>
-</select>
+              <button
+                onClick={() => setTypeFilter("nonveg")}
+                className={`px-4 py-2 rounded-md text-sm ${
+                  typeFilter === "nonveg" ? "bg-red-600 text-white" : "bg-white border"
+                }`}
+              >
+                Non-Veg
+              </button>
 
-</div>
+              <select
+                value={priceFilter}
+                onChange={(e) => setPriceFilter(e.target.value)}
+                className="px-4 py-2 rounded-md border text-sm"
+              >
+                <option value="all">All Prices</option>
+                <option value="under500">Under ₹500</option>
+                <option value="500to900">₹500 – ₹900</option>
+                <option value="above900">Above ₹900</option>
+              </select>
 
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">    
-  {filteredPackages.map((pkg, i) => (    
-    <ScrollReveal key={pkg.slug} delay={0.08 * i}>    
-      <Link    
-        to={`/menu/${pkg.slug}`}    
-        className="group block bg-card rounded-lg border border-border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md relative overflow-hidden h-full"    
-      >    
-        <div className="absolute top-0 left-0 h-1 bg-primary transition-all duration-300 w-0 group-hover:w-full" />    
+            </div>
+          </div>
+        </ScrollReveal>
 
-        <div className="flex items-center gap-2 mb-3">    
-          {pkg.isVeg ? (    
-            <span className="inline-flex items-center gap-1 text-xs font-body font-medium px-2 py-0.5 rounded border border-green-600 text-green-700">    
-              <Leaf size={12} /> Veg    
-            </span>    
-          ) : (    
-            <span className="inline-flex items-center gap-1 text-xs font-body font-medium px-2 py-0.5 rounded border border-red-600 text-red-700">    
-              <Drumstick size={12} /> Non Veg    
-            </span>    
-          )}    
-          <span className="text-xs font-body uppercase tracking-wider text-muted-foreground">    
-            {pkg.tier}    
-          </span>    
-        </div>    
 
-        <h3 className="font-heading text-xl font-semibold text-navy mb-1">    
-          {pkg.name}    
-        </h3>    
-        <p className="font-heading text-2xl font-bold text-primary mb-4">    
-          ₹{pkg.price}<span className="text-sm font-body font-normal text-muted-foreground">/- per person</span>    
-        </p>    
+        {/* CARDS */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-        <ul className="space-y-1.5 mb-6">    
-          {pkg.previewItems.map((item) => (    
-            <li key={item} className="text-sm font-body text-foreground/80 flex items-start gap-2">    
-              <span className="text-primary mt-1 text-xs">●</span>    
-              {item}    
-            </li>    
-          ))}    
-        </ul>    
+          {filteredPackages.map((pkg, i) => (
+            <ScrollReveal key={pkg.slug} delay={0.08 * i}>
 
-        <span className="inline-block font-body text-sm font-medium text-primary group-hover:underline">    
-          View Complete Menu →    
-        </span>    
-      </Link>    
-    </ScrollReveal>    
-  ))}    
-</div>
+              <Link
+                to={`/menu/${pkg.slug}`}
+                className="group block bg-card rounded-lg border border-border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md relative overflow-hidden h-full"
+              >
 
-</div>    
-</section>  
-);
+                <div className="absolute top-0 left-0 h-1 bg-primary transition-all duration-300 w-0 group-hover:w-full" />
+
+                <div className="flex items-center gap-2 mb-3">
+
+                  {pkg.isVeg ? (
+                    <span className="inline-flex items-center gap-1 text-xs font-body font-medium px-2 py-0.5 rounded border border-green-600 text-green-700">
+                      <Leaf size={12} /> Veg
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 text-xs font-body font-medium px-2 py-0.5 rounded border border-red-600 text-red-700">
+                      <Drumstick size={12} /> Non Veg
+                    </span>
+                  )}
+
+                  <span className="text-xs font-body uppercase tracking-wider text-muted-foreground">
+                    {pkg.tier}
+                  </span>
+
+                </div>
+
+                <h3 className="font-heading text-xl font-semibold text-navy mb-1">
+                  {pkg.name}
+                </h3>
+
+                <p className="font-heading text-2xl font-bold text-primary mb-4">
+                  ₹{pkg.price}
+                  <span className="text-sm font-body font-normal text-muted-foreground">
+                    /- per person
+                  </span>
+                </p>
+
+                <ul className="space-y-1.5 mb-6">
+                  {pkg.previewItems.map((item) => (
+                    <li
+                      key={item}
+                      className="text-sm font-body text-foreground/80 flex items-start gap-2"
+                    >
+                      <span className="text-primary mt-1 text-xs">●</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+
+                <span className="inline-block font-body text-sm font-medium text-primary group-hover:underline">
+                  View Complete Menu →
+                </span>
+
+              </Link>
+
+            </ScrollReveal>
+          ))}
+
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default MenuCards;
