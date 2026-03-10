@@ -55,7 +55,11 @@ const Header = () => {
             <img
               src={logo}
               alt="Bite Affair"
-              className="h-20 lg:h-32 xl:h-36 w-auto object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
+              className={`h-20 lg:h-32 xl:h-36 w-auto object-contain ${
+                scrolled || !isHome
+                  ? "drop-shadow-[0_6px_15px_rgba(0,0,0,0.25)]"
+                  : "drop-shadow-[0_12px_40px_rgba(0,0,0,0.9)]"
+              }`}
             />
           </Link>
 
