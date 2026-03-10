@@ -11,14 +11,14 @@ const MenuCards = () => {
 
   const filteredPackages = menuPackages.filter((pkg) => {
 
-    // Veg / NonVeg filter
-    if (typeFilter === "veg" && !pkg.isVeg) return false;
-    if (typeFilter === "nonveg" && pkg.isVeg) return false;
-
-    // Price filter
+    // PRICE FILTER (independent)
     if (priceFilter === "under500" && pkg.price >= 500) return false;
     if (priceFilter === "500to900" && (pkg.price < 500 || pkg.price > 900)) return false;
     if (priceFilter === "above900" && pkg.price <= 900) return false;
+
+    // Veg / NonVeg filter
+    if (typeFilter === "veg" && !pkg.isVeg) return false;
+    if (typeFilter === "nonveg" && pkg.isVeg) return false;
 
     return true;
   });
@@ -127,7 +127,7 @@ const MenuCards = () => {
                 </p>
 
                 <ul className="space-y-1.5 mb-6">
-                  {pkg.previewItems.map((item) => (
+                  {pkg.previewItems.slice(0,3).map((item) => (
                     <li
                       key={item}
                       className="text-sm font-body text-foreground/80 flex items-start gap-2"
