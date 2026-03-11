@@ -68,7 +68,9 @@ selectedVegPackage?.slug === pkg.slug
 }`}
 ><div className="h-32 bg-gray-200 rounded mb-4 flex items-center justify-center text-sm text-gray-500">
 Package Image
-</div><h3 className="text-lg font-semibold mb-1">{pkg.name}</h3><p className="text-primary font-semibold mb-4">
+</div><h3 className="text-lg font-semibold mb-1">
+{pkg.name}
+</h3><p className="text-primary font-semibold mb-4">
 ₹{pkg.price} / person
 </p><Link
 to={`/menu/${pkg.slug}?from=packages`}
@@ -106,7 +108,9 @@ selectedNonVegPackage?.slug === pkg.slug
 }`}
 ><div className="h-32 bg-gray-200 rounded mb-4 flex items-center justify-center text-sm text-gray-500">
 Package Image
-</div><h3 className="text-lg font-semibold mb-1">{pkg.name}</h3><p className="text-primary font-semibold mb-4">
+</div><h3 className="text-lg font-semibold mb-1">
+{pkg.name}
+</h3><p className="text-primary font-semibold mb-4">
 ₹{pkg.price} / person
 </p><Link
 to={`/menu/${pkg.slug}?from=packages`}
@@ -128,11 +132,14 @@ variant={selectedNonVegPackage?.slug === pkg.slug ? "default" : "outline"}
 </>
 )}{/* Floating Submit Bar */}
 
-<div className="fixed bottom-0 left-0 w-full bg-white border-t shadow-lg p-4 z-50"><div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3"><div className="text-sm"><p>
+<div className="fixed bottom-0 left-0 w-full bg-white border-t shadow-lg p-4 z-50"><div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3"><div className="text-sm">
+<p>
 Veg: {selectedVegPackage ? selectedVegPackage.name : "Not selected"}
-</p><p>
+</p>
+<p>
 Non Veg: {selectedNonVegPackage ? selectedNonVegPackage.name : "Not selected"}
-</p></div><Button size="lg" onClick={handleSubmit}>
+</p>
+</div><Button size="lg" onClick={handleSubmit}>
 Proceed to WhatsApp
 </Button></div></div></div>);
 
