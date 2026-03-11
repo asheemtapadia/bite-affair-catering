@@ -32,8 +32,7 @@ date,
 time
 });
 
-navigate("/packages?${params.toString()}");
-};
+navigate(`/packages?${params.toString()}`);
 
 return (
 
