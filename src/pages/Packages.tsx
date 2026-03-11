@@ -25,7 +25,9 @@ setCart(JSON.parse(storedCart));
 
 const addToCart = (pkg: any) => {
 
-const updatedCart = [...cart, pkg];
+const updatedCart = [...cart];
+
+updatedCart.push(pkg);
 
 setCart(updatedCart);
 
@@ -63,6 +65,7 @@ Add to Cart
 
 </div>))}
 
-</div></div>
-);
-};export default Packages;
+</div></div>);
+};
+
+export default Packages;
