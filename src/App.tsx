@@ -8,6 +8,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import Index from "./pages/Index";
 import MenuDetailPage from "./pages/MenuDetailPage";
 import Packages from "./pages/Packages";
+import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/menu/:slug" element={<MenuDetailPage />} />
             <Route path="/packages" element={<Packages />} />
+            <Route path="/cart" element={<Cart />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
