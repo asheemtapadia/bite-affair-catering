@@ -2,8 +2,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "@/components/ErrorBoundary";
+
 import Index from "./pages/Index";
 import MenuDetailPage from "./pages/MenuDetailPage";
 import Packages from "./pages/Packages";
@@ -17,14 +18,16 @@ const App = () => (
       <Toaster />
       <Sonner />
       <ErrorBoundary>
-        <BrowserRouter>
+
+        <Router>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/menu/:slug" element={<MenuDetailPage />} />
             <Route path="/packages" element={<Packages />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </BrowserRouter>
+        </Router>
+
       </ErrorBoundary>
     </TooltipProvider>
   </QueryClientProvider>
