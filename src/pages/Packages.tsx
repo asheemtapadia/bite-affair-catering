@@ -81,7 +81,7 @@ View Full Menu
 onClick={() => setSelectedVegPackage(pkg)}
 variant={selectedVegPackage?.slug === pkg.slug ? "default" : "outline"}
 
-«»
+
 
 {selectedVegPackage?.slug === pkg.slug ? "Selected ✓" : "Select Package"}
 </Button>
