@@ -1,4 +1,4 @@
-import { useParams, Link, useLocation } from "react-router-dom";
+import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
 import { menuPackages, othersInfo } from "@/data/menuData";
 import { ArrowLeft, Leaf, Drumstick, MessageCircle, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 const MenuDetailPage = () => {
 const { slug } = useParams<{ slug: string }>();
 const location = useLocation();
+const navigate = useNavigate();
 
 const pkg = menuPackages.find((p) => p.slug === slug);
 
@@ -47,13 +48,13 @@ return (
 <div className="bg-navy pt-28 pb-12">
 <div className="container mx-auto px-4">
 
-<Link
-to={cameFromPackages ? `/packages${location.search.replace("from=packages", "")}` : "/#menu"}
+<button
+onClick={() => navigate(-1)}
 className="inline-flex items-center gap-1 font-body text-sm text-navy-foreground/60 hover:text-primary transition-colors mb-4"
 >
 <ArrowLeft size={16} />
 Back to Packages
-</Link>
+</button>
 
 <div className="flex items-center gap-3 mb-2">
 {pkg.isVeg ? (
