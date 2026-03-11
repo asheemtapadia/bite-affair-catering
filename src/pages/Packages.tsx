@@ -23,13 +23,12 @@ const nonVegPackages = menuPackages.filter(pkg => !pkg.isVeg);
 const handleSubmit = () => {
 
 const message = encodeURIComponent(
-
 `New Catering Inquiry
 
 Veg Guests: ${vegGuests}
 Non Veg Guests: ${nonVegGuests}
 
-Selected Packages:
+Selected Packages
 Veg: ${selectedVegPackage ? selectedVegPackage.name : "Not selected"}
 Non Veg: ${selectedNonVegPackage ? selectedNonVegPackage.name : "Not selected"}
 
@@ -49,7 +48,7 @@ window.open(
 
 return (
 
-<div className="min-h-screen py-20 px-6"><h1 className="text-3xl font-bold text-center mb-12">
+<div className="min-h-screen py-20 px-6 pb-32"><h1 className="text-3xl font-bold text-center mb-12">
 Available Packages
 </h1>{/* Veg Packages */}
 
@@ -78,11 +77,7 @@ to={`/menu/${pkg.slug}?from=packages`}
 className="text-sm text-primary underline mb-3"
 >
 View Full Menu
-</Link><Button
-onClick={() => setSelectedVegPackage(pkg)}
-
-«»
-
+</Link><Button onClick={() => setSelectedVegPackage(pkg)}>
 Select Package
 </Button>
 
@@ -117,11 +112,7 @@ to={`/menu/${pkg.slug}?from=packages`}
 className="text-sm text-primary underline mb-3"
 >
 View Full Menu
-</Link><Button
-onClick={() => setSelectedNonVegPackage(pkg)}
-
-«»
-
+</Link><Button onClick={() => setSelectedNonVegPackage(pkg)}>
 Select Package
 </Button>
 
@@ -129,24 +120,15 @@ Select Package
 
 </div>
 </>
-)}{/* Selected packages summary */}
+)}{/* Floating Submit Bar */}
 
-<div className="max-w-xl mx-auto text-center border rounded-lg p-6"><h3 className="text-xl font-semibold mb-4">
-Selected Packages
-</h3><p className="mb-2">
+<div className="fixed bottom-0 left-0 w-full bg-white border-t shadow-lg p-4 z-50"><div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3"><div className="text-sm"><p>
 Veg: {selectedVegPackage ? selectedVegPackage.name : "Not selected"}
-</p><p className="mb-4">
+</p><p>
 Non Veg: {selectedNonVegPackage ? selectedNonVegPackage.name : "Not selected"}
-</p><Button
-size="lg"
-onClick={handleSubmit}
-
-«»
-
+</p></div><Button size="lg" onClick={handleSubmit}>
 Proceed to WhatsApp
-</Button>
-
-</div></div>);
+</Button></div></div></div>);
 };
 
 export default Packages;
