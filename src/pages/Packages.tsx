@@ -68,17 +68,20 @@ selectedVegPackage?.slug === pkg.slug
 }`}
 ><div className="h-32 bg-gray-200 rounded mb-4 flex items-center justify-center text-sm text-gray-500">
 Package Image
-</div><h3 className="text-lg font-semibold mb-1">
-{pkg.name}
-</h3><p className="text-primary font-semibold mb-4">
+</div><h3 className="text-lg font-semibold mb-1">{pkg.name}</h3><p className="text-primary font-semibold mb-4">
 ₹{pkg.price} / person
 </p><Link
 to={`/menu/${pkg.slug}?from=packages`}
 className="text-sm text-primary underline mb-3"
 >
 View Full Menu
-</Link><Button onClick={() => setSelectedVegPackage(pkg)}>
-Select Package
+</Link><Button
+onClick={() => setSelectedVegPackage(pkg)}
+variant={selectedVegPackage?.slug === pkg.slug ? "default" : "outline"}
+
+«»
+
+{selectedVegPackage?.slug === pkg.slug ? "Selected ✓" : "Select Package"}
 </Button>
 
 </div>))}
@@ -103,17 +106,20 @@ selectedNonVegPackage?.slug === pkg.slug
 }`}
 ><div className="h-32 bg-gray-200 rounded mb-4 flex items-center justify-center text-sm text-gray-500">
 Package Image
-</div><h3 className="text-lg font-semibold mb-1">
-{pkg.name}
-</h3><p className="text-primary font-semibold mb-4">
+</div><h3 className="text-lg font-semibold mb-1">{pkg.name}</h3><p className="text-primary font-semibold mb-4">
 ₹{pkg.price} / person
 </p><Link
 to={`/menu/${pkg.slug}?from=packages`}
 className="text-sm text-primary underline mb-3"
 >
 View Full Menu
-</Link><Button onClick={() => setSelectedNonVegPackage(pkg)}>
-Select Package
+</Link><Button
+onClick={() => setSelectedNonVegPackage(pkg)}
+variant={selectedNonVegPackage?.slug === pkg.slug ? "default" : "outline"}
+
+«»
+
+{selectedNonVegPackage?.slug === pkg.slug ? "Selected ✓" : "Select Package"}
 </Button>
 
 </div>))}
@@ -129,6 +135,7 @@ Non Veg: {selectedNonVegPackage ? selectedNonVegPackage.name : "Not selected"}
 </p></div><Button size="lg" onClick={handleSubmit}>
 Proceed to WhatsApp
 </Button></div></div></div>);
+
 };
 
 export default Packages;
