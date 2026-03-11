@@ -48,7 +48,7 @@ return (
 <div className="container mx-auto px-4">
 
 <Link
-to={cameFromPackages ? "/packages" : "/#menu"}
+to={cameFromPackages ? `/packages${location.search.replace("from=packages", "")}` : "/#menu"}
 className="inline-flex items-center gap-1 font-body text-sm text-navy-foreground/60 hover:text-primary transition-colors mb-4"
 >
 <ArrowLeft size={16} />
