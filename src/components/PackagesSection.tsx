@@ -1,65 +1,154 @@
+import { useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const highlights = [
-  { label: "Starting at", value: "₹499/person" },
-  { label: "Base quantity", value: "20 pax" },
-  { label: "Packages", value: "8 options" },
-  { label: "Cuisine", value: "Veg & Non Veg" },
+{ label: "Starting at", value: "₹499/person" },
+{ label: "Base quantity", value: "20 pax" },
+{ label: "Packages", value: "8 options" },
+{ label: "Cuisine", value: "Veg & Non Veg" },
 ];
 
 const PackagesSection = () => {
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
 
-  return (
-    <section id="packages" className="py-20 lg:py-28 section-white">
-      <div className="container mx-auto px-4">
-        <ScrollReveal>
-          <div className="text-center mb-16">
-            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy mb-4">
-              Flexible Packages
-            </h2>
-            <p className="font-body text-muted-foreground text-lg max-w-xl mx-auto">
-              From standard to premium, veg to non-veg. Choose the package that fits your occasion and guest count.
-            </p>
+const [vegGuests, setVegGuests] = useState("");
+const [nonVegGuests, setNonVegGuests] = useState("");
+const [area, setArea] = useState("");
+const [date, setDate] = useState("");
+const [time, setTime] = useState("");
+const [cuisine, setCuisine] = useState("");
+
+const packages = [
+{ name: "Standard Veg", price: "₹499/person" },
+{ name: "Premium Veg", price: "₹599/person" },
+{ name: "Standard Non Veg", price: "₹699/person" },
+{ name: "Premium Non Veg", price: "₹799/person" },
+];
+
+return (
+<section id="packages" className="py-20 lg:py-28 section-white">
+<div className="container mx-auto px-4">
+
+    <ScrollReveal>
+      <div className="text-center mb-16">
+        <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy mb-4">
+          Plan Your Event
+        </h2>
+        <p className="font-body text-muted-foreground text-lg max-w-xl mx-auto">
+          Select your event details to explore suitable packages.
+        </p>
+      </div>
+    </ScrollReveal>
+
+    {/* Filters */}
+    <ScrollReveal delay={0.1}>
+      <div className="bg-card border border-border rounded-lg p-6 md:p-8 max-w-4xl mx-auto shadow-sm mb-12">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+          <div>
+            <label className="text-sm font-medium mb-1 block">Area</label>
+            <Input
+              placeholder="Enter delivery area"
+              value={area}
+              onChange={(e) => setArea(e.target.value)}
+            />
           </div>
-        </ScrollReveal>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto mb-12">
-          {highlights.map((h, i) => (
-            <ScrollReveal key={h.label} delay={0.08 * i}>
-              <div className="text-center">
-                <p className="font-heading text-2xl md:text-3xl font-bold text-primary mb-1">
-                  {h.value}
-                </p>
-                <p className="font-body text-sm text-muted-foreground">{h.label}</p>
-              </div>
-            </ScrollReveal>
-          ))}
+          <div>
+            <label className="text-sm font-medium mb-1 block">Cuisine</label>
+            <select
+              className="w-full border rounded-md p-2"
+              value={cuisine}
+              onChange={(e) => setCuisine(e.target.value)}
+            >
+              <option value="">Select Cuisine</option>
+              <option value="veg">Veg</option>
+              <option value="nonveg">Non Veg</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="text-sm font-medium mb-1 block">Veg Guests</label>
+            <Input
+              type="number"
+              placeholder="Number of veg guests"
+              value={vegGuests}
+              onChange={(e) => setVegGuests(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium mb-1 block">Non Veg Guests</label>
+            <Input
+              type="number"
+              placeholder="Number of non veg guests"
+              value={nonVegGuests}
+              onChange={(e) => setNonVegGuests(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium mb-1 block">Date</label>
+            <Input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium mb-1 block">Delivery Time</label>
+            <Input
+              type="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+            />
+          </div>
+
         </div>
 
-        <ScrollReveal delay={0.3}>
-          <div className="bg-card border border-border rounded-lg p-6 md:p-8 max-w-2xl mx-auto shadow-sm">
-            <h3 className="font-heading text-lg font-semibold text-navy mb-4">What's Included</h3>
-            <ul className="space-y-2 font-body text-sm text-foreground/80">
-              <li>● Complimentary snacks plates, dips, mint chutney, mouth freshener, tooth picks & napkins</li>
-              <li>● Quantities based on 20 pax – adjustable per final confirmation</li>
-              <li>● Server support available at ₹1,500 per server</li>
-              <li>● Server + dishes at ₹1,500 + ₹750 extra</li>
-              <li>● Transport cost applicable separately</li>
-            </ul>
-            <button
-              onClick={() => scrollTo("menu")}
-              className="mt-6 font-body text-sm font-medium text-primary hover:underline"
-            >
-              Browse All Packages →
-            </button>
-          </div>
-        </ScrollReveal>
       </div>
-    </section>
-  );
+    </ScrollReveal>
+
+    {/* Packages */}
+    <ScrollReveal delay={0.2}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+
+        {packages.map((pkg, i) => (
+          <div
+            key={i}
+            className="bg-card border border-border rounded-lg p-5 shadow-sm flex flex-col"
+          >
+
+            {/* Placeholder Image */}
+            <div className="h-32 bg-muted rounded mb-4 flex items-center justify-center text-sm text-muted-foreground">
+              Package Image
+            </div>
+
+            <h3 className="font-heading text-lg font-semibold text-navy mb-1">
+              {pkg.name}
+            </h3>
+
+            <p className="text-primary font-semibold mb-4">
+              {pkg.price}
+            </p>
+
+            <Button className="mt-auto">
+              Add to Cart
+            </Button>
+
+          </div>
+        ))}
+
+      </div>
+    </ScrollReveal>
+
+  </div>
+</section>
+
+);
 };
 
 export default PackagesSection;
