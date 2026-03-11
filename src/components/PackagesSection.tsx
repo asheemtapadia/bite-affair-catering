@@ -23,18 +23,19 @@ const [cuisine, setCuisine] = useState("");
 const navigate = useNavigate();
 
 const handleFindPackages = () => {
-const params = new URLSearchParams({
-veg: vegGuests,
-nonveg: nonVegGuests,
-area,
-cuisine,
-date,
-time
-});
 
-navigate("/packages?${params.toString()}");
+  const params = new URLSearchParams({
+    veg: vegGuests,
+    nonveg: nonVegGuests,
+    area,
+    cuisine,
+    date,
+    time
+  });
+
+  navigate(`/packages?${params.toString()}`);
+
 };
-
 return (
 
 <section id="packages" className="py-20 lg:py-28 section-white">
