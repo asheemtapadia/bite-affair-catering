@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { menuPackages } from "@/data/menuData";
@@ -6,7 +5,6 @@ import { menuPackages } from "@/data/menuData";
 const Packages = () => {
 
 const [searchParams] = useSearchParams();
-const [cart, setCart] = useState<any[]>([]);
 
 const cuisine = searchParams.get("cuisine");
 
@@ -16,72 +14,65 @@ cuisine === "veg" ? pkg.isVeg : !pkg.isVeg
 )
 : menuPackages;
 
-useEffect(() => {
-const storedCart = localStorage.getItem("cart");
-if (storedCart) {
-setCart(JSON.parse(storedCart));
-}
-}, []);
+const handleSelectPackage = (pkg: any) => {
 
-const addToCart = (pkg: any) => {
+const veg = searchParams.get("veg");
+const nonveg = searchParams.get("nonveg");
+const area = searchParams.get("area");
+const date = searchParams.get("date");
+const time = searchParams.get("time");
 
-const updatedCart = [...cart];
+const message = encodeURIComponent(
+`New Catering Inquiry
 
-updatedCart.push(pkg);
+Package: ${pkg.name}
+Price: ₹${pkg.price} / person
 
-setCart(updatedCart);
+Veg Guests: ${veg || 0}
+Non Veg Guests: ${nonveg || 0}
 
-localStorage.setItem("cart", JSON.stringify(updatedCart));
+Area: ${area || "Not provided"}
+Date: ${date || "Not selected"}
+Delivery Time: ${time || "Not selected"}
 
-alert(`${pkg.name} added to cart`);
+Source: Website`
+);
+
+window.open(
+"https://wa.me/919211570030?text=${message}",
+"_blank"
+);
 
 };
 
 return (
 
-<div className="min-h-screen py-20 px-6">
-
-<h1 className="text-3xl font-bold text-center mb-12">
+<div className="min-h-screen py-20 px-6"><h1 className="text-3xl font-bold text-center mb-12">
 Available Packages
-</h1>
-
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-{filteredPackages.map((pkg) => (
+</h1><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">{filteredPackages.map((pkg) => (
 
 <div
 key={pkg.slug}
 className="border rounded-lg p-5 shadow-sm flex flex-col"
->
-
-<div className="h-32 bg-gray-200 rounded mb-4 flex items-center justify-center text-sm text-gray-500">
+><div className="h-32 bg-gray-200 rounded mb-4 flex items-center justify-center text-sm text-gray-500">
 Package Image
-</div>
-
-<h3 className="text-lg font-semibold mb-1">
+</div><h3 className="text-lg font-semibold mb-1">
 {pkg.name}
-</h3>
-
-<p className="text-primary font-semibold mb-4">
+</h3><p className="text-primary font-semibold mb-4">
 ₹{pkg.price} / person
-</p>
-
-<Button
+</p><Button
 className="mt-auto"
-onClick={() => addToCart(pkg)}
->
-Add to Cart
+onClick={() => handleSelectPackage(pkg)}
+
+«»
+
+Select Package
 </Button>
 
-</div>
+</div>))}
 
-))}
+</div></div>);
 
-</div>
-
-</div>
-
-);
 };
 
 export default Packages;
