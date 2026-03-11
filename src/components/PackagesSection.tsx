@@ -83,7 +83,7 @@ size="lg"
 className="px-10 py-6 text-base"
 onClick={handleFindPackages}
 
-«»
+
 
 Find Packages
 </Button>
