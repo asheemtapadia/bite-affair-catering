@@ -22,14 +22,27 @@ return;
 }
 
 const params = new URLSearchParams({
-veg: vegGuests,
-nonveg: nonVegGuests,
-area,
-date,
-time
-});
+const handleFindPackages = () => {
 
-navigate("/packages?${params.toString()}");
+  if(!area || !date || !time){
+    alert("Please fill Area, Date and Delivery Time");
+    return;
+  }
+
+  if(!vegGuests && !nonVegGuests){
+    alert("Please enter number of guests");
+    return;
+  }
+
+  const params = new URLSearchParams({
+    veg: vegGuests,
+    nonveg: nonVegGuests,
+    area,
+    date,
+    time
+  });
+
+  navigate(`/packages?${params.toString()}`);
 
 };
 
