@@ -168,23 +168,26 @@ variant={selectedNonVegPackage?.slug === pkg.slug ? "default" : "outline"}
 
 {/* Floating Submit Bar */}
 
-<div className="fixed bottom-0 left-0 w-full bg-white border-t shadow-lg p-4 z-50">
+<div className="fixed bottom-0 left-0 w-full bg-white border-t shadow-xl p-4 z-50">
 
-<div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
+<div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
 
-<div className="text-sm">
-
-<p>
-Veg: {selectedVegPackage ? selectedVegPackage.name : "Not selected"}
-</p>
+<div className="text-sm font-medium">
 
 <p>
-Non Veg: {selectedNonVegPackage ? selectedNonVegPackage.name : "Not selected"}
+Selected:
+{selectedVegPackage && ` Veg - ${selectedVegPackage.name}`}
+{selectedNonVegPackage && ` | Non Veg - ${selectedNonVegPackage.name}`}
+{!selectedVegPackage && !selectedNonVegPackage && " None"}
 </p>
 
 </div>
 
-<Button size="lg" onClick={handleSubmit}>
+<Button
+size="lg"
+onClick={handleSubmit}
+disabled={!selectedVegPackage && !selectedNonVegPackage}
+>
 Proceed to WhatsApp
 </Button>
 
