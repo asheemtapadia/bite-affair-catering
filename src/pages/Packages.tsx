@@ -33,38 +33,55 @@ setCart(updatedCart);
 
 localStorage.setItem("cart", JSON.stringify(updatedCart));
 
-alert("${pkg.name} added to cart");
+alert(`${pkg.name} added to cart`);
 
 };
 
 return (
 
-<div className="min-h-screen py-20 px-6"><h1 className="text-3xl font-bold text-center mb-12">
+<div className="min-h-screen py-20 px-6">
+
+<h1 className="text-3xl font-bold text-center mb-12">
 Available Packages
-</h1><div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">{filteredPackages.map((pkg) => (
+</h1>
+
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+{filteredPackages.map((pkg) => (
 
 <div
 key={pkg.slug}
 className="border rounded-lg p-5 shadow-sm flex flex-col"
->{/* Placeholder Image */}
+>
 
 <div className="h-32 bg-gray-200 rounded mb-4 flex items-center justify-center text-sm text-gray-500">
 Package Image
-</div><h3 className="text-lg font-semibold mb-1">
+</div>
+
+<h3 className="text-lg font-semibold mb-1">
 {pkg.name}
-</h3><p className="text-primary font-semibold mb-4">
+</h3>
+
+<p className="text-primary font-semibold mb-4">
 ₹{pkg.price} / person
-</p><Button
+</p>
+
+<Button
 className="mt-auto"
 onClick={() => addToCart(pkg)}
-
-
+>
 Add to Cart
 </Button>
 
-</div>))}
+</div>
 
-</div></div>);
+))}
+
+</div>
+
+</div>
+
+);
 };
 
 export default Packages;
