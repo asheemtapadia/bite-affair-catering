@@ -20,6 +20,14 @@ const [selectedNonVegPackage, setSelectedNonVegPackage] = useState<any>(null);
 const vegPackages = menuPackages.filter(pkg => pkg.isVeg);
 const nonVegPackages = menuPackages.filter(pkg => !pkg.isVeg);
 
+const vegTotal =
+selectedVegPackage ? vegGuests * selectedVegPackage.price : 0;
+
+const nonVegTotal =
+selectedNonVegPackage ? nonVegGuests * selectedNonVegPackage.price : 0;
+
+const grandTotal = vegTotal + nonVegTotal;
+
 const handleSubmit = () => {
 
 const message = encodeURIComponent(
@@ -31,6 +39,11 @@ Non Veg Guests: ${nonVegGuests}
 Selected Packages
 Veg: ${selectedVegPackage ? selectedVegPackage.name : "Not selected"}
 Non Veg: ${selectedNonVegPackage ? selectedNonVegPackage.name : "Not selected"}
+
+Estimated Cost
+Veg Total: ₹${vegTotal}
+Non Veg Total: ₹${nonVegTotal}
+Grand Total: ₹${grandTotal}
 
 Area: ${area || "Not provided"}
 Date: ${date || "Not selected"}
@@ -96,10 +109,14 @@ View Full Menu
 </Link>
 
 <Button
-onClick={() => setSelectedVegPackage(pkg)}
+onClick={() =>
+selectedVegPackage?.slug === pkg.slug
+? setSelectedVegPackage(null)
+: setSelectedVegPackage(pkg)
+}
 variant={selectedVegPackage?.slug === pkg.slug ? "default" : "outline"}
 >
-{selectedVegPackage?.slug === pkg.slug ? "Selected ✓" : "Select Package"}
+{selectedVegPackage?.slug === pkg.slug ? "Selected ✓ (Tap to remove)" : "Select Package"}
 </Button>
 
 </div>
@@ -152,10 +169,14 @@ View Full Menu
 </Link>
 
 <Button
-onClick={() => setSelectedNonVegPackage(pkg)}
+onClick={() =>
+selectedNonVegPackage?.slug === pkg.slug
+? setSelectedNonVegPackage(null)
+: setSelectedNonVegPackage(pkg)
+}
 variant={selectedNonVegPackage?.slug === pkg.slug ? "default" : "outline"}
 >
-{selectedNonVegPackage?.slug === pkg.slug ? "Selected ✓" : "Select Package"}
+{selectedNonVegPackage?.slug === pkg.slug ? "Selected ✓ (Tap to remove)" : "Select Package"}
 </Button>
 
 </div>
@@ -180,6 +201,12 @@ Selected:
 {selectedNonVegPackage && ` | Non Veg - ${selectedNonVegPackage.name}`}
 {!selectedVegPackage && !selectedNonVegPackage && " None"}
 </p>
+
+{grandTotal > 0 && (
+<p className="text-primary font-semibold mt-1">
+Estimated Total: ₹{grandTotal}
+</p>
+)}
 
 </div>
 
