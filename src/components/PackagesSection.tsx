@@ -4,13 +4,6 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-const highlights = [
-{ label: "Starting at", value: "₹499/person" },
-{ label: "Base quantity", value: "20 pax" },
-{ label: "Packages", value: "8 options" },
-{ label: "Cuisine", value: "Veg & Non Veg" },
-];
-
 const PackagesSection = () => {
 
 const [vegGuests, setVegGuests] = useState("");
@@ -18,55 +11,43 @@ const [nonVegGuests, setNonVegGuests] = useState("");
 const [area, setArea] = useState("");
 const [date, setDate] = useState("");
 const [time, setTime] = useState("");
-const [cuisine, setCuisine] = useState("");
 
 const navigate = useNavigate();
 
 const handleFindPackages = () => {
 
-  const params = new URLSearchParams({
-    veg: vegGuests,
-    nonveg: nonVegGuests,
-    area,
-    cuisine,
-    date,
-    time
-  });
+if(!vegGuests && !nonVegGuests){
+alert("Please enter number of guests");
+return;
+}
 
-  navigate(`/packages?${params.toString()}`);
+const params = new URLSearchParams({
+veg: vegGuests,
+nonveg: nonVegGuests,
+area,
+date,
+time
+});
+
+navigate("/packages?${params.toString()}");
 
 };
+
 return (
 
-<section id="packages" className="py-20 lg:py-28 section-white">
-<div className="container mx-auto px-4"><ScrollReveal>
-<div className="text-center mb-16">
-<h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy mb-4">
+<section id="packages" className="py-20 lg:py-28 section-white"><div className="container mx-auto px-4"><ScrollReveal>
+<div className="text-center mb-16"><h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy mb-4">
 Plan Your Event
-</h2>
-<p className="font-body text-muted-foreground text-lg max-w-xl mx-auto">
+</h2><p className="font-body text-muted-foreground text-lg max-w-xl mx-auto">
 Select your event details to explore suitable packages.
-</p>
-</div>
-</ScrollReveal><ScrollReveal delay={0.1}>
-<div className="bg-card border border-border rounded-lg p-6 md:p-8 max-w-4xl mx-auto shadow-sm mb-12"><div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"><div>
+</p></div>
+</ScrollReveal><ScrollReveal delay={0.1}><div className="bg-card border border-border rounded-lg p-6 md:p-8 max-w-4xl mx-auto shadow-sm mb-12"><div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"><div>
 <label className="text-sm font-medium mb-1 block">Area</label>
 <Input
 placeholder="Enter delivery area"
 value={area}
 onChange={(e) => setArea(e.target.value)}
 />
-</div><div>
-<label className="text-sm font-medium mb-1 block">Cuisine</label>
-<select
-className="w-full border rounded-md p-2"
-value={cuisine}
-onChange={(e) => setCuisine(e.target.value)}
->
-<option value="">Select Cuisine</option>
-<option value="veg">Veg</option>
-<option value="nonveg">Non Veg</option>
-</select>
 </div><div>
 <label className="text-sm font-medium mb-1 block">Veg Guests</label>
 <Input
@@ -97,17 +78,18 @@ type="time"
 value={time}
 onChange={(e) => setTime(e.target.value)}
 />
-</div></div><div className="text-center">
-<Button
+</div></div><div className="text-center"><Button
 size="lg"
 className="px-10 py-6 text-base"
 onClick={handleFindPackages}
->
+
+«»
+
 Find Packages
 </Button>
-</div></div>
-</ScrollReveal></div>
-</section>);
+
+</div></div></ScrollReveal></div></section>);
+
 };
 
 export default PackagesSection;
