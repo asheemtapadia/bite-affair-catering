@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { menuPackages } from "@/data/menuData";
 import ScrollReveal from "@/components/ScrollReveal";
-import { Leaf, Drumstick } from "lucide-react";
+import { Leaf, Drumstick, ShoppingCart } from "lucide-react";
+import { addToCart } from "@/utils/cart";
 
 const MenuCards = () => {
 
@@ -11,18 +12,15 @@ const MenuCards = () => {
 
   const filteredPackages = menuPackages.filter((pkg) => {
 
-    // Veg / NonVeg filter
     if (typeFilter === "veg" && !pkg.isVeg) return false;
     if (typeFilter === "nonveg" && pkg.isVeg) return false;
 
-    // Price filter
     if (priceFilter === "under500" && pkg.price >= 500) return false;
     if (priceFilter === "500to900" && (pkg.price <= 500 || pkg.price > 900)) return false;
 
     return true;
   });
 
-  // Only two cards initially (Veg + Non-Veg)
   const mainCards = [
     menuPackages.find(pkg => pkg.isVeg),
     menuPackages.find(pkg => !pkg.isVeg)
@@ -34,6 +32,20 @@ const MenuCards = () => {
     : filteredPackages.length > 0
     ? filteredPackages
     : [];
+
+  const handleAddToCart = (e:any, pkg:any) => {
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    addToCart({
+      slug: pkg.slug,
+      name: pkg.name,
+      price: pkg.price
+    });
+
+    alert(`${pkg.name} added to cart`);
+  };
 
   return (
     <section id="menu" className="py-20 lg:py-28 section-beige">
@@ -101,6 +113,14 @@ const MenuCards = () => {
                 className="group block bg-card rounded-lg border border-border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md relative overflow-hidden h-full"
               >
 
+                {/* Add to Cart Button */}
+                <button
+                  onClick={(e) => handleAddToCart(e, pkg)}
+                  className="absolute right-4 top-4 bg-primary text-white p-2 rounded-full shadow-md hover:scale-105 transition"
+                >
+                  <ShoppingCart size={16}/>
+                </button>
+
                 <div className="absolute top-0 left-0 h-1 bg-primary transition-all duration-300 w-0 group-hover:w-full" />
 
                 <div className="flex items-center gap-2 mb-3">
@@ -132,7 +152,6 @@ const MenuCards = () => {
                   </span>
                 </p>
 
-                {/* show only 2 dishes */}
                 <ul className="space-y-1.5 mb-6">
                   {pkg.previewItems.slice(0,2).map((item) => (
                     <li
@@ -156,7 +175,6 @@ const MenuCards = () => {
 
         </div>
 
-        {/* Empty result message */}
         {cardsToRender.length === 0 && (
           <p className="text-center text-muted-foreground mt-10 text-lg">
             No packages available in this price range.
