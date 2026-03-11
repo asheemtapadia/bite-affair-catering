@@ -89,7 +89,7 @@ Package Image
 </p>
 
 <Link
-to={`/menu/${pkg.slug}?from=packages`}
+to={`/menu/${pkg.slug}?from=packages&${searchParams.toString()}`}
 className="text-sm text-primary underline mb-3"
 >
 View Full Menu
@@ -145,7 +145,7 @@ Package Image
 </p>
 
 <Link
-to={`/menu/${pkg.slug}?from=packages`}
+to={`/menu/${pkg.slug}?from=packages&${searchParams.toString()}`}
 className="text-sm text-primary underline mb-3"
 >
 View Full Menu
@@ -173,6 +173,7 @@ variant={selectedNonVegPackage?.slug === pkg.slug ? "default" : "outline"}
 <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
 
 <div className="text-sm">
+
 <p>
 Veg: {selectedVegPackage ? selectedVegPackage.name : "Not selected"}
 </p>
@@ -180,6 +181,7 @@ Veg: {selectedVegPackage ? selectedVegPackage.name : "Not selected"}
 <p>
 Non Veg: {selectedNonVegPackage ? selectedNonVegPackage.name : "Not selected"}
 </p>
+
 </div>
 
 <Button size="lg" onClick={handleSubmit}>
@@ -191,6 +193,7 @@ Proceed to WhatsApp
 </div>
 
 </div>
+
 );
 
 };
