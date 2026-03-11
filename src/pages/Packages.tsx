@@ -58,7 +58,6 @@ Package Image
 className="mt-auto"
 onClick={() => addToCart(pkg)}
 
-«»
 
 Add to Cart
 </Button>
