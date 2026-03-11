@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone, MessageCircle } from "lucide-react";
+import { Menu, X, Phone, MessageCircle, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/bite-affair-logo.png";
 
@@ -14,21 +14,41 @@ const navLinks = [
 ];
 
 const Header = () => {
+
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+
   const location = useLocation();
   const isHome = location.pathname === "/";
 
   useEffect(() => {
+
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+
+    const updateCart = () => {
+      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      setCartCount(cart.length);
+    };
+
+    updateCart();
+
+    window.addEventListener("storage", updateCart);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("storage", updateCart);
+    };
+
   }, []);
 
   const handleNavClick = (href: string) => {
     setMobileOpen(false);
+
     if (href.startsWith("/#")) {
       const id = href.replace("/#", "");
+
       if (isHome) {
         document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
       } else {
@@ -81,10 +101,26 @@ const Header = () => {
             <MessageCircle size={16} />
             WhatsApp
           </a>
+
+          {/* CART ICON */}
+          <Link
+            to="/cart"
+            className="hidden lg:flex relative items-center justify-center w-10 h-10 rounded-full bg-primary text-white shadow-md hover:scale-105 transition"
+          >
+            <ShoppingCart size={18} />
+
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+
         </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-10">
+
           {navLinks.map((link) => (
             <button
               key={link.label}
@@ -104,6 +140,7 @@ const Header = () => {
           >
             Plan Your Event
           </Button>
+
         </nav>
 
         {/* MOBILE RIGHT */}
@@ -124,6 +161,20 @@ const Header = () => {
             <MessageCircle size={18} />
           </a>
 
+          {/* MOBILE CART */}
+          <Link
+            to="/cart"
+            className="relative flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white shadow-md"
+          >
+            <ShoppingCart size={18} />
+
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+
           <button
             className={`${scrolled || !isHome ? "text-navy" : "text-primary-foreground"}`}
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -138,6 +189,7 @@ const Header = () => {
 
       {mobileOpen && (
         <div className="lg:hidden bg-card border-t border-border px-4 pb-6 pt-2">
+
           {navLinks.map((link) => (
             <button
               key={link.label}
@@ -154,6 +206,7 @@ const Header = () => {
           >
             Plan Your Event
           </Button>
+
         </div>
       )}
     </header>
