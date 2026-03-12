@@ -2,7 +2,6 @@ import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import RealPartyMoments from "@/components/RealPartyMoments";
 import MenuCards from "@/components/MenuCards";
-import FoodGallery from "@/components/FoodGallery";
 import AboutSection from "@/components/AboutSection";
 import ServicesSection from "@/components/ServicesSection";
 import PackagesSection from "@/components/PackagesSection";
@@ -24,22 +23,7 @@ const Index = () => {
       <HeroSection />
       <RealPartyMoments />
       <MenuCards />
-      <FoodGallery />
       <AboutSection />
       <ServicesSection />
       <PackagesSection />
       <HowItWorks />
-      <WhyChooseUs />
-      <Testimonials />
-      <HowOrderingWorks />
-      <CTASection />
-      <LocationSection />
-      <FAQSection />
-      <Footer />
-      <FloatingWhatsApp />
-      <AIChatbot />
-    </div>
-  );
-};
-
-export default Index;
