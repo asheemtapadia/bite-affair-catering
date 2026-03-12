@@ -42,26 +42,23 @@ const Testimonials = () => {
   useEffect(() => {
     const slider = sliderRef.current;
 
-    const autoScroll = setInterval(() => {
+    const interval = setInterval(() => {
       if (!slider) return;
 
       slider.scrollBy({
-        left: 320,
+        left: 340,
         behavior: "smooth",
       });
 
-      if (
-        slider.scrollLeft + slider.clientWidth >=
-        slider.scrollWidth - 10
-      ) {
+      if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 20) {
         slider.scrollTo({
           left: 0,
           behavior: "smooth",
         });
       }
-    }, 4000);
+    }, 5000);
 
-    return () => clearInterval(autoScroll);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -69,27 +66,27 @@ const Testimonials = () => {
       <div className="container mx-auto px-4">
 
         <ScrollReveal>
-          <div className="text-center mb-12">
+          <div className="text-center mb-14">
             <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy mb-4">
               What Our Customers Say
             </h2>
 
             <p className="font-body text-muted-foreground text-lg max-w-xl mx-auto">
-              Real experiences from house parties, office lunches and special celebrations.
+              Real experiences from house parties, office lunches and celebrations.
             </p>
           </div>
         </ScrollReveal>
 
         <div
           ref={sliderRef}
-          className="flex gap-6 overflow-x-auto scroll-smooth pb-4 px-4"
+          className="flex gap-5 overflow-x-auto pb-4 px-4 snap-x snap-mandatory"
         >
           {testimonials.map((t, i) => (
             <div
               key={i}
-              className="min-w-[280px] md:min-w-[320px] bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300 flex-shrink-0"
+              className="snap-center flex-shrink-0 w-[85%] max-w-[320px] bg-card border border-border rounded-xl p-6 shadow-sm"
             >
-              <div className="flex text-yellow-400 mb-3">
+              <div className="text-yellow-400 mb-3 text-lg">
                 ★★★★★
               </div>
 
