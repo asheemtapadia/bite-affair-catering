@@ -67,6 +67,19 @@ const Testimonials = () => {
 
         <ScrollReveal>
           <div className="text-center mb-14">
+
+            {/* Google Rating Trust Badge */}
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <span className="text-yellow-400 text-lg">★★★★★</span>
+              <span className="font-semibold text-navy text-lg">
+                4.9 Google Rating
+              </span>
+            </div>
+
+            <p className="text-sm text-muted-foreground mb-5">
+              100+ Happy Customers Across Delhi NCR
+            </p>
+
             <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy mb-4">
               What Our Customers Say
             </h2>
@@ -74,6 +87,7 @@ const Testimonials = () => {
             <p className="font-body text-muted-foreground text-lg max-w-xl mx-auto">
               Real experiences from house parties, office lunches and celebrations.
             </p>
+
           </div>
         </ScrollReveal>
 
