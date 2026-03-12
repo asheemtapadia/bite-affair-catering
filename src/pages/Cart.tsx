@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -13,9 +12,23 @@ const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
 setCart(savedCart);
 }, []);
 
-const removeItem = (slug:string) => {
+const removeItem = (id:number) => {
 
-const updated = cart.filter((item) => item.slug !== slug);
+const updated = cart.filter((item) => item.id !== id);
+
+setCart(updated);
+
+localStorage.setItem("cart", JSON.stringify(updated));
+
+window.dispatchEvent(new Event("cartUpdated"));
+
+};
+
+const updateRequest = (id:number,value:string) => {
+
+const updated = cart.map((item)=>
+item.id === id ? {...item, request:value} : item
+);
 
 setCart(updated);
 
@@ -26,8 +39,9 @@ localStorage.setItem("cart", JSON.stringify(updated));
 const whatsappOrder = () => {
 
 const message = cart.map(
-  (item)=>`• ${item.name} (₹${item.price})`
-).join("\n");
+(item)=>`• ${item.name} (₹${item.price})
+Request: ${item.request || "None"}`
+).join("\n\n");
 
 const text = encodeURIComponent(
 
@@ -65,27 +79,39 @@ return (
 
       {cart.map((item)=>(
         <div
-          key={item.slug}
-          className="border p-4 rounded-lg flex justify-between items-center"
+          key={item.id}
+          className="border p-4 rounded-lg flex flex-col gap-3"
         >
-          <div>
 
-            <h3 className="font-semibold">
-              {item.name}
-            </h3>
+          <div className="flex justify-between items-center">
 
-            <p className="text-sm text-muted-foreground">
-              ₹{item.price} / person
-            </p>
+            <div>
+
+              <h3 className="font-semibold">
+                {item.name}
+              </h3>
+
+              <p className="text-sm text-muted-foreground">
+                ₹{item.price} / person
+              </p>
+
+            </div>
+
+            <Button
+              variant="outline"
+              onClick={()=>removeItem(item.id)}
+            >
+              Remove
+            </Button>
 
           </div>
 
-          <Button
-            variant="outline"
-            onClick={()=>removeItem(item.slug)}
-          >
-            Remove
-          </Button>
+          <textarea
+            placeholder="Special request (spice level, delivery timing, extra plates etc.)"
+            className="w-full border rounded-md p-2 text-sm"
+            value={item.request || ""}
+            onChange={(e)=>updateRequest(item.id,e.target.value)}
+          />
 
         </div>
       ))}
