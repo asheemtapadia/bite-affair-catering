@@ -82,7 +82,7 @@ const Testimonials = () => {
 
         <div
           ref={sliderRef}
-          className="flex gap-6 overflow-x-auto scroll-smooth pb-4"
+          className="flex gap-6 overflow-x-auto scroll-smooth pb-4 px-4"
         >
           {testimonials.map((t, i) => (
             <div
