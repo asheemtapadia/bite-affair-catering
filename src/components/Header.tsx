@@ -35,11 +35,12 @@ const Header = () => {
 
     updateCart();
 
-    window.addEventListener("storage", updateCart);
+    // listen for cart updates
+    window.addEventListener("cartUpdated", updateCart);
 
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("storage", updateCart);
+      window.removeEventListener("cartUpdated", updateCart);
     };
 
   }, []);
