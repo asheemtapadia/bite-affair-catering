@@ -8,6 +8,7 @@ const navLinks = [
   { label: "Home", href: "/#home" },
   { label: "Menu", href: "/#menu" },
   { label: "Packages", href: "/#packages" },
+  { label: "How it Works", href: "/#how-it-works" },
   { label: "About", href: "/#about" },
   { label: "Testimonials", href: "/#testimonials" },
   { label: "Contact", href: "/#contact" },
@@ -67,10 +68,8 @@ const Header = () => {
     >
       <div className="container mx-auto flex items-center justify-between py-5 px-4 lg:px-8">
 
-        {/* LEFT */}
         <div className="flex items-center gap-6">
 
-          {/* Logo */}
           <Link to="/" className="flex items-center transition-transform duration-300 hover:scale-105">
             <img
               src={logo}
@@ -83,7 +82,6 @@ const Header = () => {
             />
           </Link>
 
-          {/* Desktop Call */}
           <a
             href="tel:+919211570030"
             className="hidden lg:flex items-center gap-2 text-sm font-medium px-5 py-2.5 rounded-lg border border-border hover:bg-muted transition"
@@ -92,7 +90,6 @@ const Header = () => {
             Call
           </a>
 
-          {/* Desktop WhatsApp */}
           <a
             href="https://wa.me/919211570030"
             target="_blank"
@@ -102,7 +99,6 @@ const Header = () => {
             WhatsApp
           </a>
 
-          {/* CART ICON */}
           <Link
             to="/cart"
             className="hidden lg:flex relative items-center justify-center w-10 h-10 rounded-full bg-primary text-white shadow-md hover:scale-105 transition"
@@ -118,7 +114,6 @@ const Header = () => {
 
         </div>
 
-        {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-10">
 
           {navLinks.map((link) => (
@@ -143,7 +138,6 @@ const Header = () => {
 
         </nav>
 
-        {/* MOBILE RIGHT */}
         <div className="flex items-center gap-3 lg:hidden">
 
           <a
@@ -161,7 +155,6 @@ const Header = () => {
             <MessageCircle size={18} />
           </a>
 
-          {/* MOBILE CART */}
           <Link
             to="/cart"
             className="relative flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white shadow-md"
