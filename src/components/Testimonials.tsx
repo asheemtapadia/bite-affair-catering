@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
 
 const testimonials = [
@@ -36,12 +37,39 @@ const testimonials = [
 ];
 
 const Testimonials = () => {
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const slider = sliderRef.current;
+
+    const autoScroll = setInterval(() => {
+      if (!slider) return;
+
+      slider.scrollBy({
+        left: 320,
+        behavior: "smooth",
+      });
+
+      if (
+        slider.scrollLeft + slider.clientWidth >=
+        slider.scrollWidth - 10
+      ) {
+        slider.scrollTo({
+          left: 0,
+          behavior: "smooth",
+        });
+      }
+    }, 4000);
+
+    return () => clearInterval(autoScroll);
+  }, []);
+
   return (
     <section id="testimonials" className="py-20 lg:py-28 section-white">
       <div className="container mx-auto px-4">
 
         <ScrollReveal>
-          <div className="text-center mb-14">
+          <div className="text-center mb-12">
             <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy mb-4">
               What Our Customers Say
             </h2>
@@ -52,32 +80,28 @@ const Testimonials = () => {
           </div>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
+        <div
+          ref={sliderRef}
+          className="flex gap-6 overflow-x-auto scroll-smooth pb-4"
+        >
           {testimonials.map((t, i) => (
-            <ScrollReveal key={i} delay={0.08 * i}>
-              <div className="bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 h-full flex flex-col justify-between">
-
-                <div>
-                  <div className="flex text-yellow-400 mb-3">
-                    ★★★★★
-                  </div>
-
-                  <p className="font-body text-sm text-foreground/80 leading-relaxed">
-                    {t.text}
-                  </p>
-                </div>
-
-                <div className="mt-5">
-                  <p className="font-heading text-sm font-semibold text-navy">
-                    {t.name}
-                  </p>
-                </div>
-
+            <div
+              key={i}
+              className="min-w-[280px] md:min-w-[320px] bg-card border border-border rounded-lg p-6 shadow-sm hover:shadow-md transition-all duration-300 flex-shrink-0"
+            >
+              <div className="flex text-yellow-400 mb-3">
+                ★★★★★
               </div>
-            </ScrollReveal>
-          ))}
 
+              <p className="font-body text-sm text-foreground/80 leading-relaxed mb-5">
+                {t.text}
+              </p>
+
+              <p className="font-heading text-sm font-semibold text-navy">
+                {t.name}
+              </p>
+            </div>
+          ))}
         </div>
 
       </div>
