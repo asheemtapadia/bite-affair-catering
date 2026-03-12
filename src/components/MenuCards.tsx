@@ -39,13 +39,14 @@ const MenuCards = () => {
     e.stopPropagation();
 
     addToCart({
-      id: Date.now(),   // UNIQUE ID FIX
       slug: pkg.slug,
       name: pkg.name,
       price: pkg.price
     });
 
-    alert(`${pkg.name} added to cart`);
+    // notify header instantly
+    window.dispatchEvent(new Event("cartUpdated"));
+
   };
 
   return (
