@@ -10,7 +10,7 @@ const steps = [
 
 const HowItWorks = () => {
   return (
-    <section className="py-20 lg:py-28 section-beige">
+    <section id="how-it-works" className="py-20 lg:py-28 section-beige">
       <div className="container mx-auto px-4">
         <ScrollReveal>
           <div className="text-center mb-16">
