@@ -4,6 +4,7 @@ import { menuPackages } from "@/data/menuData";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Leaf, Drumstick, ShoppingCart } from "lucide-react";
 import { addToCart } from "@/utils/cart";
+import { toast } from "sonner";
 
 const MenuCards = () => {
 
@@ -44,8 +45,11 @@ const MenuCards = () => {
       price: pkg.price
     });
 
-    // notify header instantly
     window.dispatchEvent(new Event("cartUpdated"));
+
+    toast.success(`${pkg.name} added to cart`, {
+      description: "You can review it in your cart anytime.",
+    });
 
   };
 
@@ -64,7 +68,6 @@ const MenuCards = () => {
               Designed for gatherings of 15–50 guests. Structured bulk menus with generous portions and consistent quality across Delhi NCR.
             </p>
 
-            {/* FILTER BAR */}
             <div className="flex flex-wrap justify-center gap-4 mb-8">
 
               <button
@@ -104,7 +107,6 @@ const MenuCards = () => {
           </div>
         </ScrollReveal>
 
-        {/* CARDS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
           {cardsToRender.map((pkg, i) => (
@@ -115,7 +117,6 @@ const MenuCards = () => {
                 className="group block bg-card rounded-lg border border-border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md relative overflow-hidden h-full"
               >
 
-                {/* Add to Cart Button */}
                 <button
                   onClick={(e) => handleAddToCart(e, pkg)}
                   className="absolute right-4 top-4 bg-primary text-white p-2 rounded-full shadow-md hover:scale-105 transition"
