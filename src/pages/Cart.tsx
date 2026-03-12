@@ -8,8 +8,13 @@ const Cart = () => {
 const [cart,setCart] = useState<any[]>([]);
 
 useEffect(() => {
-const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
-setCart(savedCart);
+
+  // always open cart from top
+  window.scrollTo(0,0);
+
+  const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+  setCart(savedCart);
+
 }, []);
 
 const removeItem = (id:number) => {
@@ -80,7 +85,7 @@ return (
       {cart.map((item)=>(
         <div
           key={item.id}
-          className="border p-4 rounded-lg flex flex-col gap-3"
+          className="border p-4 rounded-lg flex flex-col gap-3 transition-all duration-300 hover:shadow-md"
         >
 
           <div className="flex justify-between items-center">
