@@ -19,11 +19,43 @@ import AIChatbot from "@/components/AIChatbot";
 const Index = () => {
   return (
     <div className="min-h-screen">
+
       <Header />
+
       <HeroSection />
+
       <RealPartyMoments />
+
       <MenuCards />
+
       <AboutSection />
+
       <ServicesSection />
+
       <PackagesSection />
+
       <HowItWorks />
+
+      <WhyChooseUs />
+
+      <Testimonials />
+
+      <HowOrderingWorks />
+
+      <CTASection />
+
+      <LocationSection />
+
+      <FAQSection />
+
+      <Footer />
+
+      <FloatingWhatsApp />
+
+      <AIChatbot />
+
+    </div>
+  );
+};
+
+export default Index;
