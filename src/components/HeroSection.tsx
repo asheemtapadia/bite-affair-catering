@@ -53,18 +53,18 @@ const HeroSection = () => {
           Delivered across Delhi NCR
         </motion.p>
 
-        {/* Short Buttons in White Container */}
+        {/* Short Buttons in White Background */}
         <motion.div
           className="mt-6 flex justify-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <div className="bg-white/95 backdrop-blur-md rounded-xl shadow-xl px-4 py-4 grid grid-cols-2 gap-3 max-w-md w-full">
+          <div className="bg-white/95 rounded-2xl px-3 py-3 grid grid-cols-2 gap-2 max-w-xs w-full shadow-md">
 
             <Button
               onClick={() => scrollTo("menu")}
-              className="text-sm h-10"
+              className="text-sm h-9 rounded-full"
             >
               Browse Menu
             </Button>
@@ -72,7 +72,7 @@ const HeroSection = () => {
             <Button
               variant="outline"
               onClick={() => scrollTo("packages")}
-              className="text-sm h-10"
+              className="text-sm h-9 rounded-full"
             >
               View Packages
             </Button>
@@ -80,7 +80,7 @@ const HeroSection = () => {
             <Button
               variant="outline"
               onClick={() => scrollTo("packages")}
-              className="text-sm h-10"
+              className="text-sm h-9 rounded-full"
             >
               Plan My Event
             </Button>
@@ -88,7 +88,7 @@ const HeroSection = () => {
             <Button
               variant="outline"
               onClick={() => scrollTo("how-it-works")}
-              className="text-sm h-10"
+              className="text-sm h-9 rounded-full"
             >
               How It Works
             </Button>
