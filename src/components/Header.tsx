@@ -16,7 +16,6 @@ const navLinks = [
 
 const Header = () => {
 
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
 
@@ -25,9 +24,6 @@ const Header = () => {
 
   useEffect(() => {
 
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", onScroll, { passive: true });
-
     const updateCart = () => {
       const cart = JSON.parse(localStorage.getItem("cart") || "[]");
       setCartCount(cart.length);
@@ -35,11 +31,9 @@ const Header = () => {
 
     updateCart();
 
-    // listen for cart updates
     window.addEventListener("cartUpdated", updateCart);
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("cartUpdated", updateCart);
     };
 
@@ -60,70 +54,41 @@ const Header = () => {
   };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled || !isHome
-          ? "bg-warm-white/95 backdrop-blur-sm shadow-sm"
-          : "bg-gradient-to-b from-black/40 to-transparent"
-      }`}
-    >
-      <div className="container mx-auto flex items-center justify-between py-5 px-4 lg:px-8">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
 
-        <div className="flex items-center gap-6">
+      <div className="container mx-auto flex items-center justify-between py-3 px-4 lg:px-8">
 
-          <Link to="/" className="flex items-center transition-transform duration-300 hover:scale-105">
+        {/* LEFT SIDE */}
+        <div className="flex items-center gap-4">
+
+          {/* BURGER LEFT */}
+          <button
+            className="lg:hidden text-navy"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X size={26} /> : <Menu size={26} />}
+          </button>
+
+          {/* LOGO BIGGER */}
+          <Link to="/" className="flex items-center">
             <img
               src={logo}
               alt="Bite Affair"
-              className={`h-20 w-auto object-contain transition-all duration-300 ${
-                scrolled || !isHome
-                  ? "lg:h-[160px] drop-shadow-[0_6px_15px_rgba(0,0,0,0.25)]"
-                  : "lg:h-[184px] drop-shadow-[0_0_25px_rgba(255,255,255,0.7)] drop-shadow-[0_12px_40px_rgba(0,0,0,0.9)]"
-              }`}
+              className="h-24 lg:h-[160px] w-auto object-contain"
             />
-          </Link>
-
-          <a
-            href="tel:+919211570030"
-            className="hidden lg:flex items-center gap-2 text-sm font-medium px-5 py-2.5 rounded-lg border border-border hover:bg-muted transition"
-          >
-            <Phone size={16} />
-            Call
-          </a>
-
-          <a
-            href="https://wa.me/919211570030"
-            target="_blank"
-            className="hidden lg:flex items-center gap-2 text-sm font-medium px-5 py-2.5 rounded-lg bg-green-500 text-white hover:bg-green-600 transition"
-          >
-            <MessageCircle size={16} />
-            WhatsApp
-          </a>
-
-          <Link
-            to="/cart"
-            className="hidden lg:flex relative items-center justify-center w-10 h-10 rounded-full bg-primary text-white shadow-md hover:scale-105 transition"
-          >
-            <ShoppingCart size={18} />
-
-            {cartCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">
-                {cartCount}
-              </span>
-            )}
           </Link>
 
         </div>
 
+        {/* DESKTOP NAV */}
         <nav className="hidden lg:flex items-center gap-10">
 
           {navLinks.map((link) => (
             <button
               key={link.label}
               onClick={() => handleNavClick(link.href)}
-              className={`text-sm font-body font-medium tracking-wide transition-colors duration-200 hover:text-primary ${
-                scrolled || !isHome ? "text-foreground" : "text-primary-foreground/90"
-              }`}
+              className="text-sm font-body font-medium tracking-wide transition-colors duration-200 hover:text-primary text-foreground"
             >
               {link.label}
             </button>
@@ -139,21 +104,24 @@ const Header = () => {
 
         </nav>
 
-        <div className="flex items-center gap-3 lg:hidden">
+        {/* RIGHT ACTIONS */}
+        <div className="flex items-center gap-3">
 
           <a
             href="tel:+919211570030"
-            className="flex items-center justify-center w-10 h-10 rounded-full bg-navy text-white shadow-md"
+            className="hidden lg:flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg border border-border hover:bg-muted transition"
           >
-            <Phone size={18} />
+            <Phone size={16} />
+            Call
           </a>
 
           <a
             href="https://wa.me/919211570030"
             target="_blank"
-            className="flex items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white shadow-md"
+            className="hidden lg:flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition"
           >
-            <MessageCircle size={18} />
+            <MessageCircle size={16} />
+            WhatsApp
           </a>
 
           <Link
@@ -169,18 +137,11 @@ const Header = () => {
             )}
           </Link>
 
-          <button
-            className={`${scrolled || !isHome ? "text-navy" : "text-primary-foreground"}`}
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-
         </div>
 
       </div>
 
+      {/* MOBILE MENU */}
       {mobileOpen && (
         <div className="lg:hidden bg-card border-t border-border px-4 pb-6 pt-2">
 
