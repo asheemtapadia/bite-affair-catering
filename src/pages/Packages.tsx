@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { menuPackages } from "@/data/menuData";
 
 const Packages = () => {
 
 const [searchParams] = useSearchParams();
+const navigate = useNavigate();
 
 const vegGuests = Number(searchParams.get("veg") || 0);
 const nonVegGuests = Number(searchParams.get("nonveg") || 0);
@@ -59,13 +60,32 @@ window.open(
 
 };
 
+
+const handleEditEvent = () => {
+navigate("/#packages");
+};
+
+
 return (
 
 <div className="min-h-screen py-20 px-6 pb-32">
 
+{/* Floating Edit Button */}
+
+<div className="fixed top-24 right-6 z-50">
+<Button
+variant="outline"
+onClick={handleEditEvent}
+>
+Edit Event Details
+</Button>
+</div>
+
+
 <h1 className="text-3xl font-bold text-center mb-12">
 Available Packages
 </h1>
+
 
 {/* Veg Packages */}
 
@@ -127,6 +147,7 @@ variant={selectedVegPackage?.slug === pkg.slug ? "default" : "outline"}
 </>
 )}
 
+
 {/* Non Veg Packages */}
 
 {nonVegGuests > 0 && (
@@ -186,6 +207,7 @@ variant={selectedNonVegPackage?.slug === pkg.slug ? "default" : "outline"}
 </div>
 </>
 )}
+
 
 {/* Floating Submit Bar */}
 
