@@ -16,7 +16,6 @@ const navLinks = [
 
 const Header = () => {
 
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
 
@@ -24,9 +23,6 @@ const Header = () => {
   const isHome = location.pathname === "/";
 
   useEffect(() => {
-
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", onScroll, { passive: true });
 
     const updateCart = () => {
       const cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -38,7 +34,6 @@ const Header = () => {
     window.addEventListener("cartUpdated", updateCart);
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("cartUpdated", updateCart);
     };
 
@@ -59,12 +54,13 @@ const Header = () => {
   };
 
   return (
-<header className="fixed top-0 left-0 right-0 z-50 bg-warm-white shadow-sm">
 
-<div className="container mx-auto flex items-center justify-between py-1 px-4 lg:px-8">
+<header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
+
+<div className="container mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
 
 {/* LEFT SIDE */}
-<div className="flex items-center gap-3 -mt-1">
+<div className="flex items-center gap-3">
 
 <button
 className="lg:hidden text-navy"
@@ -108,11 +104,11 @@ Plan Your Event
 </nav>
 
 {/* RIGHT ICONS */}
-<div className="flex items-center gap-2 -mt-1">
+<div className="flex items-center gap-2">
 
 <a
 href="tel:+919211570030"
-className="flex items-center justify-center w-8 h-8 rounded-full bg-navy text-white shadow-md"
+className="flex items-center justify-center w-8 h-8 rounded-full bg-navy text-white shadow-sm"
 >
 <Phone size={14} />
 </a>
@@ -120,14 +116,14 @@ className="flex items-center justify-center w-8 h-8 rounded-full bg-navy text-wh
 <a
 href="https://wa.me/919211570030"
 target="_blank"
-className="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white shadow-md"
+className="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white shadow-sm"
 >
 <MessageCircle size={14} />
 </a>
 
 <Link
 to="/cart"
-className="relative flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white shadow-md"
+className="relative flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white shadow-sm"
 >
 <ShoppingCart size={14} />
 
@@ -144,7 +140,7 @@ className="relative flex items-center justify-center w-8 h-8 rounded-full bg-pri
 </div>
 
 {mobileOpen && (
-<div className="lg:hidden bg-card border-t border-border px-4 pb-6 pt-2">
+<div className="lg:hidden bg-white border-t border-gray-200 px-4 pb-6 pt-2">
 
 {navLinks.map((link) => (
 <button
