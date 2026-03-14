@@ -53,47 +53,42 @@ const HeroSection = () => {
           Delivered across Delhi NCR
         </motion.p>
 
-        {/* Short Buttons in White Background */}
+        {/* Buttons */}
         <motion.div
-          className="mt-6 flex justify-center"
+          className="mt-6 grid grid-cols-2 gap-3 max-w-xs mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <div className="bg-white/95 rounded-2xl px-3 py-3 grid grid-cols-2 gap-2 max-w-xs w-full shadow-md">
 
-            <Button
-              onClick={() => scrollTo("menu")}
-              className="text-sm h-9 rounded-full"
-            >
-              Browse Menu
-            </Button>
+          <Button
+            onClick={() => scrollTo("menu")}
+            className="h-9 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-sm"
+          >
+            Browse Menu
+          </Button>
 
-            <Button
-              variant="outline"
-              onClick={() => scrollTo("packages")}
-              className="text-sm h-9 rounded-full"
-            >
-              View Packages
-            </Button>
+          <Button
+            onClick={() => scrollTo("packages")}
+            className="h-9 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-sm"
+          >
+            View Packages
+          </Button>
 
-            <Button
-              variant="outline"
-              onClick={() => scrollTo("packages")}
-              className="text-sm h-9 rounded-full"
-            >
-              Plan My Event
-            </Button>
+          <Button
+            onClick={() => scrollTo("packages")}
+            className="h-9 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-sm"
+          >
+            Plan My Event
+          </Button>
 
-            <Button
-              variant="outline"
-              onClick={() => scrollTo("how-it-works")}
-              className="text-sm h-9 rounded-full"
-            >
-              How It Works
-            </Button>
+          <Button
+            onClick={() => scrollTo("how-it-works")}
+            className="h-9 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-sm"
+          >
+            How It Works
+          </Button>
 
-          </div>
         </motion.div>
 
       </div>
