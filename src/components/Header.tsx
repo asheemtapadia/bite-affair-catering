@@ -1,22 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone, MessageCircle, ShoppingCart } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import logo from "@/assets/bite-affair-logo.png";
-
-const navLinks = [
-  { label: "Home", href: "/#home" },
-  { label: "Menu", href: "/#menu" },
-  { label: "Packages", href: "/#packages" },
-  { label: "How it Works", href: "/#how-it-works" },
-  { label: "About", href: "/#about" },
-  { label: "Testimonials", href: "/#testimonials" },
-  { label: "Contact", href: "/#contact" },
-];
 
 const Header = () => {
 
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
 
@@ -24,9 +12,6 @@ const Header = () => {
   const isHome = location.pathname === "/";
 
   useEffect(() => {
-
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", onScroll, { passive: true });
 
     const updateCart = () => {
       const cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -38,7 +23,6 @@ const Header = () => {
     window.addEventListener("cartUpdated", updateCart);
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("cartUpdated", updateCart);
     };
 
@@ -59,21 +43,20 @@ const Header = () => {
   };
 
   return (
-    <header
-      className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm"
-    >
-      <div className="container mx-auto flex items-center py-2 px-4 lg:px-8">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
 
-        {/* LEFT SIDE (BURGER + LOGO) */}
+      {/* HEADER BAR */}
+      <div className="container mx-auto flex items-center py-4 px-4">
+
+        {/* LEFT SIDE */}
         <div className="flex items-center gap-3">
 
-          {/* BURGER MENU */}
+          {/* BURGER */}
           <button
             className="lg:hidden text-navy"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
           >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
 
           {/* LOGO */}
@@ -81,20 +64,20 @@ const Header = () => {
             <img
               src={logo}
               alt="Bite Affair"
-              className="h-24 lg:h-[160px] w-auto object-contain"
+              className="h-14 w-auto object-contain"
             />
           </Link>
 
         </div>
 
-        {/* RIGHT SIDE ICONS */}
+        {/* RIGHT ICONS */}
         <div className="flex items-center gap-3 ml-auto">
 
           <a
             href="tel:+919211570030"
             className="flex items-center justify-center w-10 h-10 rounded-full bg-navy text-white shadow-md"
           >
-            <Phone size={18} />
+            <Phone size={18}/>
           </a>
 
           <a
@@ -102,14 +85,14 @@ const Header = () => {
             target="_blank"
             className="flex items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white shadow-md"
           >
-            <MessageCircle size={18} />
+            <MessageCircle size={18}/>
           </a>
 
           <Link
             to="/cart"
             className="relative flex items-center justify-center w-10 h-10 rounded-full bg-primary text-white shadow-md"
           >
-            <ShoppingCart size={18} />
+            <ShoppingCart size={18}/>
 
             {cartCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5">
@@ -122,52 +105,41 @@ const Header = () => {
 
       </div>
 
-      {/* DESKTOP NAV */}
-      <nav className="hidden lg:flex items-center justify-center gap-10 pb-3">
-
-        {navLinks.map((link) => (
-          <button
-            key={link.label}
-            onClick={() => handleNavClick(link.href)}
-            className="text-sm font-body font-medium tracking-wide transition-colors duration-200 hover:text-primary"
-          >
-            {link.label}
-          </button>
-        ))}
-
-        <Button
-          size="sm"
-          onClick={() => handleNavClick("/#contact")}
-          className="transition-transform duration-200 hover:scale-[1.02]"
-        >
-          Plan Your Event
-        </Button>
-
-      </nav>
-
       {/* MOBILE MENU */}
       {mobileOpen && (
-        <div className="lg:hidden bg-card border-t border-border px-4 pb-6 pt-2">
+        <div className="lg:hidden bg-white border-t px-4 pb-6 pt-2">
 
-          {navLinks.map((link) => (
-            <button
-              key={link.label}
-              onClick={() => handleNavClick(link.href)}
-              className="block w-full text-left py-3 text-foreground font-body font-medium border-b border-border/50 last:border-0"
-            >
-              {link.label}
-            </button>
-          ))}
-
-          <Button
-            className="mt-4 w-full transition-transform duration-200 hover:scale-[1.02]"
-            onClick={() => handleNavClick("/#contact")}
+          <button
+            onClick={() => handleNavClick("/#menu")}
+            className="block w-full text-left py-3 border-b"
           >
-            Plan Your Event
-          </Button>
+            Menu
+          </button>
+
+          <button
+            onClick={() => handleNavClick("/#packages")}
+            className="block w-full text-left py-3 border-b"
+          >
+            Packages
+          </button>
+
+          <button
+            onClick={() => handleNavClick("/#how-it-works")}
+            className="block w-full text-left py-3 border-b"
+          >
+            How it Works
+          </button>
+
+          <button
+            onClick={() => handleNavClick("/#contact")}
+            className="block w-full text-left py-3"
+          >
+            Contact
+          </button>
 
         </div>
       )}
+
     </header>
   );
 };
