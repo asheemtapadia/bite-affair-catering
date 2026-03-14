@@ -56,7 +56,7 @@ const Header = () => {
 
 <header className="fixed top-0 left-0 right-0 z-50 bg-warm-white shadow-sm">
 
-<div className="container mx-auto flex items-start justify-between py-2 px-4 relative">
+<div className="container mx-auto flex items-center justify-between py-1 px-4">
 
 {/* LEFT SIDE */}
 <div className="flex items-center gap-3">
@@ -69,19 +69,15 @@ aria-label="Toggle menu"
 {mobileOpen ? <X size={24} /> : <Menu size={24} />}
 </button>
 
-</div>
-
-{/* LOGO */}
-<Link
-to="/"
-className="absolute left-16 top-1"
->
+<Link to="/">
 <img
 src={logo}
 alt="Bite Affair"
-className="h-28 w-auto object-contain"
+className="h-24 -mt-2 w-auto object-contain"
 />
 </Link>
+
+</div>
 
 {/* RIGHT ICONS */}
 <div className="flex items-center gap-3">
