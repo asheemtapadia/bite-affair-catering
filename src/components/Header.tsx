@@ -61,10 +61,10 @@ const Header = () => {
   return (
 <header className="fixed top-0 left-0 right-0 z-50 bg-warm-white shadow-sm">
 
-<div className="container mx-auto flex items-center justify-between py-2 px-4 lg:px-8">
+<div className="container mx-auto flex items-center justify-between py-1 px-4 lg:px-8">
 
-{/* LEFT SIDE (BURGER + LOGO) */}
-<div className="flex items-center gap-3">
+{/* LEFT SIDE */}
+<div className="flex items-center gap-3 -mt-1">
 
 <button
 className="lg:hidden text-navy"
@@ -74,11 +74,11 @@ aria-label="Toggle menu"
 {mobileOpen ? <X size={24} /> : <Menu size={24} />}
 </button>
 
-<Link to="/" className="flex items-center transition-transform duration-300 hover:scale-105">
+<Link to="/" className="flex items-center">
 <img
 src={logo}
 alt="Bite Affair"
-className="h-28 lg:h-[220px] -mt-3 w-auto object-contain"
+className="h-28 -mt-2 w-auto object-contain"
 />
 </Link>
 
@@ -108,7 +108,7 @@ Plan Your Event
 </nav>
 
 {/* RIGHT ICONS */}
-<div className="flex items-center gap-2">
+<div className="flex items-center gap-2 -mt-1">
 
 <a
 href="tel:+919211570030"
