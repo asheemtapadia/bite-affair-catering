@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,24 @@ const [time, setTime] = useState("");
 
 const navigate = useNavigate();
 
+
+// Load saved form data (so user doesn't lose data)
+useEffect(() => {
+
+const saved = localStorage.getItem("eventForm");
+
+if(saved){
+  const data = JSON.parse(saved);
+  setVegGuests(data.vegGuests || "");
+  setNonVegGuests(data.nonVegGuests || "");
+  setArea(data.area || "");
+  setDate(data.date || "");
+  setTime(data.time || "");
+}
+
+}, []);
+
+
 const handleFindPackages = () => {
 
 if(!area || !date || !time){
@@ -25,6 +43,17 @@ if(!vegGuests && !nonVegGuests){
   alert("Please enter number of guests");
   return;
 }
+
+
+// Save form so user can edit later
+localStorage.setItem("eventForm", JSON.stringify({
+  vegGuests,
+  nonVegGuests,
+  area,
+  date,
+  time
+}));
+
 
 const params = new URLSearchParams({
   veg: vegGuests,
