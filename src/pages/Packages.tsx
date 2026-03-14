@@ -75,20 +75,9 @@ window.history.back();
 
 const handleEditEvent = () => {
 
-navigate("/");
-
-setTimeout(() => {
-
-const section = document.getElementById("packages");
-
-if(section){
-section.scrollIntoView({ behavior: "smooth", block:"start" });
-}
-
-},400);
+window.location.href = "/#packages";
 
 };
-
 
 
 return (
@@ -118,8 +107,8 @@ return (
 <div className="flex gap-3">
 
 <Button
-variant="ghost"
 onClick={handleBack}
+className="bg-primary text-white hover:bg-primary/90 shadow-md px-4 py-2"
 >
 ← Back
 </Button>
