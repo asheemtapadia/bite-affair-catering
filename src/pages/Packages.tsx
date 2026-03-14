@@ -29,6 +29,9 @@ selectedNonVegPackage ? nonVegGuests * selectedNonVegPackage.price : 0;
 
 const grandTotal = vegTotal + nonVegTotal;
 
+
+/* WHATSAPP SUBMIT */
+
 const handleSubmit = () => {
 
 const message = encodeURIComponent(
@@ -61,33 +64,77 @@ window.open(
 };
 
 
+/* BACK NAVIGATION */
+
+const handleBack = () => {
+window.history.back();
+};
+
+
+/* EDIT EVENT DETAILS */
+
 const handleEditEvent = () => {
 
 navigate("/");
 
 setTimeout(() => {
+
 const section = document.getElementById("packages");
+
 if(section){
-section.scrollIntoView({ behavior: "smooth" });
+section.scrollIntoView({ behavior: "smooth", block:"start" });
 }
-},200);
+
+},400);
 
 };
+
 
 
 return (
 
 <div className="min-h-screen py-20 px-6 pb-32">
 
-{/* Floating Edit Button */}
 
-<div className="fixed top-24 right-6 z-50">
+{/* PREMIUM EVENT BAR */}
+
+<div className="max-w-6xl mx-auto mb-10">
+
+<div className="flex items-center justify-between bg-card border rounded-lg px-6 py-4 shadow-sm">
+
+<div className="text-sm font-medium text-muted-foreground">
+
+{vegGuests > 0 && `${vegGuests} Veg`}
+{vegGuests > 0 && nonVegGuests > 0 && " • "}
+{nonVegGuests > 0 && `${nonVegGuests} Non-Veg`}
+{(vegGuests > 0 || nonVegGuests > 0) && " • "}
+
+{area && `${area} • `}
+{date && `${date} • `}
+{time && `${time}`}
+
+</div>
+
+<div className="flex gap-3">
+
+<Button
+variant="ghost"
+onClick={handleBack}
+>
+← Back
+</Button>
+
 <Button
 variant="outline"
 onClick={handleEditEvent}
 >
 Edit Event Details
 </Button>
+
+</div>
+
+</div>
+
 </div>
 
 
@@ -96,7 +143,7 @@ Available Packages
 </h1>
 
 
-{/* Veg Packages */}
+{/* VEG PACKAGES */}
 
 {vegGuests > 0 && (
 <>
@@ -157,7 +204,8 @@ variant={selectedVegPackage?.slug === pkg.slug ? "default" : "outline"}
 )}
 
 
-{/* Non Veg Packages */}
+
+{/* NON VEG PACKAGES */}
 
 {nonVegGuests > 0 && (
 <>
@@ -218,7 +266,8 @@ variant={selectedNonVegPackage?.slug === pkg.slug ? "default" : "outline"}
 )}
 
 
-{/* Floating Submit Bar */}
+
+{/* FLOATING SUBMIT BAR */}
 
 <div className="fixed bottom-0 left-0 w-full bg-white border-t shadow-xl p-4 z-50">
 
