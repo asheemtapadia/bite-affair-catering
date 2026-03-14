@@ -62,7 +62,16 @@ window.open(
 
 
 const handleEditEvent = () => {
-navigate("/#packages");
+
+navigate("/");
+
+setTimeout(() => {
+const section = document.getElementById("packages");
+if(section){
+section.scrollIntoView({ behavior: "smooth" });
+}
+},200);
+
 };
 
 
