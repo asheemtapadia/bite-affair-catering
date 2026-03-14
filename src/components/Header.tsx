@@ -80,7 +80,7 @@ aria-label="Toggle menu"
 <img
 src={logo}
 alt="Bite Affair"
-className="h-16 lg:h-[160px] w-auto object-contain"
+className="h-24 lg:h-[200px] w-auto object-contain"
 />
 </Link>
 
