@@ -54,7 +54,7 @@ const HeroSection = () => {
 
         {/* Premium Wide Buttons */}
         <motion.div
-          className="mt-8 grid grid-cols-2 gap-4 max-w-md mx-auto"
+          className="mt-10 grid grid-cols-2 gap-5 max-w-lg mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
@@ -62,28 +62,28 @@ const HeroSection = () => {
 
           <Button
             onClick={() => scrollTo("menu")}
-            className="h-11 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-md"
+            className="h-12 rounded-full bg-primary text-white text-sm shadow-md hover:scale-[1.02] transition"
           >
             Browse Menu
           </Button>
 
           <Button
             onClick={() => scrollTo("packages")}
-            className="h-11 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-md"
+            className="h-12 rounded-full border border-primary text-primary bg-white text-sm shadow-sm hover:bg-primary hover:text-white transition"
           >
             View Packages
           </Button>
 
           <Button
             onClick={() => scrollTo("packages")}
-            className="h-11 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-md"
+            className="h-12 rounded-full border border-primary text-primary bg-white text-sm shadow-sm hover:bg-primary hover:text-white transition"
           >
             Plan My Event
           </Button>
 
           <Button
             onClick={() => scrollTo("how-it-works")}
-            className="h-11 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-md"
+            className="h-12 rounded-full border border-primary text-primary bg-white text-sm shadow-sm hover:bg-primary hover:text-white transition"
           >
             How It Works
           </Button>
