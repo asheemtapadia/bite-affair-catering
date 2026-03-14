@@ -1,15 +1,11 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { MessageCircle } from "lucide-react";
 import heroImage from "@/assets/hero-catering.jpg";
 
 const HeroSection = () => {
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
-
-  const whatsappLink =
-    "https://wa.me/919211570030?text=Hi%20Bite%20Affair,%0A%0AI%20want%20to%20place%20a%20bulk%20food%20order.%0A%0AEvent%20Date:%0ANumber%20of%20Guests:%0ALocation:%0A%0APlease%20share%20menu%20options%20and%20availability.";
 
   return (
     <section
@@ -44,7 +40,7 @@ const HeroSection = () => {
         </motion.h1>
 
         <motion.p
-          className="font-body text-xl md:text-2xl text-white max-w-2xl mx-auto mb-14 font-medium leading-relaxed"
+          className="font-body text-xl md:text-2xl text-white max-w-2xl mx-auto mb-10 font-medium leading-relaxed"
           style={{ textShadow: "0 3px 14px rgba(0,0,0,0.85)" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -57,29 +53,47 @@ const HeroSection = () => {
           Delivered across Delhi NCR
         </motion.p>
 
+        {/* Short Buttons in White Container */}
         <motion.div
-          className="flex flex-col sm:flex-row gap-6 justify-center mt-4"
+          className="mt-6 flex justify-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <Button
-            size="lg"
-            onClick={() => scrollTo("menu")}
-            className="text-base px-8 py-6 transition-transform duration-200 hover:scale-[1.02]"
-          >
-            Browse Menu
-          </Button>
+          <div className="bg-white/95 backdrop-blur-md rounded-xl shadow-xl px-4 py-4 grid grid-cols-2 gap-3 max-w-md w-full">
 
-          <Button
-            size="lg"
-            variant="outline"
-            onClick={() => scrollTo("packages")}
-            className="text-base px-8 py-6 border-white/40 text-white bg-transparent hover:bg-white/10 hover:text-white transition-transform duration-200 hover:scale-[1.02]"
-          >
-            Plan My Event
-          </Button>
+            <Button
+              onClick={() => scrollTo("menu")}
+              className="text-sm h-10"
+            >
+              Browse Menu
+            </Button>
 
+            <Button
+              variant="outline"
+              onClick={() => scrollTo("packages")}
+              className="text-sm h-10"
+            >
+              View Packages
+            </Button>
+
+            <Button
+              variant="outline"
+              onClick={() => scrollTo("packages")}
+              className="text-sm h-10"
+            >
+              Plan My Event
+            </Button>
+
+            <Button
+              variant="outline"
+              onClick={() => scrollTo("how-it-works")}
+              className="text-sm h-10"
+            >
+              How It Works
+            </Button>
+
+          </div>
         </motion.div>
 
       </div>
