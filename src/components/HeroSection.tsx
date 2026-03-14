@@ -44,7 +44,7 @@ const HeroSection = () => {
         </motion.h1>
 
         <motion.p
-          className="font-body text-xl md:text-2xl text-white max-w-2xl mx-auto mb-12 font-medium leading-relaxed"
+          className="font-body text-xl md:text-2xl text-white max-w-2xl mx-auto mb-14 font-medium leading-relaxed"
           style={{ textShadow: "0 3px 14px rgba(0,0,0,0.85)" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -52,11 +52,13 @@ const HeroSection = () => {
         >
           For house parties, office lunches, and special events
           <br />
-          Serving 15–100+ guests, Delivered across Delhi NCR
+          Serving 15–100+ guests
+          <br />
+          Delivered across Delhi NCR
         </motion.p>
 
         <motion.div
-          className="flex flex-col sm:flex-row gap-6 justify-center"
+          className="flex flex-col sm:flex-row gap-6 justify-center mt-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
@@ -76,17 +78,6 @@ const HeroSection = () => {
             className="text-base px-8 py-6 border-white/40 text-white bg-transparent hover:bg-white/10 hover:text-white transition-transform duration-200 hover:scale-[1.02]"
           >
             Plan My Event
-          </Button>
-
-          <Button
-            size="lg"
-            asChild
-            className="text-base px-8 py-6 transition-transform duration-200 hover:scale-[1.02]"
-          >
-            <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-              <MessageCircle size={18} className="mr-2" />
-              Order on WhatsApp
-            </a>
           </Button>
 
         </motion.div>
