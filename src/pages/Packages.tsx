@@ -67,7 +67,9 @@ window.open(
 /* BACK NAVIGATION */
 
 const handleBack = () => {
-window.history.back();
+
+navigate("/#packages");
+
 };
 
 
@@ -75,7 +77,7 @@ window.history.back();
 
 const handleEditEvent = () => {
 
-window.location.href = "/#packages";
+navigate("/#packages");
 
 };
 
