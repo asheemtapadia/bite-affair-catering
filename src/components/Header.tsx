@@ -16,6 +16,7 @@ const navLinks = [
 
 const Header = () => {
 
+  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
 
@@ -23,6 +24,9 @@ const Header = () => {
   const isHome = location.pathname === "/";
 
   useEffect(() => {
+
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     const updateCart = () => {
       const cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -34,6 +38,7 @@ const Header = () => {
     window.addEventListener("cartUpdated", updateCart);
 
     return () => {
+      window.removeEventListener("scroll", onScroll);
       window.removeEventListener("cartUpdated", updateCart);
     };
 
@@ -54,23 +59,24 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
+    <header
+      className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm"
+    >
+      <div className="container mx-auto flex items-center py-2 px-4 lg:px-8">
 
-      <div className="container mx-auto flex items-center justify-between py-3 px-4 lg:px-8">
+        {/* LEFT SIDE (BURGER + LOGO) */}
+        <div className="flex items-center gap-3">
 
-        {/* LEFT SIDE */}
-        <div className="flex items-center gap-4">
-
-          {/* BURGER LEFT */}
+          {/* BURGER MENU */}
           <button
             className="lg:hidden text-navy"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
-            {mobileOpen ? <X size={26} /> : <Menu size={26} />}
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
-          {/* LOGO BIGGER */}
+          {/* LOGO */}
           <Link to="/" className="flex items-center">
             <img
               src={logo}
@@ -81,47 +87,22 @@ const Header = () => {
 
         </div>
 
-        {/* DESKTOP NAV */}
-        <nav className="hidden lg:flex items-center gap-10">
-
-          {navLinks.map((link) => (
-            <button
-              key={link.label}
-              onClick={() => handleNavClick(link.href)}
-              className="text-sm font-body font-medium tracking-wide transition-colors duration-200 hover:text-primary text-foreground"
-            >
-              {link.label}
-            </button>
-          ))}
-
-          <Button
-            size="sm"
-            onClick={() => handleNavClick("/#contact")}
-            className="transition-transform duration-200 hover:scale-[1.02]"
-          >
-            Plan Your Event
-          </Button>
-
-        </nav>
-
-        {/* RIGHT ACTIONS */}
-        <div className="flex items-center gap-3">
+        {/* RIGHT SIDE ICONS */}
+        <div className="flex items-center gap-3 ml-auto">
 
           <a
             href="tel:+919211570030"
-            className="hidden lg:flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg border border-border hover:bg-muted transition"
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-navy text-white shadow-md"
           >
-            <Phone size={16} />
-            Call
+            <Phone size={18} />
           </a>
 
           <a
             href="https://wa.me/919211570030"
             target="_blank"
-            className="hidden lg:flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600 transition"
+            className="flex items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white shadow-md"
           >
-            <MessageCircle size={16} />
-            WhatsApp
+            <MessageCircle size={18} />
           </a>
 
           <Link
@@ -140,6 +121,29 @@ const Header = () => {
         </div>
 
       </div>
+
+      {/* DESKTOP NAV */}
+      <nav className="hidden lg:flex items-center justify-center gap-10 pb-3">
+
+        {navLinks.map((link) => (
+          <button
+            key={link.label}
+            onClick={() => handleNavClick(link.href)}
+            className="text-sm font-body font-medium tracking-wide transition-colors duration-200 hover:text-primary"
+          >
+            {link.label}
+          </button>
+        ))}
+
+        <Button
+          size="sm"
+          onClick={() => handleNavClick("/#contact")}
+          className="transition-transform duration-200 hover:scale-[1.02]"
+        >
+          Plan Your Event
+        </Button>
+
+      </nav>
 
       {/* MOBILE MENU */}
       {mobileOpen && (
