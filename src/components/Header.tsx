@@ -59,9 +59,7 @@ const Header = () => {
   };
 
   return (
-<header
-className="fixed top-0 left-0 right-0 z-50 bg-warm-white shadow-sm"
->
+<header className="fixed top-0 left-0 right-0 z-50 bg-warm-white shadow-sm">
 
 <div className="container mx-auto flex items-center justify-between py-2 px-4 lg:px-8">
 
@@ -80,7 +78,7 @@ aria-label="Toggle menu"
 <img
 src={logo}
 alt="Bite Affair"
-className="h-24 lg:h-[200px] w-auto object-contain"
+className="h-28 lg:h-[220px] -mt-3 w-auto object-contain"
 />
 </Link>
 
