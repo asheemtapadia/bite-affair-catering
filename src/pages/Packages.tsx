@@ -64,21 +64,36 @@ window.open(
 };
 
 
+/* FUNCTION TO GO TO PLAN MY EVENT */
+
+const goToEventSection = () => {
+
+navigate("/");
+
+setTimeout(() => {
+
+const section = document.getElementById("packages");
+
+if(section){
+section.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+},300);
+
+};
+
+
 /* BACK NAVIGATION */
 
 const handleBack = () => {
-
-navigate("/#packages");
-
+goToEventSection();
 };
 
 
 /* EDIT EVENT DETAILS */
 
 const handleEditEvent = () => {
-
-navigate("/#packages");
-
+goToEventSection();
 };
 
 
