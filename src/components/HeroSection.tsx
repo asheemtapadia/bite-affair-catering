@@ -22,7 +22,6 @@ const HeroSection = () => {
           decoding="async"
         />
 
-        {/* Premium Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/55 to-black/70" />
       </div>
 
@@ -53,9 +52,9 @@ const HeroSection = () => {
           Delivered across Delhi NCR
         </motion.p>
 
-        {/* Buttons */}
+        {/* Premium Wide Buttons */}
         <motion.div
-          className="mt-6 grid grid-cols-2 gap-3 max-w-xs mx-auto"
+          className="mt-8 grid grid-cols-2 gap-4 max-w-md mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
@@ -63,28 +62,28 @@ const HeroSection = () => {
 
           <Button
             onClick={() => scrollTo("menu")}
-            className="h-9 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-sm"
+            className="h-11 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-md"
           >
             Browse Menu
           </Button>
 
           <Button
             onClick={() => scrollTo("packages")}
-            className="h-9 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-sm"
+            className="h-11 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-md"
           >
             View Packages
           </Button>
 
           <Button
             onClick={() => scrollTo("packages")}
-            className="h-9 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-sm"
+            className="h-11 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-md"
           >
             Plan My Event
           </Button>
 
           <Button
             onClick={() => scrollTo("how-it-works")}
-            className="h-9 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-sm"
+            className="h-11 text-sm rounded-full bg-white text-black hover:bg-white/90 shadow-md"
           >
             How It Works
           </Button>
