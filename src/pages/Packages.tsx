@@ -275,8 +275,7 @@ variant={selectedNonVegPackage?.slug === pkg.slug ? "default" : "outline"}
 
 {/* FLOATING SUBMIT BAR */}
 
-<div className="fixed bottom-0 left-0 w-full bg-white border-t shadow-xl p-4 z-50">
-
+<div className="fixed bottom-16 left-0 w-full bg-white border-t shadow-xl p-4 z-50">
 <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
 
 <div className="text-sm font-medium">
