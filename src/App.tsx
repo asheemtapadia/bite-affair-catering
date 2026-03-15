@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
+import MobileBottomNav from "@/components/MobileBottomNav";
+
 import Index from "./pages/Index";
 import MenuDetailPage from "./pages/MenuDetailPage";
 import Packages from "./pages/Packages";
@@ -21,6 +23,7 @@ const App = () => (
       <ErrorBoundary>
 
         <Router>
+
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/menu/:slug" element={<MenuDetailPage />} />
@@ -28,6 +31,9 @@ const App = () => (
             <Route path="/cart" element={<Cart />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+
+          <MobileBottomNav />
+
         </Router>
 
       </ErrorBoundary>
