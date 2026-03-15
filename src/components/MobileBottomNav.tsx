@@ -1,4 +1,4 @@
-import { Home, UtensilsCrossed, Phone } from "lucide-react";
+import { Home, UtensilsCrossed, ClipboardList, Phone } from "lucide-react";
 
 const MobileBottomNav = () => {
 
@@ -29,12 +29,13 @@ const MobileBottomNav = () => {
           Menu
         </button>
 
-        {/* PLAN EVENT (CENTER BUTTON) */}
+        {/* Plan Event */}
         <button
           onClick={() => scrollTo("packages")}
-          className="flex flex-col items-center justify-center w-14 h-14 rounded-full bg-primary text-white shadow-lg -mt-6"
+          className="flex flex-col items-center text-xs text-primary"
         >
-          ●
+          <ClipboardList size={22} />
+          Plan
         </button>
 
         {/* Call */}
