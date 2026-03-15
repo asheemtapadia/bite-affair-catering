@@ -276,6 +276,7 @@ variant={selectedNonVegPackage?.slug === pkg.slug ? "default" : "outline"}
 {/* FLOATING SUBMIT BAR */}
 
 <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-5 py-4 z-40">
+
 <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
 
 <div className="text-sm font-medium">
@@ -300,9 +301,9 @@ size="lg"
 onClick={handleSubmit}
 disabled={!selectedVegPackage && !selectedNonVegPackage}
 className={`w-full transition-all duration-300 ${
-  !selectedVegPackage && !selectedNonVegPackage
-    ? "opacity-50 cursor-not-allowed"
-    : "opacity-100 hover:scale-[1.02]"
+!selectedVegPackage && !selectedNonVegPackage
+? "opacity-50 cursor-not-allowed"
+: "opacity-100 hover:scale-[1.02]"
 }`}
 >
 Proceed to WhatsApp
