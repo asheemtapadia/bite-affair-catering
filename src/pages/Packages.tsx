@@ -299,6 +299,11 @@ Estimated Total: ₹{grandTotal}
 size="lg"
 onClick={handleSubmit}
 disabled={!selectedVegPackage && !selectedNonVegPackage}
+className={`w-full transition-all duration-300 ${
+  !selectedVegPackage && !selectedNonVegPackage
+    ? "opacity-50 cursor-not-allowed"
+    : "opacity-100 hover:scale-[1.02]"
+}`}
 >
 Proceed to WhatsApp
 </Button>
