@@ -5,7 +5,8 @@ const MobileBottomNav = () => {
 
   const location = useLocation();
 
-  if (location.pathname === "/packages") return null;
+  // Hide bottom nav on Packages page
+  if (location.pathname.includes("packages")) return null;
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -16,6 +17,7 @@ const MobileBottomNav = () => {
 
       <div className="flex items-center justify-around h-16">
 
+        {/* Home */}
         <button
           onClick={() => scrollTo("home")}
           className="flex flex-col items-center text-xs text-gray-700"
@@ -24,6 +26,7 @@ const MobileBottomNav = () => {
           Home
         </button>
 
+        {/* Menu */}
         <button
           onClick={() => scrollTo("menu")}
           className="flex flex-col items-center text-xs text-gray-700"
@@ -32,6 +35,7 @@ const MobileBottomNav = () => {
           Menu
         </button>
 
+        {/* Plan Event */}
         <button
           onClick={() => scrollTo("packages")}
           className="flex flex-col items-center text-xs text-primary"
@@ -40,6 +44,7 @@ const MobileBottomNav = () => {
           Plan
         </button>
 
+        {/* Call */}
         <a
           href="tel:+919211570030"
           className="flex flex-col items-center text-xs text-gray-700"
