@@ -238,7 +238,6 @@ selectedNonVegPackage?.slug === pkg.slug
 >
 
 <img
-<img
   src={`/images/packages/${pkg.slug
     .replace("++", "-plusplus")
     .replace("+", "-plus")}.jpg`}
