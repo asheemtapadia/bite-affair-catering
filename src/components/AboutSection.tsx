@@ -4,32 +4,23 @@ const AboutSection = () => {
   return (
     <section
       id="about"
-      className="relative py-24 lg:py-32 text-white overflow-hidden"
+      className="relative min-h-[80vh] flex items-center py-24 lg:py-32 text-white overflow-hidden"
       style={{
         backgroundImage: "url('/about-bg.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        filter: "contrast(1.15) saturate(1.15)"
       }}
     >
 
-      {/* Parallax background layer */}
-      <div
-        className="absolute inset-0 scale-110 opacity-80"
-        style={{
-          backgroundImage: "url('/about-bg.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          transform: "translateZ(0)"
-        }}
-      />
+      {/* Cinematic dark overlay */}
+      <div className="absolute inset-0 bg-navy/60 backdrop-blur-[1px]"></div>
 
-      {/* Dark cinematic overlay */}
-      <div className="absolute inset-0 bg-navy/80 backdrop-blur-[2px]"></div>
+      {/* Premium grain texture */}
+      <div className="absolute inset-0 opacity-[0.10] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
-      {/* Grain texture */}
-      <div className="absolute inset-0 opacity-[0.12] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
-
-      {/* Floating particles */}
+      {/* Floating light particles */}
       <div className="absolute inset-0 pointer-events-none">
         <span className="absolute w-2 h-2 bg-white/20 rounded-full animate-pulse top-10 left-10"></span>
         <span className="absolute w-1.5 h-1.5 bg-white/20 rounded-full animate-pulse top-1/3 left-1/4"></span>
@@ -40,7 +31,6 @@ const AboutSection = () => {
 
       <div className="relative container mx-auto px-4 max-w-3xl text-center">
 
-        {/* Text reveal animation */}
         <ScrollReveal>
           <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
             About Bite Affair
