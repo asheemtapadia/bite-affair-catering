@@ -66,6 +66,5 @@ const App = () => (
     </TooltipProvider>
   </QueryClientProvider>
 );
-redeploy
 
 export default App;
