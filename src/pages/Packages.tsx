@@ -174,7 +174,7 @@ selectedVegPackage?.slug === pkg.slug
 <img
   src={`/images/packages/${pkg.slug}.jpg`}
   alt={pkg.name}
-  className="h-32 w-full object-cover rounded mb-4"
+  className="h-44 w-full object-cover rounded mb-4"
 />
 
 <h3 className="text-lg font-semibold mb-1">
@@ -238,7 +238,7 @@ selectedNonVegPackage?.slug === pkg.slug
 <img
   src={`/images/packages/${pkg.slug}.jpg`}
   alt={pkg.name}
-  className="h-32 w-full object-cover rounded mb-4"
+  className="h-44 w-full object-cover rounded mb-4"
 />
 
 <h3 className="text-lg font-semibold mb-1">
