@@ -8,17 +8,18 @@ export const saveOrder = async () => {
       {
         customer_name: "Test Customer",
         phone: "9999999999",
-        package_name: "Standard Veg",
-        persons: 20,
-        total_price: 9980,
+        package: "Standard Veg",
+        guests: 20,
         status: "pending"
       }
     ]);
 
   if (error) {
     console.error("Order Error:", error);
+    alert("Error saving order");
   } else {
     console.log("Order Saved:", data);
+    alert("Test Order Saved!");
   }
 
 };
