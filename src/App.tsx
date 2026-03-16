@@ -27,12 +27,29 @@ const App = () => (
         <Router>
 
           {/* TEST ORDER BUTTON */}
-          <div style={{ position: "fixed", top: 80, right: 20, zIndex: 99999 }}>
-            <button onClick={saveOrder}>
-              Test Order
-            </button>
-          </div>
-
+          <div
+  style={{
+    position: "fixed",
+    bottom: "120px",
+    right: "20px",
+    zIndex: 999999,
+    pointerEvents: "auto"
+  }}
+>
+  <button
+    onClick={saveOrder}
+    style={{
+      background: "#ff6b00",
+      color: "white",
+      padding: "12px 16px",
+      borderRadius: "8px",
+      border: "none",
+      fontWeight: "600"
+    }}
+  >
+    Test Order
+  </button>
+</div>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/menu/:slug" element={<MenuDetailPage />} />
