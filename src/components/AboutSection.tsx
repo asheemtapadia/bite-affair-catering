@@ -6,14 +6,13 @@ const AboutSection = () => {
       id="about"
       className="relative py-20 lg:py-28 text-white overflow-hidden"
       style={{
-        backgroundImage: "url('/images/about-bg.jpg')",
+        backgroundImage: "url('/about-bg.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundAttachment: "fixed"
       }}
     >
-
-      {/* Dark Overlay */}
+      {/* Dark overlay */}
       <div className="absolute inset-0 bg-navy/70"></div>
 
       <div className="relative container mx-auto px-4 max-w-3xl text-center">
