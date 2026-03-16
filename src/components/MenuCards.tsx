@@ -114,24 +114,38 @@ const MenuCards = () => {
 
               <Link
                 to={`/menu/${pkg.slug}`}
-                className="group block bg-white rounded-xl border border-border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden h-full"
+                className="group block bg-white rounded-xl border border-border shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden h-full"
               >
 
-                <div className="overflow-hidden rounded-t-xl">
+                {/* PREMIUM BADGE */}
+                {pkg.tier === "premium" && (
+                  <span className="absolute left-4 top-4 bg-amber-500 text-white text-xs px-2 py-1 rounded z-20 shadow">
+                    Premium
+                  </span>
+                )}
+
+                {/* IMAGE */}
+                <div className="relative overflow-hidden rounded-t-xl">
+
                   <img
                     src={`/images/packages/${pkg.slug}.jpg`}
                     alt={pkg.name}
                     className="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105"
                   />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+
                 </div>
 
+                {/* CART BUTTON */}
                 <button
                   onClick={(e) => handleAddToCart(e, pkg)}
-                  className="absolute right-4 top-4 bg-primary text-white p-2 rounded-full shadow-md hover:scale-110 transition"
+                  className="absolute right-4 top-4 bg-primary text-white p-3 rounded-full shadow-lg hover:scale-110 hover:shadow-xl transition"
                 >
-                  <ShoppingCart size={16}/>
+                  <ShoppingCart size={18}/>
                 </button>
 
+                {/* CONTENT */}
                 <div className="p-6">
 
                   <div className="flex items-center gap-2 mb-3">
@@ -156,7 +170,7 @@ const MenuCards = () => {
                     {pkg.name}
                   </h3>
 
-                  <p className="font-heading text-2xl font-bold text-primary mb-4">
+                  <p className="font-heading text-3xl font-bold text-primary mb-4">
                     ₹{pkg.price}
                     <span className="text-sm font-body font-normal text-muted-foreground">
                       /- per person
