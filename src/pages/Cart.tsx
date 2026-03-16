@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import { saveOrder } from "@/utils/saveOrder";
 
 const Cart = () => {
 
@@ -75,9 +76,25 @@ return (
     </h1>
 
     {cart.length === 0 && (
+      <>
       <p className="text-muted-foreground">
         Your cart is empty.
       </p>
+
+      <button
+        onClick={saveOrder}
+        style={{
+          background:"#ff6b00",
+          color:"white",
+          padding:"12px 20px",
+          borderRadius:"8px",
+          border:"none",
+          marginTop:"20px"
+        }}
+      >
+        Test Order
+      </button>
+      </>
     )}
 
     <div className="space-y-4">
