@@ -172,7 +172,25 @@ selectedVegPackage?.slug === pkg.slug
 >
 
 <img
-  src={`/images/packages/${pkg.slug.replace('++','plusplus')}.jpg`}
+  src={`/images/packages/${
+    pkg.slug === "standard-veg"
+      ? "standard-veg.jpg"
+      : pkg.slug === "standard++-veg"
+      ? "standard-plusplus-veg.jpg"
+      : pkg.slug === "premium-veg"
+      ? "premium-veg.jpg"
+      : pkg.slug === "premium++-veg"
+      ? "premium-plusplus-veg.jpg"
+      : pkg.slug === "standard-nonveg"
+      ? "standard-nonveg.jpg"
+      : pkg.slug === "standard+-nonveg"
+      ? "standard-plus-nonveg.jpg"
+      : pkg.slug === "premium-nonveg"
+      ? "premium-nonveg.jpg"
+      : pkg.slug === "premium+-nonveg"
+      ? "premium-plus-nonveg.jpg"
+      : ""
+  }`}
   alt={pkg.name}
   className="h-32 w-full object-cover rounded mb-4"
 />
@@ -235,9 +253,29 @@ selectedNonVegPackage?.slug === pkg.slug
 }`}
 >
 
-<div className="h-32 bg-gray-200 rounded mb-4 flex items-center justify-center text-sm text-gray-500">
-Package Image
-</div>
+<img
+  src={`/images/packages/${
+    pkg.slug === "standard-veg"
+      ? "standard-veg.jpg"
+      : pkg.slug === "standard++-veg"
+      ? "standard-plusplus-veg.jpg"
+      : pkg.slug === "premium-veg"
+      ? "premium-veg.jpg"
+      : pkg.slug === "premium++-veg"
+      ? "premium-plusplus-veg.jpg"
+      : pkg.slug === "standard-nonveg"
+      ? "standard-nonveg.jpg"
+      : pkg.slug === "standard+-nonveg"
+      ? "standard-plus-nonveg.jpg"
+      : pkg.slug === "premium-nonveg"
+      ? "premium-nonveg.jpg"
+      : pkg.slug === "premium+-nonveg"
+      ? "premium-plus-nonveg.jpg"
+      : ""
+  }`}
+  alt={pkg.name}
+  className="h-32 w-full object-cover rounded mb-4"
+/>
 
 <h3 className="text-lg font-semibold mb-1">
 {pkg.name}
