@@ -4,32 +4,58 @@ const AboutSection = () => {
   return (
     <section
       id="about"
-      className="relative py-20 lg:py-28 text-white overflow-hidden"
+      className="relative py-24 lg:py-32 text-white overflow-hidden"
       style={{
         backgroundImage: "url('/about-bg.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundAttachment: "fixed"
       }}
     >
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-navy/70"></div>
+
+      {/* Parallax background layer */}
+      <div
+        className="absolute inset-0 scale-110 opacity-80"
+        style={{
+          backgroundImage: "url('/about-bg.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          transform: "translateZ(0)"
+        }}
+      />
+
+      {/* Dark cinematic overlay */}
+      <div className="absolute inset-0 bg-navy/80 backdrop-blur-[2px]"></div>
+
+      {/* Grain texture */}
+      <div className="absolute inset-0 opacity-[0.12] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+
+      {/* Floating particles */}
+      <div className="absolute inset-0 pointer-events-none">
+        <span className="absolute w-2 h-2 bg-white/20 rounded-full animate-pulse top-10 left-10"></span>
+        <span className="absolute w-1.5 h-1.5 bg-white/20 rounded-full animate-pulse top-1/3 left-1/4"></span>
+        <span className="absolute w-2 h-2 bg-white/20 rounded-full animate-pulse bottom-10 right-10"></span>
+        <span className="absolute w-1.5 h-1.5 bg-white/20 rounded-full animate-pulse bottom-1/3 left-1/2"></span>
+        <span className="absolute w-2 h-2 bg-white/20 rounded-full animate-pulse top-1/2 right-1/4"></span>
+      </div>
 
       <div className="relative container mx-auto px-4 max-w-3xl text-center">
 
+        {/* Text reveal animation */}
         <ScrollReveal>
           <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
             About Bite Affair
           </h2>
         </ScrollReveal>
 
-        <ScrollReveal delay={0.1}>
+        <ScrollReveal delay={0.15}>
           <p className="font-body text-lg leading-relaxed text-white/90 mb-4">
             Food aggregators cap out at 4–5 people. Traditional caterers start at 100+. 
             For gatherings of 15–50 pax, neither works well — portions are inconsistent, 
             pricing is opaque, and quality is unpredictable.
           </p>
+        </ScrollReveal>
 
+        <ScrollReveal delay={0.3}>
           <p className="font-body text-lg leading-relaxed text-white/90">
             Bite Affair fills that gap. We deliver bulk party food across Gurugram 
             and Delhi NCR with curated menus, generous portions and consistent 
