@@ -172,9 +172,7 @@ selectedVegPackage?.slug === pkg.slug
 >
 
 <img
-  src={`/images/packages/${pkg.slug
-    .replace("++", "-plusplus")
-    .replace("+", "-plus")}.jpg`}
+  src={`/images/packages/${pkg.slug}.jpg`}
   alt={pkg.name}
   className="h-32 w-full object-cover rounded mb-4"
 />
@@ -238,9 +236,7 @@ selectedNonVegPackage?.slug === pkg.slug
 >
 
 <img
-  src={`/images/packages/${pkg.slug
-    .replace("++", "-plusplus")
-    .replace("+", "-plus")}.jpg`}
+  src={`/images/packages/${pkg.slug}.jpg`}
   alt={pkg.name}
   className="h-32 w-full object-cover rounded mb-4"
 />
