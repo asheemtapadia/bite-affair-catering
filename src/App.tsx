@@ -27,7 +27,7 @@ const App = () => (
         <Router>
 
           {/* TEST ORDER BUTTON */}
-          <div style={{ position: "fixed", top: 10, right: 10, zIndex: 9999 }}>
+          <div style={{ position: "fixed", top: 80, right: 20, zIndex: 99999 }}>
             <button onClick={saveOrder}>
               Test Order
             </button>
