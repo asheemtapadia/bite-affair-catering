@@ -172,25 +172,9 @@ selectedVegPackage?.slug === pkg.slug
 >
 
 <img
-  src={`/images/packages/${
-    pkg.slug === "standard-veg"
-      ? "standard-veg.jpg"
-      : pkg.slug === "standard++-veg"
-      ? "standard-plusplus-veg.jpg"
-      : pkg.slug === "premium-veg"
-      ? "premium-veg.jpg"
-      : pkg.slug === "premium++-veg"
-      ? "premium-plusplus-veg.jpg"
-      : pkg.slug === "standard-nonveg"
-      ? "standard-nonveg.jpg"
-      : pkg.slug === "standard+-nonveg"
-      ? "standard-plus-nonveg.jpg"
-      : pkg.slug === "premium-nonveg"
-      ? "premium-nonveg.jpg"
-      : pkg.slug === "premium+-nonveg"
-      ? "premium-plus-nonveg.jpg"
-      : ""
-  }`}
+  src={`/images/packages/${pkg.slug
+    .replace("++", "-plusplus")
+    .replace("+", "-plus")}.jpg`}
   alt={pkg.name}
   className="h-32 w-full object-cover rounded mb-4"
 />
@@ -254,25 +238,10 @@ selectedNonVegPackage?.slug === pkg.slug
 >
 
 <img
-  src={`/images/packages/${
-    pkg.slug === "standard-veg"
-      ? "standard-veg.jpg"
-      : pkg.slug === "standard++-veg"
-      ? "standard-plusplus-veg.jpg"
-      : pkg.slug === "premium-veg"
-      ? "premium-veg.jpg"
-      : pkg.slug === "premium++-veg"
-      ? "premium-plusplus-veg.jpg"
-      : pkg.slug === "standard-nonveg"
-      ? "standard-nonveg.jpg"
-      : pkg.slug === "standard+-nonveg"
-      ? "standard-plus-nonveg.jpg"
-      : pkg.slug === "premium-nonveg"
-      ? "premium-nonveg.jpg"
-      : pkg.slug === "premium+-nonveg"
-      ? "premium-plus-nonveg.jpg"
-      : ""
-  }`}
+<img
+  src={`/images/packages/${pkg.slug
+    .replace("++", "-plusplus")
+    .replace("+", "-plus")}.jpg`}
   alt={pkg.name}
   className="h-32 w-full object-cover rounded mb-4"
 />
