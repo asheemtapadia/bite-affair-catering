@@ -16,10 +16,8 @@ export const saveOrder = async () => {
     ]);
 
   if (error) {
-    console.error("Supabase Error:", error);
-    alert("Error saving order");
+    alert("SUPABASE ERROR: " + error.message);
   } else {
-    console.log("Order saved:", data);
     alert("Order saved successfully");
   }
 
