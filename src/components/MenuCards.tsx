@@ -72,7 +72,7 @@ const MenuCards = () => {
 
               <button
                 onClick={() => setTypeFilter("veg")}
-                className={`px-5 py-2 rounded-md text-sm ${
+                className={`px-6 py-2 rounded-full text-sm shadow-sm transition ${
                   typeFilter === "veg"
                     ? "bg-green-600 text-white"
                     : "bg-white border"
@@ -83,7 +83,7 @@ const MenuCards = () => {
 
               <button
                 onClick={() => setTypeFilter("nonveg")}
-                className={`px-5 py-2 rounded-md text-sm ${
+                className={`px-6 py-2 rounded-full text-sm shadow-sm transition ${
                   typeFilter === "nonveg"
                     ? "bg-red-600 text-white"
                     : "bg-white border"
@@ -95,7 +95,7 @@ const MenuCards = () => {
               <select
                 value={priceFilter}
                 onChange={(e) => setPriceFilter(e.target.value)}
-                className="px-4 py-2 rounded-md border text-sm"
+                className="px-5 py-2 rounded-full border text-sm shadow-sm"
               >
                 <option value="all">All Prices</option>
                 <option value="under500">Under ₹500</option>
@@ -114,12 +114,12 @@ const MenuCards = () => {
 
               <Link
                 to={`/menu/${pkg.slug}`}
-                className="group block bg-white rounded-xl border border-border shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden h-full"
+                className="group block bg-white rounded-xl border border-border shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-500 relative overflow-hidden h-full"
               >
 
                 {/* PREMIUM BADGE */}
                 {pkg.tier === "premium" && (
-                  <span className="absolute left-4 top-4 bg-amber-500 text-white text-xs px-2 py-1 rounded z-20 shadow">
+                  <span className="absolute left-4 top-4 bg-amber-500 text-white text-xs px-4 py-1 rounded-full shadow z-20">
                     Premium
                   </span>
                 )}
@@ -130,10 +130,10 @@ const MenuCards = () => {
                   <img
                     src={`/images/packages/${pkg.slug}.jpg`}
                     alt={pkg.name}
-                    className="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="w-full h-44 object-cover transition-transform duration-500 group-hover:scale-105"
                   />
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
 
                 </div>
 
