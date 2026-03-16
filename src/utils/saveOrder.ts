@@ -8,18 +8,19 @@ export const saveOrder = async () => {
       {
         customer_name: "Test Customer",
         phone: "9999999999",
-        package: "Standard Veg",
-        guests: 20,
+        package_name: "Standard Veg",
+        persons: 20,
+        total_price: 9980,
         status: "pending"
       }
     ]);
 
   if (error) {
-    console.error("Order Error:", error);
+    console.error("Supabase Error:", error);
     alert("Error saving order");
   } else {
-    console.log("Order Saved:", data);
-    alert("Test Order Saved!");
+    console.log("Order saved:", data);
+    alert("Order saved successfully");
   }
 
 };
