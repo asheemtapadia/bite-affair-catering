@@ -171,9 +171,11 @@ selectedVegPackage?.slug === pkg.slug
 }`}
 >
 
-<div className="h-32 bg-gray-200 rounded mb-4 flex items-center justify-center text-sm text-gray-500">
-Package Image
-</div>
+<img
+  src={`/images/packages/${pkg.slug}.jpg`}
+  alt={pkg.name}
+  className="h-32 w-full object-cover rounded mb-4"
+/>
 
 <h3 className="text-lg font-semibold mb-1">
 {pkg.name}
