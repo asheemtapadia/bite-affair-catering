@@ -1,24 +1,23 @@
-import { supabase } from "@/lib/supabase";
-
 export const saveOrder = async () => {
 
-  const { data, error } = await supabase
-    .from("orders")
-    .insert([
-      {
-        customer_name: "Test Customer",
-        phone: "9999999999",
-        package_name: "Standard Veg",
-        persons: 20,
-        total_price: 9980,
-        status: "pending"
-      }
-    ]);
+try {
 
-  if (error) {
-    alert("SUPABASE ERROR: " + error.message);
-  } else {
-    alert("Order saved successfully");
-  }
+const response = await fetch("/api/order", {
+method: "POST"
+});
+
+const data = await response.json();
+
+alert("Order saved successfully");
+
+console.log(data);
+
+} catch (error) {
+
+alert("Error saving order");
+
+console.error(error);
+
+}
 
 };
