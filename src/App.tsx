@@ -13,6 +13,8 @@ import Packages from "./pages/Packages";
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
 
+import { saveOrder } from "@/utils/saveOrder";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -23,6 +25,13 @@ const App = () => (
       <ErrorBoundary>
 
         <Router>
+
+          {/* TEST ORDER BUTTON */}
+          <div style={{ position: "fixed", top: 10, right: 10, zIndex: 9999 }}>
+            <button onClick={saveOrder}>
+              Test Order
+            </button>
+          </div>
 
           <Routes>
             <Route path="/" element={<Index />} />
