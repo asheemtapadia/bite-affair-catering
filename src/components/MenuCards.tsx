@@ -114,62 +114,72 @@ const MenuCards = () => {
 
               <Link
                 to={`/menu/${pkg.slug}`}
-                className="group block bg-card rounded-lg border border-border p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md relative overflow-hidden h-full"
+                className="group block bg-white rounded-xl border border-border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden h-full"
               >
+
+                <div className="overflow-hidden rounded-t-xl">
+                  <img
+                    src={`/images/packages/${pkg.slug}.jpg`}
+                    alt={pkg.name}
+                    className="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
 
                 <button
                   onClick={(e) => handleAddToCart(e, pkg)}
-                  className="absolute right-4 top-4 bg-primary text-white p-2 rounded-full shadow-md hover:scale-105 transition"
+                  className="absolute right-4 top-4 bg-primary text-white p-2 rounded-full shadow-md hover:scale-110 transition"
                 >
                   <ShoppingCart size={16}/>
                 </button>
 
-                <div className="absolute top-0 left-0 h-1 bg-primary transition-all duration-300 w-0 group-hover:w-full" />
+                <div className="p-6">
 
-                <div className="flex items-center gap-2 mb-3">
+                  <div className="flex items-center gap-2 mb-3">
 
-                  {pkg.isVeg ? (
-                    <span className="inline-flex items-center gap-1 text-xs font-body font-medium px-2 py-0.5 rounded border border-green-600 text-green-700">
-                      <Leaf size={12} /> Veg
+                    {pkg.isVeg ? (
+                      <span className="inline-flex items-center gap-1 text-xs font-body font-medium px-2 py-0.5 rounded border border-green-600 text-green-700">
+                        <Leaf size={12} /> Veg
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 text-xs font-body font-medium px-2 py-0.5 rounded border border-red-600 text-red-700">
+                        <Drumstick size={12} /> Non Veg
+                      </span>
+                    )}
+
+                    <span className="text-xs font-body uppercase tracking-wider text-muted-foreground">
+                      {pkg.tier}
                     </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1 text-xs font-body font-medium px-2 py-0.5 rounded border border-red-600 text-red-700">
-                      <Drumstick size={12} /> Non Veg
-                    </span>
-                  )}
 
-                  <span className="text-xs font-body uppercase tracking-wider text-muted-foreground">
-                    {pkg.tier}
+                  </div>
+
+                  <h3 className="font-heading text-xl font-semibold text-navy mb-1">
+                    {pkg.name}
+                  </h3>
+
+                  <p className="font-heading text-2xl font-bold text-primary mb-4">
+                    ₹{pkg.price}
+                    <span className="text-sm font-body font-normal text-muted-foreground">
+                      /- per person
+                    </span>
+                  </p>
+
+                  <ul className="space-y-1.5 mb-6">
+                    {pkg.previewItems.slice(0,2).map((item) => (
+                      <li
+                        key={item}
+                        className="text-sm font-body text-foreground/80 flex items-start gap-2"
+                      >
+                        <span className="text-primary mt-1 text-xs">●</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <span className="inline-block font-body text-sm font-medium text-primary group-hover:underline">
+                    See Full Menu →
                   </span>
 
                 </div>
-
-                <h3 className="font-heading text-xl font-semibold text-navy mb-1">
-                  {pkg.name}
-                </h3>
-
-                <p className="font-heading text-2xl font-bold text-primary mb-4">
-                  ₹{pkg.price}
-                  <span className="text-sm font-body font-normal text-muted-foreground">
-                    /- per person
-                  </span>
-                </p>
-
-                <ul className="space-y-1.5 mb-6">
-                  {pkg.previewItems.slice(0,2).map((item) => (
-                    <li
-                      key={item}
-                      className="text-sm font-body text-foreground/80 flex items-start gap-2"
-                    >
-                      <span className="text-primary mt-1 text-xs">●</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-
-                <span className="inline-block font-body text-sm font-medium text-primary group-hover:underline">
-                  See Full Menu →
-                </span>
 
               </Link>
 
