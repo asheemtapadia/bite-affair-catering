@@ -102,7 +102,7 @@ return (
 <div className="min-h-screen py-20 px-6 pb-32">
 
 
-{/* PREMIUM EVENT BAR */}
+{/* EVENT BAR */}
 
 <div className="max-w-6xl mx-auto mb-10">
 
@@ -158,31 +158,47 @@ Available Packages
 Veg Packages
 </h2>
 
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
 
 {vegPackages.map((pkg) => (
 
 <div
 key={pkg.slug}
-className={`border rounded-lg p-5 shadow-sm flex flex-col transition ${
+className={`relative border rounded-xl p-6 shadow-sm flex flex-col transition hover:shadow-xl hover:-translate-y-1 ${
 selectedVegPackage?.slug === pkg.slug
-? "border-primary ring-2 ring-primary"
+? "border-primary ring-2 ring-primary bg-primary/5"
 : ""
 }`}
 >
 
+{/* BADGE */}
+
+<span className="absolute top-3 left-3 text-xs bg-primary text-white px-2 py-1 rounded">
+Veg
+</span>
+
+{pkg.tier === "premium" && (
+<span className="absolute top-3 right-3 text-xs bg-black text-white px-2 py-1 rounded">
+Premium
+</span>
+)}
+
 <img
-  src={`/images/packages/${pkg.slug}.jpg`}
-  alt={pkg.name}
-  className="h-44 w-full object-cover rounded mb-4"
+src={`/images/packages/${pkg.slug}.jpg`}
+alt={pkg.name}
+className="h-48 w-full object-cover rounded-lg mb-4"
 />
 
 <h3 className="text-lg font-semibold mb-1">
 {pkg.name}
 </h3>
 
-<p className="text-primary font-semibold mb-4">
+<p className="text-xl font-semibold text-primary mb-3">
 ₹{pkg.price} / person
+</p>
+
+<p className="text-sm text-muted-foreground mb-4">
+{pkg.previewItems.slice(0,3).join(" • ")}
 </p>
 
 <Link
@@ -199,6 +215,7 @@ selectedVegPackage?.slug === pkg.slug
 : setSelectedVegPackage(pkg)
 }
 variant={selectedVegPackage?.slug === pkg.slug ? "default" : "outline"}
+className="hover:scale-[1.02] transition"
 >
 {selectedVegPackage?.slug === pkg.slug ? "Selected ✓ (Tap to remove)" : "Select Package"}
 </Button>
@@ -222,31 +239,45 @@ variant={selectedVegPackage?.slug === pkg.slug ? "default" : "outline"}
 Non Veg Packages
 </h2>
 
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
 
 {nonVegPackages.map((pkg) => (
 
 <div
 key={pkg.slug}
-className={`border rounded-lg p-5 shadow-sm flex flex-col transition ${
+className={`relative border rounded-xl p-6 shadow-sm flex flex-col transition hover:shadow-xl hover:-translate-y-1 ${
 selectedNonVegPackage?.slug === pkg.slug
-? "border-primary ring-2 ring-primary"
+? "border-primary ring-2 ring-primary bg-primary/5"
 : ""
 }`}
 >
 
+<span className="absolute top-3 left-3 text-xs bg-red-500 text-white px-2 py-1 rounded">
+Non Veg
+</span>
+
+{pkg.tier === "premium" && (
+<span className="absolute top-3 right-3 text-xs bg-black text-white px-2 py-1 rounded">
+Premium
+</span>
+)}
+
 <img
-  src={`/images/packages/${pkg.slug}.jpg`}
-  alt={pkg.name}
-  className="h-44 w-full object-cover rounded mb-4"
+src={`/images/packages/${pkg.slug}.jpg`}
+alt={pkg.name}
+className="h-48 w-full object-cover rounded-lg mb-4"
 />
 
 <h3 className="text-lg font-semibold mb-1">
 {pkg.name}
 </h3>
 
-<p className="text-primary font-semibold mb-4">
+<p className="text-xl font-semibold text-primary mb-3">
 ₹{pkg.price} / person
+</p>
+
+<p className="text-sm text-muted-foreground mb-4">
+{pkg.previewItems.slice(0,3).join(" • ")}
 </p>
 
 <Link
@@ -263,6 +294,7 @@ selectedNonVegPackage?.slug === pkg.slug
 : setSelectedNonVegPackage(pkg)
 }
 variant={selectedNonVegPackage?.slug === pkg.slug ? "default" : "outline"}
+className="hover:scale-[1.02] transition"
 >
 {selectedNonVegPackage?.slug === pkg.slug ? "Selected ✓ (Tap to remove)" : "Select Package"}
 </Button>
@@ -316,7 +348,7 @@ selectedVegPackage || selectedNonVegPackage
 : "opacity-40 cursor-not-allowed"
 }`}
 >
-Proceed to WhatsApp
+Get Quote on WhatsApp
 </Button>
 
 </div>
