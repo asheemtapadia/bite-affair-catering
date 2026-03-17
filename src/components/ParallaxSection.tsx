@@ -1,18 +1,26 @@
-import { useEffect, useState, ReactNode } from "react";
+import { useEffect, useState } from "react";
 
-interface ParallaxSectionProps {
+interface Props {
   bgImage: string;
-  children: ReactNode;
+  children: React.ReactNode;
   speed?: number;
 }
 
-const ParallaxSection = ({ bgImage, children, speed = 0.3 }: ParallaxSectionProps) => {
+const ParallaxSection = ({ bgImage, children, speed = 0.15 }: Props) => {
 
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      setOffset(window.scrollY * speed);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setOffset(window.scrollY * speed);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -22,14 +30,17 @@ const ParallaxSection = ({ bgImage, children, speed = 0.3 }: ParallaxSectionProp
   return (
     <section className="relative overflow-hidden">
 
-      {/* PARALLAX BACKGROUND */}
+      {/* BACKGROUND */}
       <div
         className="absolute inset-0 bg-cover bg-center will-change-transform"
         style={{
           backgroundImage: `url(${bgImage})`,
-          transform: `translateY(${offset}px)`
+          transform: `translate3d(0, ${offset}px, 0)`
         }}
       />
+
+      {/* DARK OVERLAY (NO BLUR) */}
+      <div className="absolute inset-0 bg-black/50" />
 
       {/* CONTENT */}
       <div className="relative z-10">
