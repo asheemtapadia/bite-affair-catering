@@ -1,69 +1,76 @@
-import { Link } from "react-router-dom";
-
-const footerLinks = [
-  { label: "Home", href: "/#home" },
-  { label: "Menu", href: "/#menu" },
-  { label: "About", href: "/#about" },
-  { label: "Contact", href: "/#contact" },
-];
+import { Phone, MessageCircle } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-navy py-12">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-          {/* Logo */}
-          <div>
-            <Link to="/" className="font-heading text-2xl font-bold text-navy-foreground">
-              Bite Affair
-            </Link>
-            <p className="font-body text-sm text-navy-foreground/60 mt-2">
-              Premium catering across Gurugram & Delhi NCR.
-            </p>
-          </div>
+    <footer className="relative text-white overflow-hidden">
 
-          {/* Links */}
-          <div>
-            <h4 className="font-body font-medium text-navy-foreground/80 text-sm mb-3 uppercase tracking-wider">
-              Quick Links
-            </h4>
-            <ul className="space-y-2">
-              {footerLinks.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="font-body text-sm text-navy-foreground/60 hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+      {/* BACKGROUND IMAGE */}
+      <div
+        className="absolute inset-0 bg-cover bg-center scale-105"
+        style={{
+          backgroundImage: "url('/about-bg.jpg')" // change if needed
+        }}
+      />
 
-          {/* Contact */}
-          <div>
-            <h4 className="font-body font-medium text-navy-foreground/80 text-sm mb-3 uppercase tracking-wider">
-              Contact
-            </h4>
-            <p className="font-body text-sm text-navy-foreground/60">
-              +91 92115 70030
-            </p>
-            <p className="font-body text-sm text-navy-foreground/60 mt-2">
-              Sector 52, Gurugram, Haryana
-            </p>
-            <p className="font-body text-xs text-navy-foreground/40 mt-1">
-              Serving Gurugram, Delhi, Noida, Faridabad & Ghaziabad
-            </p>
-          </div>
+      {/* DARK OVERLAY */}
+      <div className="absolute inset-0 bg-black/80" />
+
+      {/* TEXTURE (LIKE DAWAT) */}
+      <div className="absolute inset-0 opacity-[0.08] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+
+      {/* CONTENT */}
+      <div className="relative container mx-auto px-6 py-20 text-center">
+
+        {/* BRAND */}
+        <h2 className="text-3xl md:text-4xl font-heading font-bold tracking-wide mb-6">
+          Bite Affair
+        </h2>
+
+        {/* TAGLINE */}
+        <p className="text-white/70 max-w-xl mx-auto leading-relaxed mb-8">
+          Premium catering for 15–50 guests. Curated menus, consistent quality,
+          and seamless ordering experience.
+        </p>
+
+        {/* CONTACT */}
+        <div className="space-y-3 mb-10">
+
+          <a
+            href="tel:+919211570030"
+            className="block text-orange-400 text-lg font-medium hover:text-orange-300 transition"
+          >
+            +91 9211570030
+          </a>
+
+          <a
+            href="https://wa.me/919211570030"
+            target="_blank"
+            className="inline-flex items-center gap-2 text-green-400 hover:text-green-300 transition"
+          >
+            <MessageCircle size={18} />
+            Chat on WhatsApp
+          </a>
+
         </div>
 
-        <div className="border-t border-navy-foreground/10 mt-10 pt-6 text-center">
-          <p className="font-body text-xs text-navy-foreground/40">
-            © {new Date().getFullYear()} Bite Affair. All rights reserved.
-          </p>
+        {/* DIVIDER */}
+        <div className="w-16 h-[2px] bg-orange-500 mx-auto mb-8"></div>
+
+        {/* LINKS */}
+        <div className="flex flex-wrap justify-center gap-6 text-sm text-white/60 mb-8">
+          <a href="/#home" className="hover:text-white transition">Home</a>
+          <a href="/#menu" className="hover:text-white transition">Menu</a>
+          <a href="/#packages" className="hover:text-white transition">Packages</a>
+          <a href="/#contact" className="hover:text-white transition">Contact</a>
         </div>
+
+        {/* COPYRIGHT */}
+        <p className="text-xs text-white/50">
+          © {new Date().getFullYear()} Bite Affair. All rights reserved.
+        </p>
+
       </div>
+
     </footer>
   );
 };
