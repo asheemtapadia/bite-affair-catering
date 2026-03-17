@@ -2,176 +2,186 @@ import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { saveOrder } from "@/utils/saveOrder";
 
 const Cart = () => {
 
-  const [cart, setCart] = useState<any[]>([]);
-  const [customerName, setCustomerName] = useState("");
-  const [phone, setPhone] = useState("");
+const [cart,setCart] = useState<any[]>([]);
+const [customerName,setCustomerName] = useState("");
+const [phone,setPhone] = useState("");
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
-    setCart(savedCart);
-  }, []);
+useEffect(() => {
+  window.scrollTo(0,0);
+  const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+  setCart(savedCart);
+}, []);
 
-  const removeItem = (id: number) => {
-    const updated = cart.filter((item) => item.id !== id);
-    setCart(updated);
-    localStorage.setItem("cart", JSON.stringify(updated));
-    window.dispatchEvent(new Event("cartUpdated"));
-  };
+const removeItem = (id:number) => {
+const updated = cart.filter((item) => item.id !== id);
+setCart(updated);
+localStorage.setItem("cart", JSON.stringify(updated));
+window.dispatchEvent(new Event("cartUpdated"));
+};
 
-  const updateRequest = (id: number, value: string) => {
-    const updated = cart.map((item) =>
-      item.id === id ? { ...item, request: value } : item
-    );
-    setCart(updated);
-    localStorage.setItem("cart", JSON.stringify(updated));
-  };
+const updateRequest = (id:number,value:string) => {
+const updated = cart.map((item)=>
+item.id === id ? {...item, request:value} : item
+);
+setCart(updated);
+localStorage.setItem("cart", JSON.stringify(updated));
+};
 
-  const whatsappOrder = () => {
-    const message = cart.map(
-      (item) => `• ${item.name} (₹${item.price})
+const total = cart.reduce((sum,item)=> sum + item.price,0);
+
+const whatsappOrder = () => {
+const message = cart.map(
+(item)=>`• ${item.name} (₹${item.price})
 Request: ${item.request || "None"}`
-    ).join("\n\n");
+).join("\n\n");
 
-    const text = encodeURIComponent(
+const text = encodeURIComponent(
 `Hi Bite Affair,
 
-I'd like to order these packages:
+I'd like to order:
 
 ${message}
 
-Please confirm availability.`
-    );
+Name: ${customerName}
+Phone: ${phone}
 
-    window.open(`https://wa.me/919211570030?text=${text}`, "_blank");
-  };
+Please confirm.`
+);
 
-  const handlePlaceOrder = () => {
+window.open(`https://wa.me/919211570030?text=${text}`,"_blank");
+};
 
-    if (!customerName || !phone) {
-      alert("Please enter name and phone");
-      return;
-    }
+const handlePlaceOrder = () => {
+if(!customerName || !phone){
+  alert("Please enter name and phone");
+  return;
+}
+alert("Order saved successfully");
+};
 
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
+return (
+<div className="min-h-screen bg-[#faf9f7]">
 
-    const orderData = {
-      customer_name: customerName,
-      phone: phone,
-      package_name: cart.map(i => i.name).join(", "),
-      persons: cart.length,
-      total_price: total,
-      status: "pending"
-    };
+  <Header />
 
-    saveOrder(orderData);
+  <div className="container mx-auto px-4 py-28 max-w-3xl">
 
-  };
+    <h1 className="text-3xl font-serif font-semibold mb-8">
+      Your Cart
+    </h1>
 
-  return (
-    <div className="min-h-screen">
+    {cart.length === 0 && (
+      <p className="text-muted-foreground">
+        Your cart is empty.
+      </p>
+    )}
 
-      <Header />
+    <div className="space-y-5">
 
-      <div className="container mx-auto px-4 py-32 max-w-3xl">
+      {cart.map((item)=>(
+        <div
+          key={item.id}
+          className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition"
+        >
 
-        <h1 className="text-3xl font-bold mb-10">
-          Your Cart
-        </h1>
+          <div className="flex justify-between items-start">
 
-        {cart.length === 0 && (
-          <p className="text-muted-foreground">
-            Your cart is empty.
-          </p>
-        )}
-
-        <div className="space-y-4">
-
-          {cart.map((item) => (
-            <div
-              key={item.id}
-              className="border p-4 rounded-lg flex flex-col gap-3 transition-all duration-300 hover:shadow-md"
-            >
-
-              <div className="flex justify-between items-center">
-
-                <div>
-                  <h3 className="font-semibold">{item.name}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    ₹{item.price} / person
-                  </p>
-                </div>
-
-                <Button
-                  variant="outline"
-                  onClick={() => removeItem(item.id)}
-                >
-                  Remove
-                </Button>
-
-              </div>
-
-              <textarea
-                placeholder="Special request (spice level, delivery timing, extra plates etc.)"
-                className="w-full border rounded-md p-2 text-sm"
-                value={item.request || ""}
-                onChange={(e) => updateRequest(item.id, e.target.value)}
-              />
-
+            <div>
+              <h3 className="font-semibold text-lg">
+                {item.name}
+              </h3>
+              <p className="text-sm text-muted-foreground mt-1">
+                ₹{item.price} / person
+              </p>
             </div>
-          ))}
-
-        </div>
-
-        {cart.length > 0 && (
-
-          <div className="mt-10 space-y-3">
-
-            <input
-              placeholder="Your Name"
-              value={customerName}
-              onChange={(e) => setCustomerName(e.target.value)}
-              className="w-full border p-2 rounded"
-            />
-
-            <input
-              placeholder="Phone Number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full border p-2 rounded"
-            />
 
             <Button
-              size="lg"
-              onClick={handlePlaceOrder}
-              className="w-full bg-orange-500 text-white"
-            >
-              Place Order
-            </Button>
-
-            <Button
-              size="lg"
               variant="outline"
-              onClick={whatsappOrder}
-              className="w-full"
+              onClick={()=>removeItem(item.id)}
             >
-              Order on WhatsApp
+              Remove
             </Button>
 
           </div>
 
-        )}
+          <textarea
+            placeholder="Special request (spice level, timing, extras...)"
+            className="w-full border rounded-lg p-2 text-sm mt-4"
+            value={item.request || ""}
+            onChange={(e)=>updateRequest(item.id,e.target.value)}
+          />
+
+        </div>
+      ))}
+
+    </div>
+
+    {cart.length > 0 && (
+
+      <div className="mt-10 bg-white p-5 rounded-xl border shadow-sm">
+
+        {/* TOTAL */}
+        <div className="flex justify-between mb-5">
+          <span className="text-lg font-medium">Total</span>
+          <span className="text-lg font-semibold text-primary">
+            ₹{total}
+          </span>
+        </div>
+
+        {/* INPUTS */}
+        <div className="space-y-3">
+
+          <input
+            placeholder="Your Name"
+            value={customerName}
+            onChange={(e)=>setCustomerName(e.target.value)}
+            className="w-full border p-3 rounded-lg"
+          />
+
+          <input
+            placeholder="Phone Number"
+            value={phone}
+            onChange={(e)=>setPhone(e.target.value)}
+            className="w-full border p-3 rounded-lg"
+          />
+
+        </div>
+
+        {/* BUTTONS */}
+        <div className="mt-5 space-y-3">
+
+          <Button
+            size="lg"
+            onClick={handlePlaceOrder}
+            className="w-full bg-orange-500 text-white text-base"
+          >
+            Place Order
+          </Button>
+
+          <Button
+            size="lg"
+            variant="outline"
+            onClick={whatsappOrder}
+            className="w-full text-base"
+          >
+            Order on WhatsApp
+          </Button>
+
+        </div>
 
       </div>
 
-      <Footer />
+    )}
 
-    </div>
-  );
+  </div>
+
+  <Footer />
+
+</div>
+);
 };
 
 export default Cart;
