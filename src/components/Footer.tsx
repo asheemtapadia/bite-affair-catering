@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer className="relative text-white overflow-hidden">
 
-      {/* BACKGROUND */}
+      {/* BACKGROUND IMAGE */}
       <div
         className="absolute inset-0 bg-cover bg-center scale-105"
         style={{
@@ -12,11 +12,18 @@ const Footer = () => {
         }}
       />
 
-      {/* DARK OVERLAY */}
-      <div className="absolute inset-0 bg-black/85" />
+      {/* ORANGE + DARK OVERLAY (MAIN MAGIC) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-[#1a0d05]/90 to-black/90" />
 
-      {/* LIGHT TEXTURE */}
-      <div className="absolute inset-0 opacity-[0.06] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+      {/* ORANGE GLOW */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,120,0,0.25),transparent_60%)]" />
+
+      {/* SIDE ORANGE LIGHT */}
+      <div className="absolute left-[-100px] bottom-0 w-[300px] h-[300px] bg-orange-500/20 blur-3xl opacity-30"></div>
+      <div className="absolute right-[-100px] top-0 w-[300px] h-[300px] bg-orange-400/20 blur-3xl opacity-20"></div>
+
+      {/* ORANGE TEXTURE */}
+      <div className="absolute inset-0 opacity-[0.08] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
 
       {/* CONTENT */}
       <div className="relative container mx-auto px-6 py-20 text-center">
@@ -32,7 +39,7 @@ const Footer = () => {
           and seamless ordering experience.
         </p>
 
-        {/* CONTACT ACTIONS */}
+        {/* CONTACT */}
         <div className="flex flex-col items-center gap-4 mb-10">
 
           <a
@@ -53,7 +60,7 @@ const Footer = () => {
           </a>
 
           <a
-            href="https://instagram.com/yourhandle" // replace
+            href="https://instagram.com/yourhandle"
             target="_blank"
             className="flex items-center gap-2 text-pink-400 hover:text-pink-300 transition"
           >
