@@ -1,15 +1,27 @@
 import { Home, UtensilsCrossed, ClipboardList, Phone } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const MobileBottomNav = () => {
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Hide bottom nav on Packages page
   if (location.pathname.includes("packages")) return null;
 
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const goToSection = (section: string) => {
+
+    // अगर already home page पे हैं → scroll
+    if (location.pathname === "/") {
+      document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // पहले home जाओ फिर scroll
+      navigate("/");
+      setTimeout(() => {
+        document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+    }
+
   };
 
   return (
@@ -19,7 +31,7 @@ const MobileBottomNav = () => {
 
         {/* Home */}
         <button
-          onClick={() => scrollTo("home")}
+          onClick={() => goToSection("home")}
           className="flex flex-col items-center text-xs text-gray-700"
         >
           <Home size={20} />
@@ -28,7 +40,7 @@ const MobileBottomNav = () => {
 
         {/* Menu */}
         <button
-          onClick={() => scrollTo("menu")}
+          onClick={() => goToSection("menu")}
           className="flex flex-col items-center text-xs text-gray-700"
         >
           <UtensilsCrossed size={20} />
@@ -37,7 +49,7 @@ const MobileBottomNav = () => {
 
         {/* Plan Event */}
         <button
-          onClick={() => scrollTo("packages")}
+          onClick={() => navigate("/packages")}
           className="flex flex-col items-center text-xs text-primary"
         >
           <ClipboardList size={22} />
