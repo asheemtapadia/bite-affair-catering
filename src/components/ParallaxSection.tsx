@@ -6,7 +6,7 @@ interface Props {
   speed?: number;
 }
 
-const ParallaxSection = ({ bgImage, children, speed = 0.15 }: Props) => {
+const ParallaxSection = ({ bgImage, children, speed = 0.1 }: Props) => {
 
   const [offset, setOffset] = useState(0);
 
@@ -39,8 +39,8 @@ const ParallaxSection = ({ bgImage, children, speed = 0.15 }: Props) => {
         }}
       />
 
-      {/* DARK OVERLAY (NO BLUR) */}
-      <div className="absolute inset-0 bg-black/50" />
+      {/* STRONG GRADIENT OVERLAY (FIXED VISIBILITY) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
 
       {/* CONTENT */}
       <div className="relative z-10">
