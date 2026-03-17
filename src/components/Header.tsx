@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Phone, MessageCircle, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/bite-affair-logo.png";
@@ -20,6 +20,8 @@ const Header = () => {
   const [cartCount, setCartCount] = useState(0);
 
   const location = useLocation();
+  const navigate = useNavigate();
+
   const isHome = location.pathname === "/";
 
   useEffect(() => {
@@ -48,7 +50,10 @@ const Header = () => {
       if (isHome) {
         document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
       } else {
-        window.location.href = href;
+        navigate("/");
+        setTimeout(() => {
+          document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+        }, 300);
       }
     }
   };
