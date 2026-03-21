@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
+import LiteMealBanner from "@/components/LiteMealBanner"; // ✅ ADDED
 import MenuCards from "@/components/MenuCards";
 import AboutSection from "@/components/AboutSection";
 import RealPartyMoments from "@/components/RealPartyMoments";
@@ -23,6 +24,8 @@ const Index = () => {
       <Header />
 
       <HeroSection />
+
+      <LiteMealBanner /> {/* ✅ ADDED HERE */}
 
       <MenuCards />
 
