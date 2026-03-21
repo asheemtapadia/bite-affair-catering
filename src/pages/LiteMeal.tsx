@@ -21,7 +21,6 @@ const LiteMeal = () => {
   const [pax, setPax] = useState(15);
 
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -36,7 +35,7 @@ const LiteMeal = () => {
       return;
     }
 
-    if (!name || !phone || !address || !date || !time) {
+    if (!name || !address || !date || !time) {
       alert("Please fill all details");
       return;
     }
@@ -45,7 +44,6 @@ const LiteMeal = () => {
 `*Bite Affair Lite Meal Order*
 
 👤 Name: ${name}
-📞 Phone: ${phone}
 📍 Address: ${address}
 
 📅 Date: ${date}
@@ -72,7 +70,7 @@ Please confirm availability.`
 
   // UI
   return (
-    <div className="min-h-screen p-6 max-w-2xl mx-auto">
+    <div className="min-h-screen p-6 pb-28 max-w-2xl mx-auto">
 
       <h1 className="text-3xl font-bold mb-6 text-center">
         Bite Affair Lite Meal
@@ -126,27 +124,5 @@ Please confirm availability.`
       {/* FORM */}
       <div className="space-y-3 mb-6">
         <input placeholder="Name" className="w-full border p-2 rounded" onChange={(e) => setName(e.target.value)} />
-        <input placeholder="Phone" className="w-full border p-2 rounded" onChange={(e) => setPhone(e.target.value)} />
         <input placeholder="Address" className="w-full border p-2 rounded" onChange={(e) => setAddress(e.target.value)} />
-        <input type="date" className="w-full border p-2 rounded" onChange={(e) => setDate(e.target.value)} />
-        <input type="time" className="w-full border p-2 rounded" onChange={(e) => setTime(e.target.value)} />
-      </div>
-
-      {/* PRICE */}
-      <div className="mb-4 text-lg font-semibold">
-        Total: ₹{total}
-      </div>
-
-      {/* BUTTON */}
-      <button
-        onClick={handleOrder}
-        className="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold"
-      >
-        Order on WhatsApp
-      </button>
-
-    </div>
-  );
-};
-
-export default LiteMeal;
+        <input type="date" className="w-full border p-2 rounded" onChange={(e) => setDate(e.target.value)}
