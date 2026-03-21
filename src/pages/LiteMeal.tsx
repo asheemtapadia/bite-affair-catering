@@ -2,7 +2,6 @@ import { useState } from "react";
 
 const LiteMeal = () => {
 
-  // MENU DATA
   const menu = {
     dal: ["Dal Tadka", "Dal Makhani", "Dal Panchmel"],
     paneer: ["Paneer Butter Masala", "Paneer Lababdar", "Matar Paneer", "Shahi Paneer"],
@@ -11,7 +10,7 @@ const LiteMeal = () => {
     dessert: ["Gulab Jamun", "Rasgulla"]
   };
 
-  // DEFAULT SELECTIONS (fix: no empty error)
+  // DEFAULT SELECTED (no empty error)
   const [dal, setDal] = useState("Dal Tadka");
   const [paneer, setPaneer] = useState("Paneer Butter Masala");
   const [veg, setVeg] = useState("Mix Veg");
@@ -27,7 +26,6 @@ const LiteMeal = () => {
 
   const total = pax * 250;
 
-  // WHATSAPP FUNCTION
   const handleOrder = () => {
 
     if (!name || !address || !date || !time) {
@@ -74,14 +72,14 @@ Please confirm availability.`
 
         {/* CATEGORY */}
         {Object.entries(menu).map(([key, items]) => (
-          <div key={key} className="mb-6">
+          <div key={key} className="mb-5">
 
-            <h2 className="font-semibold capitalize mb-3 text-lg">
+            <h2 className="font-semibold capitalize mb-2 text-base">
               Select {key}
             </h2>
 
-            {/* premium grid */}
-            <div className="grid grid-cols-2 gap-3">
+            {/* LIGHTWEIGHT PILLS */}
+            <div className="flex flex-wrap gap-2">
               {items.map((item) => {
                 const selected =
                   (key === "dal" && dal === item) ||
@@ -91,7 +89,7 @@ Please confirm availability.`
                   (key === "dessert" && dessert === item);
 
                 return (
-                  <div
+                  <button
                     key={item}
                     onClick={() => {
                       if (key === "dal") setDal(item);
@@ -100,14 +98,16 @@ Please confirm availability.`
                       if (key === "rice") setRice(item);
                       if (key === "dessert") setDessert(item);
                     }}
-                    className={`p-3 rounded-xl border cursor-pointer text-sm text-center transition
-                    ${selected
-                        ? "bg-orange-500 text-white border-orange-500"
-                        : "bg-white border-gray-200"
-                      }`}
+                    className={`px-3 py-2 rounded-full text-sm border transition 
+                    hover:scale-[1.02] active:scale-[0.97]
+                    ${
+                      selected
+                        ? "bg-orange-100 text-orange-700 border-orange-300"
+                        : "bg-white border-gray-300 text-gray-700"
+                    }`}
                   >
                     {item}
-                  </div>
+                  </button>
                 );
               })}
             </div>
@@ -144,7 +144,6 @@ Please confirm availability.`
             onChange={(e) => setAddress(e.target.value)}
           />
 
-          {/* FIXED LABELS */}
           <div>
             <p className="text-sm mb-1">Delivery Date</p>
             <input
@@ -172,11 +171,11 @@ Please confirm availability.`
 
       </div>
 
-      {/* STICKY BUTTON (fix navbar overlap) */}
+      {/* CTA (only solid orange = branding) */}
       <div className="fixed bottom-16 left-0 right-0 px-4">
         <button
           onClick={handleOrder}
-          className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold shadow-lg"
+          className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold shadow-md"
         >
           Order on WhatsApp
         </button>
