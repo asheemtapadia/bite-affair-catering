@@ -11,12 +11,12 @@ const LiteMeal = () => {
     dessert: ["Gulab Jamun", "Rasgulla"]
   };
 
-  // STATES
-  const [dal, setDal] = useState("");
-  const [paneer, setPaneer] = useState("");
-  const [veg, setVeg] = useState("");
-  const [rice, setRice] = useState("");
-  const [dessert, setDessert] = useState("");
+  // DEFAULT SELECTIONS (fix: no empty error)
+  const [dal, setDal] = useState("Dal Tadka");
+  const [paneer, setPaneer] = useState("Paneer Butter Masala");
+  const [veg, setVeg] = useState("Mix Veg");
+  const [rice, setRice] = useState("Plain Rice");
+  const [dessert, setDessert] = useState("Gulab Jamun");
 
   const [pax, setPax] = useState(15);
 
@@ -29,11 +29,6 @@ const LiteMeal = () => {
 
   // WHATSAPP FUNCTION
   const handleOrder = () => {
-
-    if (!dal || !paneer || !veg || !rice || !dessert) {
-      alert("Please select all items");
-      return;
-    }
 
     if (!name || !address || !date || !time) {
       alert("Please fill all details");
@@ -68,95 +63,124 @@ Please confirm availability.`
     window.open(`https://wa.me/919211570030?text=${text}`, "_blank");
   };
 
-  // UI
   return (
-    <div className="min-h-screen p-6 pb-28 max-w-2xl mx-auto">
+    <div className="min-h-screen bg-[#faf7f2] px-4 py-6 pb-28">
 
-      <h1 className="text-3xl font-bold mb-6 text-center">
-        Bite Affair Lite Meal
-      </h1>
+      <div className="max-w-2xl mx-auto">
 
-      {/* CATEGORY */}
-      {Object.entries(menu).map(([key, items]) => (
-        <div key={key} className="mb-6">
+        <h1 className="text-3xl font-bold text-center mb-6">
+          Bite Affair Lite Meal
+        </h1>
 
-          <h2 className="font-semibold capitalize mb-2">
-            Select {key}
-          </h2>
+        {/* CATEGORY */}
+        {Object.entries(menu).map(([key, items]) => (
+          <div key={key} className="mb-6">
 
-          <div className="space-y-2">
-            {items.map((item) => (
-              <label key={item} className="block">
-                <input
-                  type="radio"
-                  name={key}
-                  value={item}
-                  onChange={(e) => {
-                    if (key === "dal") setDal(e.target.value);
-                    if (key === "paneer") setPaneer(e.target.value);
-                    if (key === "veg") setVeg(e.target.value);
-                    if (key === "rice") setRice(e.target.value);
-                    if (key === "dessert") setDessert(e.target.value);
-                  }}
-                />{" "}
-                {item}
-              </label>
+            <h2 className="font-semibold capitalize mb-3 text-lg">
+              Select {key}
+            </h2>
+
+            {/* premium grid */}
+            <div className="grid grid-cols-2 gap-3">
+              {items.map((item) => {
+                const selected =
+                  (key === "dal" && dal === item) ||
+                  (key === "paneer" && paneer === item) ||
+                  (key === "veg" && veg === item) ||
+                  (key === "rice" && rice === item) ||
+                  (key === "dessert" && dessert === item);
+
+                return (
+                  <div
+                    key={item}
+                    onClick={() => {
+                      if (key === "dal") setDal(item);
+                      if (key === "paneer") setPaneer(item);
+                      if (key === "veg") setVeg(item);
+                      if (key === "rice") setRice(item);
+                      if (key === "dessert") setDessert(item);
+                    }}
+                    className={`p-3 rounded-xl border cursor-pointer text-sm text-center transition
+                    ${selected
+                        ? "bg-orange-500 text-white border-orange-500"
+                        : "bg-white border-gray-200"
+                      }`}
+                  >
+                    {item}
+                  </div>
+                );
+              })}
+            </div>
+
+          </div>
+        ))}
+
+        {/* PAX */}
+        <div className="mb-6">
+          <h2 className="font-semibold mb-2">Number of Guests</h2>
+          <select
+            value={pax}
+            onChange={(e) => setPax(Number(e.target.value))}
+            className="border p-3 rounded-lg w-full bg-white"
+          >
+            {[15, 20, 25, 30, 40, 50].map((p) => (
+              <option key={p} value={p}>{p}</option>
             ))}
+          </select>
+        </div>
+
+        {/* FORM */}
+        <div className="space-y-4 mb-6">
+
+          <input
+            placeholder="Name"
+            className="w-full border p-3 rounded-lg bg-white"
+            onChange={(e) => setName(e.target.value)}
+          />
+
+          <input
+            placeholder="Address"
+            className="w-full border p-3 rounded-lg bg-white"
+            onChange={(e) => setAddress(e.target.value)}
+          />
+
+          {/* FIXED LABELS */}
+          <div>
+            <p className="text-sm mb-1">Delivery Date</p>
+            <input
+              type="date"
+              className="w-full border p-3 rounded-lg bg-white"
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <p className="text-sm mb-1">Delivery Time</p>
+            <input
+              type="time"
+              className="w-full border p-3 rounded-lg bg-white"
+              onChange={(e) => setTime(e.target.value)}
+            />
           </div>
 
         </div>
-      ))}
 
-      {/* PAX */}
-      <div className="mb-6">
-        <h2 className="font-semibold mb-2">Number of Guests</h2>
-        <select
-          value={pax}
-          onChange={(e) => setPax(Number(e.target.value))}
-          className="border p-2 rounded w-full"
+        {/* TOTAL */}
+        <div className="mb-4 text-lg font-semibold">
+          Total: ₹{total}
+        </div>
+
+      </div>
+
+      {/* STICKY BUTTON (fix navbar overlap) */}
+      <div className="fixed bottom-16 left-0 right-0 px-4">
+        <button
+          onClick={handleOrder}
+          className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold shadow-lg"
         >
-          {[15, 20, 25, 30, 40, 50].map((p) => (
-            <option key={p} value={p}>{p}</option>
-          ))}
-        </select>
+          Order on WhatsApp
+        </button>
       </div>
-
-      {/* FORM */}
-      <div className="space-y-3 mb-6">
-        <input
-          placeholder="Name"
-          className="w-full border p-2 rounded"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          placeholder="Address"
-          className="w-full border p-2 rounded"
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <input
-          type="date"
-          className="w-full border p-2 rounded"
-          onChange={(e) => setDate(e.target.value)}
-        />
-        <input
-          type="time"
-          className="w-full border p-2 rounded"
-          onChange={(e) => setTime(e.target.value)}
-        />
-      </div>
-
-      {/* PRICE */}
-      <div className="mb-4 text-lg font-semibold">
-        Total: ₹{total}
-      </div>
-
-      {/* BUTTON */}
-      <button
-        onClick={handleOrder}
-        className="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold"
-      >
-        Order on WhatsApp
-      </button>
 
     </div>
   );
