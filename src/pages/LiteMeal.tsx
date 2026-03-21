@@ -123,6 +123,43 @@ Please confirm availability.`
 
       {/* FORM */}
       <div className="space-y-3 mb-6">
-        <input placeholder="Name" className="w-full border p-2 rounded" onChange={(e) => setName(e.target.value)} />
-        <input placeholder="Address" className="w-full border p-2 rounded" onChange={(e) => setAddress(e.target.value)} />
-        <input type="date" className="w-full border p-2 rounded" onChange={(e) => setDate(e.target.value)}
+        <input
+          placeholder="Name"
+          className="w-full border p-2 rounded"
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          placeholder="Address"
+          className="w-full border p-2 rounded"
+          onChange={(e) => setAddress(e.target.value)}
+        />
+        <input
+          type="date"
+          className="w-full border p-2 rounded"
+          onChange={(e) => setDate(e.target.value)}
+        />
+        <input
+          type="time"
+          className="w-full border p-2 rounded"
+          onChange={(e) => setTime(e.target.value)}
+        />
+      </div>
+
+      {/* PRICE */}
+      <div className="mb-4 text-lg font-semibold">
+        Total: ₹{total}
+      </div>
+
+      {/* BUTTON */}
+      <button
+        onClick={handleOrder}
+        className="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold"
+      >
+        Order on WhatsApp
+      </button>
+
+    </div>
+  );
+};
+
+export default LiteMeal;
