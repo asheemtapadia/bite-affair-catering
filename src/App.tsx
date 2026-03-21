@@ -12,6 +12,7 @@ import MenuDetailPage from "./pages/MenuDetailPage";
 import Packages from "./pages/Packages";
 import Cart from "./pages/Cart";
 import NotFound from "./pages/NotFound";
+import LiteMeal from "./pages/LiteMeal"; // ✅ ADDED
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/menu/:slug" element={<MenuDetailPage />} />
             <Route path="/packages" element={<Packages />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/lite-meal" element={<LiteMeal />} /> {/* ✅ ADDED */}
             <Route path="*" element={<NotFound />} />
           </Routes>
 
