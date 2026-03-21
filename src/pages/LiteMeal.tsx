@@ -1,16 +1,35 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LiteMeal = () => {
 
+  const navigate = useNavigate();
+
+  // MENU DATA + IMAGE PATHS (replace later)
   const menu = {
-    dal: ["Dal Tadka", "Dal Makhani", "Dal Panchmel"],
-    paneer: ["Paneer Butter Masala", "Paneer Lababdar", "Matar Paneer", "Shahi Paneer"],
-    veg: ["Mix Veg", "Tawa Veg", "Kadhai Veg", "Aloo Gobhi"],
-    rice: ["Plain Rice", "Jeera Rice", "Peas Pulao", "Veg Fried Rice"],
-    dessert: ["Gulab Jamun", "Rasgulla"]
+    dal: {
+      img: "/images/dal.jpg",
+      items: ["Dal Tadka", "Dal Makhani", "Dal Panchmel"]
+    },
+    paneer: {
+      img: "/images/paneer.jpg",
+      items: ["Paneer Butter Masala", "Paneer Lababdar", "Matar Paneer", "Shahi Paneer"]
+    },
+    veg: {
+      img: "/images/veg.jpg",
+      items: ["Mix Veg", "Tawa Veg", "Kadhai Veg", "Aloo Gobhi"]
+    },
+    rice: {
+      img: "/images/rice.jpg",
+      items: ["Plain Rice", "Jeera Rice", "Peas Pulao", "Veg Fried Rice"]
+    },
+    dessert: {
+      img: "/images/dessert.jpg",
+      items: ["Gulab Jamun", "Rasgulla"]
+    }
   };
 
-  // DEFAULT SELECTED (no empty error)
+  // DEFAULT SELECTED
   const [dal, setDal] = useState("Dal Tadka");
   const [paneer, setPaneer] = useState("Paneer Butter Masala");
   const [veg, setVeg] = useState("Mix Veg");
@@ -26,6 +45,8 @@ const LiteMeal = () => {
 
   const total = pax * 250;
 
+  const quantity = (pax * 0.1).toFixed(1);
+
   const handleOrder = () => {
 
     if (!name || !address || !date || !time) {
@@ -34,7 +55,7 @@ const LiteMeal = () => {
     }
 
     const text = encodeURIComponent(
-`*Bite Affair Lite Meal Order*
+`*Bite Affair Lite Box Order*
 
 👤 Name: ${name}
 📍 Address: ${address}
@@ -44,9 +65,9 @@ const LiteMeal = () => {
 
 👥 Guests: ${pax}
 
-🍲 Dal: ${dal}
-🧀 Paneer: ${paneer}
-🥦 Veg: ${veg}
+🍲 Dal: ${dal} (${quantity}kg)
+🧀 Paneer: ${paneer} (${quantity}kg)
+🥦 Veg: ${veg} (${quantity}kg)
 🍚 Rice: ${rice}
 🍰 Dessert: ${dessert}
 
@@ -66,54 +87,78 @@ Please confirm availability.`
 
       <div className="max-w-2xl mx-auto">
 
+        {/* 🔙 BACK BUTTON */}
+        <button
+          onClick={() => navigate(-1)}
+          className="mb-4 text-sm text-gray-600"
+        >
+          ← Back
+        </button>
+
+        {/* TITLE */}
         <h1 className="text-3xl font-bold text-center mb-6">
-          Bite Affair Lite Meal
+          Bite Affair Lite Box
         </h1>
 
         {/* CATEGORY */}
-        {Object.entries(menu).map(([key, items]) => (
-          <div key={key} className="mb-5">
+        {Object.entries(menu).map(([key, value]) => {
 
-            <h2 className="font-semibold capitalize mb-2 text-base">
-              Select {key}
-            </h2>
+          const items = value.items;
 
-            {/* LIGHTWEIGHT PILLS */}
-            <div className="flex flex-wrap gap-2">
-              {items.map((item) => {
-                const selected =
-                  (key === "dal" && dal === item) ||
-                  (key === "paneer" && paneer === item) ||
-                  (key === "veg" && veg === item) ||
-                  (key === "rice" && rice === item) ||
-                  (key === "dessert" && dessert === item);
+          return (
+            <div key={key} className="mb-6">
 
-                return (
-                  <button
-                    key={item}
-                    onClick={() => {
-                      if (key === "dal") setDal(item);
-                      if (key === "paneer") setPaneer(item);
-                      if (key === "veg") setVeg(item);
-                      if (key === "rice") setRice(item);
-                      if (key === "dessert") setDessert(item);
-                    }}
-                    className={`px-3 py-2 rounded-full text-sm border transition 
-                    hover:scale-[1.02] active:scale-[0.97]
-                    ${
-                      selected
-                        ? "bg-orange-100 text-orange-700 border-orange-300"
-                        : "bg-white border-gray-300 text-gray-700"
-                    }`}
-                  >
-                    {item}
-                  </button>
-                );
-              })}
+              <img
+                src={value.img}
+                alt={key}
+                className="w-full h-28 object-cover rounded-xl mb-3"
+              />
+
+              <h2 className="font-semibold capitalize mb-2 text-base flex justify-between">
+                <span>Select {key}</span>
+                {(key !== "rice" && key !== "dessert") && (
+                  <span className="text-sm text-orange-600">
+                    {quantity}kg
+                  </span>
+                )}
+              </h2>
+
+              <div className="flex flex-wrap gap-2">
+                {items.map((item) => {
+
+                  const selected =
+                    (key === "dal" && dal === item) ||
+                    (key === "paneer" && paneer === item) ||
+                    (key === "veg" && veg === item) ||
+                    (key === "rice" && rice === item) ||
+                    (key === "dessert" && dessert === item);
+
+                  return (
+                    <button
+                      key={item}
+                      onClick={() => {
+                        if (key === "dal") setDal(item);
+                        if (key === "paneer") setPaneer(item);
+                        if (key === "veg") setVeg(item);
+                        if (key === "rice") setRice(item);
+                        if (key === "dessert") setDessert(item);
+                      }}
+                      className={`px-3 py-2 rounded-full text-sm border transition
+                      ${
+                        selected
+                          ? "bg-orange-100 text-orange-700 border-orange-300"
+                          : "bg-white border-gray-300 text-gray-700"
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  );
+                })}
+              </div>
+
             </div>
-
-          </div>
-        ))}
+          );
+        })}
 
         {/* PAX */}
         <div className="mb-6">
@@ -164,18 +209,17 @@ Please confirm availability.`
 
         </div>
 
-        {/* TOTAL */}
         <div className="mb-4 text-lg font-semibold">
           Total: ₹{total}
         </div>
 
       </div>
 
-      {/* CTA (only solid orange = branding) */}
+      {/* CTA */}
       <div className="fixed bottom-16 left-0 right-0 px-4">
         <button
           onClick={handleOrder}
-          className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold shadow-md"
+          className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold"
         >
           Order on WhatsApp
         </button>
