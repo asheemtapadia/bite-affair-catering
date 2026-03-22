@@ -41,12 +41,15 @@ const LiteMeal = () => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
+  const [error, setError] = useState("");
+
   const total = pax * 300;
   const quantity = (pax * 0.1).toFixed(1);
 
   const handleOrder = () => {
+
     if (!name || !address || !date || !time) {
-      alert("Please fill all details");
+      setError("Please fill all details");
       return;
     }
 
@@ -83,52 +86,46 @@ Please confirm availability.`
 
       <div className="max-w-2xl mx-auto">
 
-        {/* BACK */}
         <button
           onClick={() => navigate(-1)}
-          className="mb-4 text-sm text-gray-500 hover:text-gray-700"
+          className="mb-4 text-sm text-gray-600"
         >
           ← Back
         </button>
 
-        {/* TITLE */}
-        <h1 className="text-3xl font-bold text-center mb-2 tracking-tight">
+        <h1 className="text-3xl font-bold text-center mb-2">
           Bite Affair Lite Box
         </h1>
 
-        <p className="text-center text-sm text-gray-500 mb-8">
+        <p className="text-center text-sm text-gray-500 mb-6">
           ₹300 per person • Starting ₹4500
         </p>
 
-        {/* CATEGORY */}
         {Object.entries(menu).map(([key, value]) => {
 
           const items = value.items;
 
           return (
-            <div key={key} className="mb-8">
+            <div key={key} className="mb-6">
 
-              {/* IMAGE */}
-              <div className="relative mb-4">
+              <div className="relative mb-3">
                 <img
                   src={value.img}
                   alt={key}
-                  className="w-full h-28 object-cover rounded-xl shadow-sm"
+                  className="w-full h-28 object-cover rounded-xl"
                 />
-                <div className="absolute inset-0 bg-black/10 rounded-xl" />
+                <div className="absolute inset-0 bg-black/30 rounded-xl" />
               </div>
 
-              {/* TITLE */}
-              <h2 className="font-semibold capitalize mb-3 text-base flex justify-between">
+              <h2 className="font-semibold capitalize mb-2 text-base flex justify-between">
                 <span>Select {key}</span>
                 {(key !== "rice" && key !== "dessert") && (
-                  <span className="text-sm text-orange-600 font-medium">
+                  <span className="text-sm text-orange-600">
                     {quantity}kg
                   </span>
                 )}
               </h2>
 
-              {/* OPTIONS */}
               <div className="flex flex-wrap gap-2">
                 {items.map((item) => {
 
@@ -149,11 +146,11 @@ Please confirm availability.`
                         if (key === "rice") setRice(item);
                         if (key === "dessert") setDessert(item);
                       }}
-                      className={`px-4 py-2 rounded-full text-sm border transition-all duration-200
+                      className={`px-3 py-2 rounded-full text-sm border transition
                       ${
                         selected
-                          ? "bg-orange-50 text-orange-700 border-orange-400 shadow-sm"
-                          : "bg-white border-gray-300 text-gray-700 hover:border-gray-400"
+                          ? "bg-orange-100 text-orange-700 border-orange-300"
+                          : "bg-white border-gray-300 text-gray-700"
                       }`}
                     >
                       {item}
@@ -166,32 +163,39 @@ Please confirm availability.`
           );
         })}
 
-        {/* PAX */}
-        <div className="mb-8">
+        {/* ✅ PAX PILLS (REPLACED DROPDOWN) */}
+        <div className="mb-6">
           <h2 className="font-semibold mb-2">Number of Guests</h2>
-          <select
-            value={pax}
-            onChange={(e) => setPax(Number(e.target.value))}
-            className="border p-3 rounded-lg w-full bg-white shadow-sm"
-          >
+
+          <div className="flex flex-wrap gap-2">
             {[15, 20, 25, 30, 40, 50].map((p) => (
-              <option key={p} value={p}>{p}</option>
+              <button
+                key={p}
+                onClick={() => setPax(p)}
+                className={`px-4 py-2 rounded-full border text-sm transition
+                ${
+                  pax === p
+                    ? "bg-orange-100 text-orange-700 border-orange-300"
+                    : "bg-white border-gray-300 text-gray-700"
+                }`}
+              >
+                {p}
+              </button>
             ))}
-          </select>
+          </div>
         </div>
 
-        {/* FORM */}
         <div className="space-y-4 mb-6">
 
           <input
             placeholder="Name"
-            className="w-full border p-3 rounded-lg bg-white shadow-sm"
+            className="w-full border p-3 rounded-lg bg-white"
             onChange={(e) => setName(e.target.value)}
           />
 
           <input
             placeholder="Address"
-            className="w-full border p-3 rounded-lg bg-white shadow-sm"
+            className="w-full border p-3 rounded-lg bg-white"
             onChange={(e) => setAddress(e.target.value)}
           />
 
@@ -199,7 +203,7 @@ Please confirm availability.`
             <p className="text-sm mb-1">Delivery Date</p>
             <input
               type="date"
-              className="w-full border p-3 rounded-lg bg-white shadow-sm"
+              className="w-full border p-3 rounded-lg bg-white"
               onChange={(e) => setDate(e.target.value)}
             />
           </div>
@@ -208,25 +212,30 @@ Please confirm availability.`
             <p className="text-sm mb-1">Delivery Time</p>
             <input
               type="time"
-              className="w-full border p-3 rounded-lg bg-white shadow-sm"
+              className="w-full border p-3 rounded-lg bg-white"
               onChange={(e) => setTime(e.target.value)}
             />
           </div>
 
         </div>
 
-        {/* TOTAL */}
         <div className="mb-4 text-lg font-semibold">
           Total: ₹{total}
         </div>
 
       </div>
 
-      {/* CTA */}
+      {/* ✅ ERROR UI (REPLACED ALERT) */}
+      {error && (
+        <div className="fixed bottom-24 left-4 right-4 bg-red-500 text-white p-3 rounded-xl text-center shadow-lg">
+          {error}
+        </div>
+      )}
+
       <div className="fixed bottom-16 left-0 right-0 px-4">
         <button
           onClick={handleOrder}
-          className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold shadow-md active:scale-[0.98] transition"
+          className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold shadow-lg active:scale-[0.98] transition"
         >
           Order on WhatsApp
         </button>
