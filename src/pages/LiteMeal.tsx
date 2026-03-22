@@ -5,26 +5,26 @@ const LiteMeal = () => {
 
   const navigate = useNavigate();
 
-  // MENU DATA + IMAGE PATHS
+  // MENU DATA + IMAGE PATHS (✅ FIXED PATHS)
   const menu = {
     dal: {
-      img: "/images/dal.jpg",
+      img: "/images/lite-meal/dal.jpg",
       items: ["Dal Tadka", "Dal Makhani", "Dal Panchmel"]
     },
     paneer: {
-      img: "/images/paneer.jpg",
+      img: "/images/lite-meal/paneer.jpg",
       items: ["Paneer Butter Masala", "Paneer Lababdar", "Matar Paneer", "Shahi Paneer"]
     },
     veg: {
-      img: "/images/veg.jpg",
+      img: "/images/lite-meal/veg.jpg",
       items: ["Mix Veg", "Tawa Veg", "Kadhai Veg", "Aloo Gobhi"]
     },
     rice: {
-      img: "/images/rice.jpg",
+      img: "/images/lite-meal/rice.jpg",
       items: ["Plain Rice", "Jeera Rice", "Peas Pulao", "Veg Fried Rice"]
     },
     dessert: {
-      img: "/images/dessert.jpg",
+      img: "/images/lite-meal/dessert.jpg",
       items: ["Gulab Jamun", "Rasgulla"]
     }
   };
@@ -43,9 +43,10 @@ const LiteMeal = () => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
-  // ✅ UPDATED PRICING
+  // ✅ PRICING UPDATED
   const total = pax * 300;
 
+  // ✅ QUANTITY LOGIC (dynamic)
   const quantity = (pax * 0.1).toFixed(1);
 
   const handleOrder = () => {
@@ -88,7 +89,7 @@ Please confirm availability.`
 
       <div className="max-w-2xl mx-auto">
 
-        {/* BACK */}
+        {/* 🔙 BACK BUTTON */}
         <button
           onClick={() => navigate(-1)}
           className="mb-4 text-sm text-gray-600"
@@ -101,7 +102,7 @@ Please confirm availability.`
           Bite Affair Lite Box
         </h1>
 
-        {/* SMALL INFO */}
+        {/* SUBTEXT */}
         <p className="text-center text-sm text-gray-500 mb-6">
           ₹300 per person • Starting ₹4500
         </p>
@@ -114,16 +115,17 @@ Please confirm availability.`
           return (
             <div key={key} className="mb-6">
 
-              {/* ✅ IMAGE WITH OVERLAY */}
+              {/* IMAGE */}
               <div className="relative mb-3">
                 <img
                   src={value.img}
                   alt={key}
                   className="w-full h-28 object-cover rounded-xl"
                 />
-                <div className="absolute inset-0 bg-black/30 rounded-xl" />
+                <div className="absolute inset-0 bg-black/20 rounded-xl" />
               </div>
 
+              {/* TITLE + QUANTITY */}
               <h2 className="font-semibold capitalize mb-2 text-base flex justify-between">
                 <span>Select {key}</span>
                 {(key !== "rice" && key !== "dessert") && (
@@ -133,6 +135,7 @@ Please confirm availability.`
                 )}
               </h2>
 
+              {/* OPTIONS */}
               <div className="flex flex-wrap gap-2">
                 {items.map((item) => {
 
@@ -219,6 +222,7 @@ Please confirm availability.`
 
         </div>
 
+        {/* TOTAL */}
         <div className="mb-4 text-lg font-semibold">
           Total: ₹{total}
         </div>
@@ -229,7 +233,7 @@ Please confirm availability.`
       <div className="fixed bottom-16 left-0 right-0 px-4">
         <button
           onClick={handleOrder}
-          className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold"
+          className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold shadow-md"
         >
           Order on WhatsApp
         </button>
