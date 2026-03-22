@@ -69,11 +69,14 @@ const LiteMeal = () => {
 
 👥 Guests: ${pax}
 
-🍲 Dal: ${dal} (${quantity}kg)
-🧀 Paneer: ${paneer} (${quantity}kg)
-🥦 Veg: ${veg} (${quantity}kg)
-🍚 Rice: ${rice}
-🍰 Dessert: ${dessert}
+🍲 Dal: ${dal} (${quantity} kg)
+🧀 Paneer: ${paneer} (${quantity} kg)
+🥦 Veg: ${veg} (${quantity} kg)
+🍚 Rice: ${rice} (${rice === "Plain Rice" || rice === "Jeera Rice" ? "2 ltr" : "1 ltr"})
+🍰 Dessert: ${dessert} (${pax * 2} pcs)
+
+🥖 Breads: Lachha Paratha & Tandoori Roti (${pax} pcs)
+🥗 Raita & Salad: Included
 
 💰 Total: ₹${total}`
     );
@@ -153,11 +156,11 @@ const LiteMeal = () => {
               <h2 className="font-medium capitalize mb-3 text-base flex justify-between">
                 <span>Select {key}</span>
 
-                {(key !== "rice" && key !== "dessert") && (
-                  <span className="text-lg font-bold text-orange-600">
-                    {quantity}kg
-                  </span>
-                )}
+                <span className="text-lg font-bold text-orange-600">
+                  {key === "rice" && (rice === "Plain Rice" || rice === "Jeera Rice" ? "2 ltr" : "1 ltr")}
+                  {key === "dessert" && `${pax * 2} pcs`}
+                  {(key !== "rice" && key !== "dessert") && `${quantity} kg`}
+                </span>
               </h2>
 
               <div className="flex flex-wrap gap-3">
@@ -197,22 +200,40 @@ const LiteMeal = () => {
           );
         })}
 
+        {/* ROTI (INCLUDED) */}
+        <div className="mb-10">
+          <h2 className="font-medium mb-3 text-base flex justify-between">
+            <span>Breads</span>
+            <span className="text-lg font-bold text-orange-600">
+              {pax} pcs
+            </span>
+          </h2>
+
+          <div className="flex flex-wrap gap-3">
+            <div className="px-4 py-2 rounded-full text-sm border bg-white border-gray-200 text-gray-700">
+              Lachha Paratha
+            </div>
+            <div className="px-4 py-2 rounded-full text-sm border bg-white border-gray-200 text-gray-700">
+              Tandoori Roti
+            </div>
+          </div>
+        </div>
+
         {/* FORM */}
         <div className="space-y-7 mb-12">
 
           <input
             placeholder="Name"
-            className="w-full border border-gray-200 p-4 rounded-xl bg-white shadow-sm focus:shadow-md"
+            className="w-full border border-gray-200 p-4 rounded-xl bg-white shadow-sm"
             onChange={(e) => setName(e.target.value)}
           />
 
           <input
             placeholder="Address"
-            className="w-full border border-gray-200 p-4 rounded-xl bg-white shadow-sm focus:shadow-md"
+            className="w-full border border-gray-200 p-4 rounded-xl bg-white shadow-sm"
             onChange={(e) => setAddress(e.target.value)}
           />
 
-          {/* ✅ DATE LABEL */}
           <div>
             <p className="text-sm text-gray-500 mb-2">Delivery Date</p>
             <input
@@ -222,7 +243,6 @@ const LiteMeal = () => {
             />
           </div>
 
-          {/* ✅ TIME LABEL */}
           <div>
             <p className="text-sm text-gray-500 mb-2">Delivery Time</p>
             <input
