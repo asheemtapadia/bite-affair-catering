@@ -5,7 +5,6 @@ const LiteMeal = () => {
 
   const navigate = useNavigate();
 
-  // ✅ SCROLL TO TOP FIX
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -49,8 +48,6 @@ const LiteMeal = () => {
   const [error, setError] = useState("");
 
   const total = pax * 300;
-
-  // ✅ QUANTITY AUTO UPDATE (CLIENT POINT 4)
   const quantity = (pax * 0.1).toFixed(1);
 
   const handleOrder = () => {
@@ -87,7 +84,6 @@ const LiteMeal = () => {
   return (
     <div className="min-h-screen bg-[#faf7f2] px-5 py-8 pb-40">
 
-      {/* TOAST */}
       {error && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
           <div className="bg-white/90 backdrop-blur-md border border-red-200 text-red-600 px-5 py-3 rounded-full shadow-xl text-sm font-medium">
@@ -98,7 +94,6 @@ const LiteMeal = () => {
 
       <div className="max-w-2xl mx-auto">
 
-        {/* BACK */}
         <button
           onClick={() => navigate(-1)}
           className="mb-6 text-sm text-gray-500"
@@ -106,7 +101,6 @@ const LiteMeal = () => {
           ← Back
         </button>
 
-        {/* TITLE */}
         <h1 className="text-3xl font-semibold text-center mb-2">
           Bite Affair Lite Box
         </h1>
@@ -115,7 +109,7 @@ const LiteMeal = () => {
           ₹300 per person • Starting ₹4500
         </p>
 
-        {/* ✅ GUEST SELECTOR AT TOP (CLIENT POINT 2 & 4) */}
+        {/* GUEST */}
         <div className="mb-10">
           <h2 className="text-sm text-gray-500 mb-3 text-center">
             Number of Guests
@@ -159,9 +153,8 @@ const LiteMeal = () => {
               <h2 className="font-medium capitalize mb-3 text-base flex justify-between">
                 <span>Select {key}</span>
 
-                {/* ✅ BIGGER KG TEXT (CLIENT POINT 3) */}
                 {(key !== "rice" && key !== "dessert") && (
-                  <span className="text-base font-semibold text-orange-600">
+                  <span className="text-lg font-bold text-orange-600">
                     {quantity}kg
                   </span>
                 )}
@@ -219,17 +212,25 @@ const LiteMeal = () => {
             onChange={(e) => setAddress(e.target.value)}
           />
 
-          <input
-            type="date"
-            className="w-full border border-gray-200 p-4 rounded-xl bg-white"
-            onChange={(e) => setDate(e.target.value)}
-          />
+          {/* ✅ DATE LABEL */}
+          <div>
+            <p className="text-sm text-gray-500 mb-2">Delivery Date</p>
+            <input
+              type="date"
+              className="w-full border border-gray-200 p-4 rounded-xl bg-white"
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
 
-          <input
-            type="time"
-            className="w-full border border-gray-200 p-4 rounded-xl bg-white"
-            onChange={(e) => setTime(e.target.value)}
-          />
+          {/* ✅ TIME LABEL */}
+          <div>
+            <p className="text-sm text-gray-500 mb-2">Delivery Time</p>
+            <input
+              type="time"
+              className="w-full border border-gray-200 p-4 rounded-xl bg-white"
+              onChange={(e) => setTime(e.target.value)}
+            />
+          </div>
 
         </div>
 
@@ -239,7 +240,6 @@ const LiteMeal = () => {
 
       </div>
 
-      {/* CTA */}
       <div className="fixed bottom-20 left-0 right-0 px-5">
         <button
           onClick={handleOrder}
