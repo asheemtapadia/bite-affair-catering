@@ -163,39 +163,49 @@ Please confirm availability.`
           );
         })}
 
-        {/* ✅ PAX PILLS (REPLACED DROPDOWN) */}
-        <div className="mb-6">
-          <h2 className="font-semibold mb-2">Number of Guests</h2>
+        {/* ✅ PREMIUM GUEST SELECTOR */}
+        <div className="mb-8">
+          <h2 className="font-semibold mb-3 text-lg">Number of Guests</h2>
 
-          <div className="flex flex-wrap gap-2">
-            {[15, 20, 25, 30, 40, 50].map((p) => (
+          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+
+            {[15, 20, 25, 30, 40, 50].map((p, i) => (
               <button
                 key={p}
                 onClick={() => setPax(p)}
-                className={`px-4 py-2 rounded-full border text-sm transition
-                ${
-                  pax === p
-                    ? "bg-orange-100 text-orange-700 border-orange-300"
-                    : "bg-white border-gray-300 text-gray-700"
-                }`}
+                className={`w-full flex justify-between items-center px-4 py-4 text-left transition
+                ${i !== 5 ? "border-b border-gray-100" : ""}
+                ${pax === p ? "bg-orange-50" : "bg-white"}`}
               >
-                {p}
+                <span className="text-base text-gray-800">
+                  {p} Guests
+                </span>
+
+                <div className={`w-5 h-5 rounded-full border flex items-center justify-center
+                  ${pax === p ? "border-orange-500" : "border-gray-300"}`}
+                >
+                  {pax === p && (
+                    <div className="w-2.5 h-2.5 bg-orange-500 rounded-full" />
+                  )}
+                </div>
               </button>
             ))}
+
           </div>
         </div>
 
-        <div className="space-y-4 mb-6">
+        {/* FORM */}
+        <div className="space-y-6 mb-10">
 
           <input
             placeholder="Name"
-            className="w-full border p-3 rounded-lg bg-white"
+            className="w-full border border-gray-200 p-4 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-orange-200"
             onChange={(e) => setName(e.target.value)}
           />
 
           <input
             placeholder="Address"
-            className="w-full border p-3 rounded-lg bg-white"
+            className="w-full border border-gray-200 p-4 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-orange-200"
             onChange={(e) => setAddress(e.target.value)}
           />
 
@@ -203,7 +213,7 @@ Please confirm availability.`
             <p className="text-sm mb-1">Delivery Date</p>
             <input
               type="date"
-              className="w-full border p-3 rounded-lg bg-white"
+              className="w-full border border-gray-200 p-4 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-orange-200"
               onChange={(e) => setDate(e.target.value)}
             />
           </div>
@@ -212,7 +222,7 @@ Please confirm availability.`
             <p className="text-sm mb-1">Delivery Time</p>
             <input
               type="time"
-              className="w-full border p-3 rounded-lg bg-white"
+              className="w-full border border-gray-200 p-4 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-orange-200"
               onChange={(e) => setTime(e.target.value)}
             />
           </div>
@@ -225,7 +235,7 @@ Please confirm availability.`
 
       </div>
 
-      {/* ✅ ERROR UI (REPLACED ALERT) */}
+      {/* ERROR */}
       {error && (
         <div className="fixed bottom-24 left-4 right-4 bg-red-500 text-white p-3 rounded-xl text-center shadow-lg">
           {error}
