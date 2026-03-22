@@ -50,6 +50,7 @@ const LiteMeal = () => {
 
     if (!name || !address || !date || !time) {
       setError("Please fill all details");
+      setTimeout(() => setError(""), 2500);
       return;
     }
 
@@ -82,51 +83,63 @@ Please confirm availability.`
   };
 
   return (
-    <div className="min-h-screen bg-[#faf7f2] px-4 py-6 pb-28">
+    <div className="min-h-screen bg-[#faf7f2] px-5 py-8 pb-32">
+
+      {/* PREMIUM TOAST */}
+      {error && (
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
+          <div className="bg-white/90 backdrop-blur-md border border-red-200 text-red-600 px-5 py-3 rounded-full shadow-xl text-sm font-medium">
+            {error}
+          </div>
+        </div>
+      )}
 
       <div className="max-w-2xl mx-auto">
 
+        {/* BACK */}
         <button
           onClick={() => navigate(-1)}
-          className="mb-4 text-sm text-gray-600"
+          className="mb-6 text-sm text-gray-500"
         >
           ← Back
         </button>
 
-        <h1 className="text-3xl font-bold text-center mb-2">
+        {/* TITLE */}
+        <h1 className="text-3xl font-semibold text-center mb-3 tracking-tight">
           Bite Affair Lite Box
         </h1>
 
-        <p className="text-center text-sm text-gray-500 mb-6">
+        <p className="text-center text-sm text-gray-500 mb-10">
           ₹300 per person • Starting ₹4500
         </p>
 
+        {/* MENU */}
         {Object.entries(menu).map(([key, value]) => {
 
           const items = value.items;
 
           return (
-            <div key={key} className="mb-6">
+            <div key={key} className="mb-10">
 
-              <div className="relative mb-3">
+              <div className="relative mb-4">
                 <img
                   src={value.img}
                   alt={key}
-                  className="w-full h-28 object-cover rounded-xl"
+                  className="w-full h-32 object-cover rounded-2xl"
                 />
-                <div className="absolute inset-0 bg-black/30 rounded-xl" />
+                <div className="absolute inset-0 bg-black/25 rounded-2xl" />
               </div>
 
-              <h2 className="font-semibold capitalize mb-2 text-base flex justify-between">
+              <h2 className="font-medium capitalize mb-3 text-base flex justify-between">
                 <span>Select {key}</span>
                 {(key !== "rice" && key !== "dessert") && (
-                  <span className="text-sm text-orange-600">
+                  <span className="text-sm text-orange-500">
                     {quantity}kg
                   </span>
                 )}
               </h2>
 
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-3">
                 {items.map((item) => {
 
                   const selected =
@@ -146,11 +159,11 @@ Please confirm availability.`
                         if (key === "rice") setRice(item);
                         if (key === "dessert") setDessert(item);
                       }}
-                      className={`px-3 py-2 rounded-full text-sm border transition
+                      className={`px-4 py-2 rounded-full text-sm border transition-all duration-200
                       ${
                         selected
-                          ? "bg-orange-100 text-orange-700 border-orange-300"
-                          : "bg-white border-gray-300 text-gray-700"
+                          ? "bg-orange-100 text-orange-700 border-orange-300 shadow-sm"
+                          : "bg-white border-gray-200 text-gray-700 hover:border-orange-200"
                       }`}
                     >
                       {item}
@@ -163,39 +176,30 @@ Please confirm availability.`
           );
         })}
 
-        {/* ✅ PREMIUM GUEST SELECTOR */}
-        <div className="mb-8">
-          <h2 className="font-semibold mb-3 text-lg">Number of Guests</h2>
+        {/* GUEST SELECTOR (PREMIUM) */}
+        <div className="mb-12">
+          <h2 className="font-medium mb-4">Number of Guests</h2>
 
-          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-
-            {[15, 20, 25, 30, 40, 50].map((p, i) => (
+          <div className="flex flex-wrap gap-3">
+            {[15, 20, 25, 30, 40, 50].map((p) => (
               <button
                 key={p}
                 onClick={() => setPax(p)}
-                className={`w-full flex justify-between items-center px-4 py-4 text-left transition
-                ${i !== 5 ? "border-b border-gray-100" : ""}
-                ${pax === p ? "bg-orange-50" : "bg-white"}`}
+                className={`px-5 py-2 rounded-full border text-sm transition-all
+                ${
+                  pax === p
+                    ? "bg-orange-500 text-white border-orange-500 shadow-md"
+                    : "bg-white border-gray-200 text-gray-600"
+                }`}
               >
-                <span className="text-base text-gray-800">
-                  {p} Guests
-                </span>
-
-                <div className={`w-5 h-5 rounded-full border flex items-center justify-center
-                  ${pax === p ? "border-orange-500" : "border-gray-300"}`}
-                >
-                  {pax === p && (
-                    <div className="w-2.5 h-2.5 bg-orange-500 rounded-full" />
-                  )}
-                </div>
+                {p}
               </button>
             ))}
-
           </div>
         </div>
 
         {/* FORM */}
-        <div className="space-y-6 mb-10">
+        <div className="space-y-7 mb-12">
 
           <input
             placeholder="Name"
@@ -210,42 +214,36 @@ Please confirm availability.`
           />
 
           <div>
-            <p className="text-sm mb-1">Delivery Date</p>
+            <p className="text-sm mb-2 text-gray-500">Delivery Date</p>
             <input
               type="date"
-              className="w-full border border-gray-200 p-4 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-orange-200"
+              className="w-full border border-gray-200 p-4 rounded-xl bg-white"
               onChange={(e) => setDate(e.target.value)}
             />
           </div>
 
           <div>
-            <p className="text-sm mb-1">Delivery Time</p>
+            <p className="text-sm mb-2 text-gray-500">Delivery Time</p>
             <input
               type="time"
-              className="w-full border border-gray-200 p-4 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-orange-200"
+              className="w-full border border-gray-200 p-4 rounded-xl bg-white"
               onChange={(e) => setTime(e.target.value)}
             />
           </div>
 
         </div>
 
-        <div className="mb-4 text-lg font-semibold">
+        <div className="mb-6 text-xl font-semibold">
           Total: ₹{total}
         </div>
 
       </div>
 
-      {/* ERROR */}
-      {error && (
-        <div className="fixed bottom-24 left-4 right-4 bg-red-500 text-white p-3 rounded-xl text-center shadow-lg">
-          {error}
-        </div>
-      )}
-
-      <div className="fixed bottom-16 left-0 right-0 px-4">
+      {/* CTA */}
+      <div className="fixed bottom-20 left-0 right-0 px-5">
         <button
           onClick={handleOrder}
-          className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold shadow-lg active:scale-[0.98] transition"
+          className="w-full bg-orange-500 text-white py-4 rounded-2xl font-medium shadow-lg active:scale-[0.98] transition"
         >
           Order on WhatsApp
         </button>
