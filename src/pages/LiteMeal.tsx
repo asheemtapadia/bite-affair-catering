@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const LiteMeal = () => {
 
   const navigate = useNavigate();
+
+  // ✅ SCROLL TO TOP FIX
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const menu = {
     dal: {
@@ -44,12 +49,14 @@ const LiteMeal = () => {
   const [error, setError] = useState("");
 
   const total = pax * 300;
+
+  // ✅ QUANTITY AUTO UPDATE (CLIENT POINT 4)
   const quantity = (pax * 0.1).toFixed(1);
 
   const handleOrder = () => {
 
     if (!name || !address || !date || !time) {
-      setError("Please fill all details");
+      setError("Complete all details to proceed");
       setTimeout(() => setError(""), 2500);
       return;
     }
@@ -71,21 +78,16 @@ const LiteMeal = () => {
 🍚 Rice: ${rice}
 🍰 Dessert: ${dessert}
 
-🥖 Bread: Lachha Paratha & Tandoori Roti
-🥗 Raita & Salad: Included
-
-💰 Total: ₹${total}
-
-Please confirm availability.`
+💰 Total: ₹${total}`
     );
 
     window.open(`https://wa.me/919211570030?text=${text}`, "_blank");
   };
 
   return (
-    <div className="min-h-screen bg-[#faf7f2] px-5 py-8 pb-32">
+    <div className="min-h-screen bg-[#faf7f2] px-5 py-8 pb-40">
 
-      {/* PREMIUM TOAST */}
+      {/* TOAST */}
       {error && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
           <div className="bg-white/90 backdrop-blur-md border border-red-200 text-red-600 px-5 py-3 rounded-full shadow-xl text-sm font-medium">
@@ -105,13 +107,37 @@ Please confirm availability.`
         </button>
 
         {/* TITLE */}
-        <h1 className="text-3xl font-semibold text-center mb-3 tracking-tight">
+        <h1 className="text-3xl font-semibold text-center mb-2">
           Bite Affair Lite Box
         </h1>
 
-        <p className="text-center text-sm text-gray-500 mb-10">
+        <p className="text-center text-sm text-gray-500 mb-6">
           ₹300 per person • Starting ₹4500
         </p>
+
+        {/* ✅ GUEST SELECTOR AT TOP (CLIENT POINT 2 & 4) */}
+        <div className="mb-10">
+          <h2 className="text-sm text-gray-500 mb-3 text-center">
+            Number of Guests
+          </h2>
+
+          <div className="flex flex-wrap justify-center gap-3">
+            {[15, 20, 25, 30, 40, 50].map((p) => (
+              <button
+                key={p}
+                onClick={() => setPax(p)}
+                className={`px-5 py-2 rounded-full border text-sm transition-all duration-200
+                ${
+                  pax === p
+                    ? "bg-orange-500 text-white border-orange-500 shadow-lg scale-105"
+                    : "bg-white border-gray-200 text-gray-600"
+                }`}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+        </div>
 
         {/* MENU */}
         {Object.entries(menu).map(([key, value]) => {
@@ -125,15 +151,17 @@ Please confirm availability.`
                 <img
                   src={value.img}
                   alt={key}
-                  className="w-full h-32 object-cover rounded-2xl"
+                  className="w-full h-32 object-cover rounded-2xl shadow-sm"
                 />
                 <div className="absolute inset-0 bg-black/25 rounded-2xl" />
               </div>
 
               <h2 className="font-medium capitalize mb-3 text-base flex justify-between">
                 <span>Select {key}</span>
+
+                {/* ✅ BIGGER KG TEXT (CLIENT POINT 3) */}
                 {(key !== "rice" && key !== "dessert") && (
-                  <span className="text-sm text-orange-500">
+                  <span className="text-base font-semibold text-orange-600">
                     {quantity}kg
                   </span>
                 )}
@@ -163,7 +191,7 @@ Please confirm availability.`
                       ${
                         selected
                           ? "bg-orange-100 text-orange-700 border-orange-300 shadow-sm"
-                          : "bg-white border-gray-200 text-gray-700 hover:border-orange-200"
+                          : "bg-white border-gray-200 text-gray-700"
                       }`}
                     >
                       {item}
@@ -176,60 +204,32 @@ Please confirm availability.`
           );
         })}
 
-        {/* GUEST SELECTOR (PREMIUM) */}
-        <div className="mb-12">
-          <h2 className="font-medium mb-4">Number of Guests</h2>
-
-          <div className="flex flex-wrap gap-3">
-            {[15, 20, 25, 30, 40, 50].map((p) => (
-              <button
-                key={p}
-                onClick={() => setPax(p)}
-                className={`px-5 py-2 rounded-full border text-sm transition-all
-                ${
-                  pax === p
-                    ? "bg-orange-500 text-white border-orange-500 shadow-md"
-                    : "bg-white border-gray-200 text-gray-600"
-                }`}
-              >
-                {p}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* FORM */}
         <div className="space-y-7 mb-12">
 
           <input
             placeholder="Name"
-            className="w-full border border-gray-200 p-4 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-orange-200"
+            className="w-full border border-gray-200 p-4 rounded-xl bg-white shadow-sm focus:shadow-md"
             onChange={(e) => setName(e.target.value)}
           />
 
           <input
             placeholder="Address"
-            className="w-full border border-gray-200 p-4 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-orange-200"
+            className="w-full border border-gray-200 p-4 rounded-xl bg-white shadow-sm focus:shadow-md"
             onChange={(e) => setAddress(e.target.value)}
           />
 
-          <div>
-            <p className="text-sm mb-2 text-gray-500">Delivery Date</p>
-            <input
-              type="date"
-              className="w-full border border-gray-200 p-4 rounded-xl bg-white"
-              onChange={(e) => setDate(e.target.value)}
-            />
-          </div>
+          <input
+            type="date"
+            className="w-full border border-gray-200 p-4 rounded-xl bg-white"
+            onChange={(e) => setDate(e.target.value)}
+          />
 
-          <div>
-            <p className="text-sm mb-2 text-gray-500">Delivery Time</p>
-            <input
-              type="time"
-              className="w-full border border-gray-200 p-4 rounded-xl bg-white"
-              onChange={(e) => setTime(e.target.value)}
-            />
-          </div>
+          <input
+            type="time"
+            className="w-full border border-gray-200 p-4 rounded-xl bg-white"
+            onChange={(e) => setTime(e.target.value)}
+          />
 
         </div>
 
