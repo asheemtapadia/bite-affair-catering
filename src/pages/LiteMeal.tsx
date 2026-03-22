@@ -5,7 +5,6 @@ const LiteMeal = () => {
 
   const navigate = useNavigate();
 
-  // MENU DATA + IMAGE PATHS (✅ FIXED PATHS)
   const menu = {
     dal: {
       img: "/images/lite-meal/dal.jpg",
@@ -29,7 +28,6 @@ const LiteMeal = () => {
     }
   };
 
-  // DEFAULT SELECTED
   const [dal, setDal] = useState("Dal Tadka");
   const [paneer, setPaneer] = useState("Paneer Butter Masala");
   const [veg, setVeg] = useState("Mix Veg");
@@ -43,14 +41,10 @@ const LiteMeal = () => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
-  // ✅ PRICING UPDATED
   const total = pax * 300;
-
-  // ✅ QUANTITY LOGIC (dynamic)
   const quantity = (pax * 0.1).toFixed(1);
 
   const handleOrder = () => {
-
     if (!name || !address || !date || !time) {
       alert("Please fill all details");
       return;
@@ -89,21 +83,20 @@ Please confirm availability.`
 
       <div className="max-w-2xl mx-auto">
 
-        {/* 🔙 BACK BUTTON */}
+        {/* BACK */}
         <button
           onClick={() => navigate(-1)}
-          className="mb-4 text-sm text-gray-600"
+          className="mb-4 text-sm text-gray-500 hover:text-gray-700"
         >
           ← Back
         </button>
 
         {/* TITLE */}
-        <h1 className="text-3xl font-bold text-center mb-2">
+        <h1 className="text-3xl font-bold text-center mb-2 tracking-tight">
           Bite Affair Lite Box
         </h1>
 
-        {/* SUBTEXT */}
-        <p className="text-center text-sm text-gray-500 mb-6">
+        <p className="text-center text-sm text-gray-500 mb-8">
           ₹300 per person • Starting ₹4500
         </p>
 
@@ -113,23 +106,23 @@ Please confirm availability.`
           const items = value.items;
 
           return (
-            <div key={key} className="mb-6">
+            <div key={key} className="mb-8">
 
               {/* IMAGE */}
-              <div className="relative mb-3">
+              <div className="relative mb-4">
                 <img
                   src={value.img}
                   alt={key}
-                  className="w-full h-28 object-cover rounded-xl"
+                  className="w-full h-28 object-cover rounded-xl shadow-sm"
                 />
-                <div className="absolute inset-0 bg-black/20 rounded-xl" />
+                <div className="absolute inset-0 bg-black/10 rounded-xl" />
               </div>
 
-              {/* TITLE + QUANTITY */}
-              <h2 className="font-semibold capitalize mb-2 text-base flex justify-between">
+              {/* TITLE */}
+              <h2 className="font-semibold capitalize mb-3 text-base flex justify-between">
                 <span>Select {key}</span>
                 {(key !== "rice" && key !== "dessert") && (
-                  <span className="text-sm text-orange-600">
+                  <span className="text-sm text-orange-600 font-medium">
                     {quantity}kg
                   </span>
                 )}
@@ -156,11 +149,11 @@ Please confirm availability.`
                         if (key === "rice") setRice(item);
                         if (key === "dessert") setDessert(item);
                       }}
-                      className={`px-3 py-2 rounded-full text-sm border transition
+                      className={`px-4 py-2 rounded-full text-sm border transition-all duration-200
                       ${
                         selected
-                          ? "bg-orange-100 text-orange-700 border-orange-300"
-                          : "bg-white border-gray-300 text-gray-700"
+                          ? "bg-orange-50 text-orange-700 border-orange-400 shadow-sm"
+                          : "bg-white border-gray-300 text-gray-700 hover:border-gray-400"
                       }`}
                     >
                       {item}
@@ -174,12 +167,12 @@ Please confirm availability.`
         })}
 
         {/* PAX */}
-        <div className="mb-6">
+        <div className="mb-8">
           <h2 className="font-semibold mb-2">Number of Guests</h2>
           <select
             value={pax}
             onChange={(e) => setPax(Number(e.target.value))}
-            className="border p-3 rounded-lg w-full bg-white"
+            className="border p-3 rounded-lg w-full bg-white shadow-sm"
           >
             {[15, 20, 25, 30, 40, 50].map((p) => (
               <option key={p} value={p}>{p}</option>
@@ -192,13 +185,13 @@ Please confirm availability.`
 
           <input
             placeholder="Name"
-            className="w-full border p-3 rounded-lg bg-white"
+            className="w-full border p-3 rounded-lg bg-white shadow-sm"
             onChange={(e) => setName(e.target.value)}
           />
 
           <input
             placeholder="Address"
-            className="w-full border p-3 rounded-lg bg-white"
+            className="w-full border p-3 rounded-lg bg-white shadow-sm"
             onChange={(e) => setAddress(e.target.value)}
           />
 
@@ -206,7 +199,7 @@ Please confirm availability.`
             <p className="text-sm mb-1">Delivery Date</p>
             <input
               type="date"
-              className="w-full border p-3 rounded-lg bg-white"
+              className="w-full border p-3 rounded-lg bg-white shadow-sm"
               onChange={(e) => setDate(e.target.value)}
             />
           </div>
@@ -215,7 +208,7 @@ Please confirm availability.`
             <p className="text-sm mb-1">Delivery Time</p>
             <input
               type="time"
-              className="w-full border p-3 rounded-lg bg-white"
+              className="w-full border p-3 rounded-lg bg-white shadow-sm"
               onChange={(e) => setTime(e.target.value)}
             />
           </div>
@@ -233,7 +226,7 @@ Please confirm availability.`
       <div className="fixed bottom-16 left-0 right-0 px-4">
         <button
           onClick={handleOrder}
-          className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold shadow-md"
+          className="w-full bg-orange-500 text-white py-4 rounded-xl font-semibold shadow-md active:scale-[0.98] transition"
         >
           Order on WhatsApp
         </button>
