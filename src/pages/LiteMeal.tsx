@@ -5,7 +5,7 @@ const LiteMeal = () => {
 
   const navigate = useNavigate();
 
-  // MENU DATA + IMAGE PATHS (replace later)
+  // MENU DATA + IMAGE PATHS
   const menu = {
     dal: {
       img: "/images/dal.jpg",
@@ -43,7 +43,8 @@ const LiteMeal = () => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
-  const total = pax * 250;
+  // ✅ UPDATED PRICING
+  const total = pax * 300;
 
   const quantity = (pax * 0.1).toFixed(1);
 
@@ -87,7 +88,7 @@ Please confirm availability.`
 
       <div className="max-w-2xl mx-auto">
 
-        {/* 🔙 BACK BUTTON */}
+        {/* BACK */}
         <button
           onClick={() => navigate(-1)}
           className="mb-4 text-sm text-gray-600"
@@ -96,9 +97,14 @@ Please confirm availability.`
         </button>
 
         {/* TITLE */}
-        <h1 className="text-3xl font-bold text-center mb-6">
+        <h1 className="text-3xl font-bold text-center mb-2">
           Bite Affair Lite Box
         </h1>
+
+        {/* SMALL INFO */}
+        <p className="text-center text-sm text-gray-500 mb-6">
+          ₹300 per person • Starting ₹4500
+        </p>
 
         {/* CATEGORY */}
         {Object.entries(menu).map(([key, value]) => {
@@ -108,11 +114,15 @@ Please confirm availability.`
           return (
             <div key={key} className="mb-6">
 
-              <img
-                src={value.img}
-                alt={key}
-                className="w-full h-28 object-cover rounded-xl mb-3"
-              />
+              {/* ✅ IMAGE WITH OVERLAY */}
+              <div className="relative mb-3">
+                <img
+                  src={value.img}
+                  alt={key}
+                  className="w-full h-28 object-cover rounded-xl"
+                />
+                <div className="absolute inset-0 bg-black/30 rounded-xl" />
+              </div>
 
               <h2 className="font-semibold capitalize mb-2 text-base flex justify-between">
                 <span>Select {key}</span>
