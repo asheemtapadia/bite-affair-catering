@@ -48,7 +48,18 @@ const LiteMeal = () => {
   const [error, setError] = useState("");
 
   const total = pax * 300;
-  const quantity = (pax * 0.1).toFixed(1);
+
+  // ✅ CORE LOGIC (CLIENT BASED)
+
+  const quantity = (pax * 0.1).toFixed(1); // kg items
+
+  const riceQty =
+    rice === "Plain Rice" || rice === "Jeera Rice"
+      ? ((pax / 15) * 2).toFixed(1)
+      : ((pax / 15) * 1).toFixed(1);
+
+  const dessertQty = pax * 2; // 2 pcs per person
+  const rotiQty = pax; // 1 per person
 
   const handleOrder = () => {
 
@@ -72,10 +83,10 @@ const LiteMeal = () => {
 🍲 Dal: ${dal} (${quantity} kg)
 🧀 Paneer: ${paneer} (${quantity} kg)
 🥦 Veg: ${veg} (${quantity} kg)
-🍚 Rice: ${rice} (${rice === "Plain Rice" || rice === "Jeera Rice" ? "2 ltr" : "1 ltr"})
-🍰 Dessert: ${dessert} (${pax * 2} pcs)
+🍚 Rice: ${rice} (${riceQty} ltr)
+🍰 Dessert: ${dessert} (${dessertQty} pcs)
 
-🥖 Breads: Lachha Paratha & Tandoori Roti (${pax} pcs)
+🥖 Breads: Lachha Paratha & Tandoori Roti (${rotiQty} pcs)
 🥗 Raita & Salad: Included
 
 💰 Total: ₹${total}`
@@ -157,8 +168,8 @@ const LiteMeal = () => {
                 <span>Select {key}</span>
 
                 <span className="text-lg font-bold text-orange-600">
-                  {key === "rice" && (rice === "Plain Rice" || rice === "Jeera Rice" ? "2 ltr" : "1 ltr")}
-                  {key === "dessert" && `${pax * 2} pcs`}
+                  {key === "rice" && `${riceQty} ltr`}
+                  {key === "dessert" && `${dessertQty} pcs`}
                   {(key !== "rice" && key !== "dessert") && `${quantity} kg`}
                 </span>
               </h2>
@@ -200,12 +211,12 @@ const LiteMeal = () => {
           );
         })}
 
-        {/* ROTI (INCLUDED) */}
+        {/* ROTI */}
         <div className="mb-10">
           <h2 className="font-medium mb-3 text-base flex justify-between">
             <span>Breads</span>
             <span className="text-lg font-bold text-orange-600">
-              {pax} pcs
+              {rotiQty} pcs
             </span>
           </h2>
 
@@ -215,6 +226,22 @@ const LiteMeal = () => {
             </div>
             <div className="px-4 py-2 rounded-full text-sm border bg-white border-gray-200 text-gray-700">
               Tandoori Roti
+            </div>
+          </div>
+        </div>
+
+        {/* COMPLIMENTARY */}
+        <div className="mb-10">
+          <h2 className="font-medium mb-3 text-base">
+            Complimentary
+          </h2>
+
+          <div className="flex gap-3">
+            <div className="px-4 py-2 rounded-full text-sm border bg-white border-gray-200 text-gray-700">
+              Raita
+            </div>
+            <div className="px-4 py-2 rounded-full text-sm border bg-white border-gray-200 text-gray-700">
+              Salad
             </div>
           </div>
         </div>
