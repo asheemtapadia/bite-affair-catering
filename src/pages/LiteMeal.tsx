@@ -3,73 +3,73 @@ import { useNavigate } from "react-router-dom";
 
 const LiteMeal = () => {
 
-  const navigate = useNavigate();
+const navigate = useNavigate();
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, []);
+useEffect(() => {
+window.scrollTo({ top: 0, behavior: "instant" });
+}, []);
 
-  const menu = {
-    dal: {
-      img: "/images/lite-meal/dal.jpg",
-      items: ["Dal Tadka", "Dal Makhani", "Dal Panchmel"]
-    },
-    paneer: {
-      img: "/images/lite-meal/paneer.jpg",
-      items: ["Paneer Butter Masala", "Paneer Lababdar", "Matar Paneer", "Shahi Paneer"]
-    },
-    veg: {
-      img: "/images/lite-meal/veg.jpg",
-      items: ["Mix Veg", "Tawa Veg", "Kadhai Veg", "Aloo Gobhi"]
-    },
-    rice: {
-      img: "/images/lite-meal/rice.jpg",
-      items: ["Plain Rice", "Jeera Rice", "Peas Pulao", "Veg Fried Rice"]
-    },
-    dessert: {
-      img: "/images/lite-meal/dessert.jpg",
-      items: ["Gulab Jamun", "Rasgulla"]
-    }
-  };
+const menu = {
+dal: {
+img: "/images/lite-meal/dal.jpg",
+items: ["Dal Tadka", "Dal Makhani", "Dal Panchmel"]
+},
+paneer: {
+img: "/images/lite-meal/paneer.jpg",
+items: ["Paneer Butter Masala", "Paneer Lababdar", "Matar Paneer", "Shahi Paneer"]
+},
+veg: {
+img: "/images/lite-meal/veg.jpg",
+items: ["Mix Veg", "Tawa Veg", "Kadhai Veg", "Aloo Gobhi"]
+},
+rice: {
+img: "/images/lite-meal/rice.jpg",
+items: ["Plain Rice", "Jeera Rice", "Peas Pulao", "Veg Fried Rice"]
+},
+dessert: {
+img: "/images/lite-meal/dessert.jpg",
+items: ["Gulab Jamun", "Rasgulla"]
+}
+};
 
-  const [dal, setDal] = useState("Dal Tadka");
-  const [paneer, setPaneer] = useState("Paneer Butter Masala");
-  const [veg, setVeg] = useState("Mix Veg");
-  const [rice, setRice] = useState("Plain Rice");
-  const [dessert, setDessert] = useState("Gulab Jamun");
-  const [bread, setBread] = useState("Lachha Paratha");
+const [dal, setDal] = useState("Dal Tadka");
+const [paneer, setPaneer] = useState("Paneer Butter Masala");
+const [veg, setVeg] = useState("Mix Veg");
+const [rice, setRice] = useState("Plain Rice");
+const [dessert, setDessert] = useState("Gulab Jamun");
+const [bread, setBread] = useState("Lachha Paratha");
 
-  const [pax, setPax] = useState(15);
+const [pax, setPax] = useState(15);
 
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+const [name, setName] = useState("");
+const [address, setAddress] = useState("");
+const [date, setDate] = useState("");
+const [time, setTime] = useState("");
 
-  const [error, setError] = useState("");
+const [error, setError] = useState("");
 
-  const total = pax * 300;
+const total = pax * 300;
 
-  const quantity = (pax * 0.1).toFixed(1);
+const quantity = (pax * 0.1).toFixed(1);
 
-  const riceQty =
-    rice === "Plain Rice" || rice === "Jeera Rice"
-      ? ((pax / 15) * 2).toFixed(1)
-      : ((pax / 15) * 1).toFixed(1);
+const riceQty =
+rice === "Plain Rice" || rice === "Jeera Rice"
+? ((pax / 15) * 2).toFixed(1)
+: ((pax / 15) * 1).toFixed(1);
 
-  const dessertQty = pax * 2;
-  const rotiQty = pax;
+const dessertQty = pax * 2;
+const rotiQty = pax;
 
-  const handleOrder = () => {
+const handleOrder = () => {
 
-    if (!name || !address || !date || !time) {
-      setError("Complete all details to proceed");
-      setTimeout(() => setError(""), 2500);
-      return;
-    }
+if (!name || !address || !date || !time) {  
+  setError("Complete all details to proceed");  
+  setTimeout(() => setError(""), 2500);  
+  return;  
+}  
 
-    const text = encodeURIComponent(
-`*Bite Affair Lite Box Order*
+const text = encodeURIComponent(
+`Bite Affair Lite Box Order
 
 👤 Name: ${name}
 📍 Address: ${address}
@@ -89,228 +89,232 @@ const LiteMeal = () => {
 🥗 Raita & Salad: Included
 
 💰 Total: ₹${total}`
-    );
+);
 
-    window.open(`https://wa.me/919211570030?text=${text}`, "_blank");
-  };
+window.open(`https://wa.me/919211570030?text=${text}`, "_blank");
 
-  return (
-    <div className="min-h-screen bg-[#faf7f2] pb-40">
+};
 
-      {error && (
-        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
-          <div className="bg-white/90 backdrop-blur-md border border-red-200 text-red-600 px-5 py-3 rounded-full shadow-xl text-sm font-medium">
-            {error}
-          </div>
-        </div>
-      )}
+return (
+<div className="min-h-screen bg-[#faf7f2] pb-40">
 
-      <div className="max-w-2xl mx-auto">
+{error && (  
+  <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">  
+    <div className="bg-white/90 backdrop-blur-md border border-red-200 text-red-600 px-5 py-3 rounded-full shadow-xl text-sm font-medium">  
+      {error}  
+    </div>  
+  </div>  
+)}  
 
-        <button
-          onClick={() => navigate(-1)}
-          className="mt-6 ml-4 text-sm text-gray-500"
-        >
-          ← Back
-        </button>
+{/* 🔥 FULL BLEED HEADER (NO BOX FEEL) */}
+<div className="relative w-full h-[300px] overflow-hidden">
 
-        {/* ✅ PREMIUM HEADER */}
-        <div className="relative h-[260px] w-full overflow-hidden rounded-b-[40px] mt-4">
+  <img
+    src="/images/lite-meal/litebox-hero.jpg"
+    alt="Lite Box"
+    className="absolute inset-0 w-full h-full object-cover scale-105"
+  />
 
+  {/* deep luxury overlay */}
+  <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70" />
+
+  {/* content */}
+  <div className="relative z-10 flex flex-col justify-center items-center h-full text-center px-6">
+
+    <h1 className="text-3xl md:text-4xl font-semibold text-white tracking-tight drop-shadow-xl">
+      Bite Affair Lite Box
+    </h1>
+
+    <p className="text-sm md:text-base text-white/85 mt-2">
+      ₹300 per person • Starting ₹4500
+    </p>
+
+    <div className="w-14 h-[2px] bg-orange-400 my-3 rounded-full opacity-90" />
+
+    <p className="text-xs tracking-[4px] text-orange-300 uppercase">
+      Simplicity is Luxury
+    </p>
+
+  </div>
+
+</div>
+
+<div className="max-w-2xl mx-auto">
+
+  <button  
+    onClick={() => navigate(-1)}  
+    className="mt-6 ml-4 text-sm text-gray-500"  
+  >  
+    ← Back  
+  </button>  
+
+  {/* GUEST */}  
+  <div className="px-5 mt-8 mb-10">  
+    <h2 className="text-sm text-gray-500 mb-3 text-center">  
+      Number of Guests  
+    </h2>  
+
+    <div className="flex flex-wrap justify-center gap-3">  
+      {[15, 20, 25, 30, 40, 50].map((p) => (  
+        <button  
+          key={p}  
+          onClick={() => setPax(p)}  
+          className={`px-5 py-2 rounded-full border text-sm  
+          ${  
+            pax === p  
+              ? "bg-orange-500 text-white border-orange-500"  
+              : "bg-white border-gray-200 text-gray-600"  
+          }`}  
+        >  
+          {p}  
+        </button>  
+      ))}  
+    </div>  
+  </div>  
+
+  {/* MENU */}
+  {Object.entries(menu).map(([key, value]) => {
+
+    const items = value.items;
+
+    return (
+      <div key={key} className="px-5 mb-10">
+
+        <div className="relative mb-4">
           <img
-            src="/images/lite-meal/litebox-hero.jpg"
-            alt="Lite Box"
-            className="w-full h-full object-cover"
+            src={value.img}
+            alt={key}
+            className="w-full h-32 object-cover rounded-2xl"
           />
-
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
-
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
-
-            <h1 className="text-3xl font-semibold text-white drop-shadow">
-              Bite Affair Lite Box
-            </h1>
-
-            <p className="text-sm text-white/80 mt-2">
-              ₹300 per person • Starting ₹4500
-            </p>
-
-            <div className="w-12 h-[2px] bg-orange-400 my-3 rounded-full" />
-
-            <p className="text-xs tracking-[3px] text-orange-300 uppercase">
-              Simplicity is Luxury
-            </p>
-
-          </div>
+          <div className="absolute inset-0 bg-black/10 rounded-2xl" />
         </div>
 
-        {/* GUEST */}
-        <div className="px-5 mt-8 mb-10">
-          <h2 className="text-sm text-gray-500 mb-3 text-center">
-            Number of Guests
-          </h2>
+        <h2 className="font-medium capitalize mb-3 flex justify-between">
+          <span>Select {key}</span>
 
-          <div className="flex flex-wrap justify-center gap-3">
-            {[15, 20, 25, 30, 40, 50].map((p) => (
-              <button
-                key={p}
-                onClick={() => setPax(p)}
-                className={`px-5 py-2 rounded-full border text-sm
-                ${
-                  pax === p
-                    ? "bg-orange-500 text-white border-orange-500"
-                    : "bg-white border-gray-200 text-gray-600"
-                }`}
-              >
-                {p}
-              </button>
-            ))}
-          </div>
-        </div>
+          <span className="text-orange-600 font-bold">
+            {key === "rice" && `${riceQty} ltr`}
+            {key === "dessert" && `${dessertQty} pcs`}
+            {(key !== "rice" && key !== "dessert") && `${quantity} kg`}
+          </span>
+        </h2>
 
-        {/* ✅ MENU (UNCHANGED) */}
-        {Object.entries(menu).map(([key, value]) => {
+        <div className="flex flex-wrap gap-3">
+          {items.map((item) => {
 
-          const items = value.items;
+            const selected =
+              (key === "dal" && dal === item) ||
+              (key === "paneer" && paneer === item) ||
+              (key === "veg" && veg === item) ||
+              (key === "rice" && rice === item) ||
+              (key === "dessert" && dessert === item);
 
-          return (
-            <div key={key} className="px-5 mb-10">
-
-              <div className="relative mb-4">
-                <img
-                  src={value.img}
-                  alt={key}
-                  className="w-full h-32 object-cover rounded-2xl"
-                />
-                <div className="absolute inset-0 bg-black/10 rounded-2xl" />
-              </div>
-
-              <h2 className="font-medium capitalize mb-3 flex justify-between">
-                <span>Select {key}</span>
-
-                <span className="text-orange-600 font-bold">
-                  {key === "rice" && `${riceQty} ltr`}
-                  {key === "dessert" && `${dessertQty} pcs`}
-                  {(key !== "rice" && key !== "dessert") && `${quantity} kg`}
-                </span>
-              </h2>
-
-              <div className="flex flex-wrap gap-3">
-                {items.map((item) => {
-
-                  const selected =
-                    (key === "dal" && dal === item) ||
-                    (key === "paneer" && paneer === item) ||
-                    (key === "veg" && veg === item) ||
-                    (key === "rice" && rice === item) ||
-                    (key === "dessert" && dessert === item);
-
-                  return (
-                    <button
-                      key={item}
-                      onClick={() => {
-                        if (key === "dal") setDal(item);
-                        if (key === "paneer") setPaneer(item);
-                        if (key === "veg") setVeg(item);
-                        if (key === "rice") setRice(item);
-                        if (key === "dessert") setDessert(item);
-                      }}
-                      className={`px-4 py-2 rounded-full text-sm border
-                      ${
-                        selected
-                          ? "bg-orange-100 text-orange-700 border-orange-300"
-                          : "bg-white border-gray-200"
-                      }`}
-                    >
-                      {item}
-                    </button>
-                  );
-                })}
-              </div>
-
-            </div>
-          );
-        })}
-
-        {/* BREAD */}
-        <div className="px-5 mb-10">
-          <h2 className="flex justify-between mb-3">
-            <span>Select Bread</span>
-            <span className="text-orange-600 font-bold">{rotiQty} pcs</span>
-          </h2>
-
-          <div className="flex gap-3">
-            {["Lachha Paratha", "Tandoori Roti"].map((item) => (
+            return (
               <button
                 key={item}
-                onClick={() => setBread(item)}
-                className={`px-4 py-2 rounded-full border
+                onClick={() => {
+                  if (key === "dal") setDal(item);
+                  if (key === "paneer") setPaneer(item);
+                  if (key === "veg") setVeg(item);
+                  if (key === "rice") setRice(item);
+                  if (key === "dessert") setDessert(item);
+                }}
+                className={`px-4 py-2 rounded-full text-sm border  
                 ${
-                  bread === item
-                    ? "bg-orange-100 border-orange-300"
+                  selected
+                    ? "bg-orange-100 text-orange-700 border-orange-300"
                     : "bg-white border-gray-200"
                 }`}
               >
                 {item}
               </button>
-            ))}
-          </div>
-        </div>
-
-        {/* FORM */}
-        <div className="px-5 space-y-6 mb-12">
-
-          <input
-            placeholder="Name"
-            className="w-full border p-4 rounded-xl"
-            onChange={(e) => setName(e.target.value)}
-          />
-
-          <input
-            placeholder="Address"
-            className="w-full border p-4 rounded-xl"
-            onChange={(e) => setAddress(e.target.value)}
-          />
-
-          <div>
-            <p className="text-sm mb-1">Delivery Date</p>
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="w-full border p-4 rounded-xl"
-            />
-          </div>
-
-          <div>
-            <p className="text-sm mb-1">Delivery Time</p>
-            <input
-              type="time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              className="w-full border p-4 rounded-xl"
-            />
-          </div>
-
-        </div>
-
-        <div className="px-5 mb-6 text-xl font-semibold">
-          Total: ₹{total}
+            );
+          })}
         </div>
 
       </div>
+    );
+  })}
 
-      <div className="fixed bottom-20 left-0 right-0 px-5">
+  {/* BREAD */}
+  <div className="px-5 mb-10">
+    <h2 className="flex justify-between mb-3">
+      <span>Select Bread</span>
+      <span className="text-orange-600 font-bold">{rotiQty} pcs</span>
+    </h2>
+
+    <div className="flex gap-3">
+      {["Lachha Paratha", "Tandoori Roti"].map((item) => (
         <button
-          onClick={handleOrder}
-          className="w-full bg-orange-500 text-white py-4 rounded-2xl"
+          key={item}
+          onClick={() => setBread(item)}
+          className={`px-4 py-2 rounded-full border  
+          ${
+            bread === item
+              ? "bg-orange-100 border-orange-300"
+              : "bg-white border-gray-200"
+          }`}
         >
-          Order on WhatsApp
+          {item}
         </button>
-      </div>
-
+      ))}
     </div>
-  );
+  </div>
+
+  {/* FORM */}
+  <div className="px-5 space-y-6 mb-12">
+
+    <input
+      placeholder="Name"
+      className="w-full border p-4 rounded-xl"
+      onChange={(e) => setName(e.target.value)}
+    />
+
+    <input
+      placeholder="Address"
+      className="w-full border p-4 rounded-xl"
+      onChange={(e) => setAddress(e.target.value)}
+    />
+
+    <div>
+      <p className="text-sm mb-1">Delivery Date</p>
+      <input
+        type="date"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        className="w-full border p-4 rounded-xl"
+      />
+    </div>
+
+    <div>
+      <p className="text-sm mb-1">Delivery Time</p>
+      <input
+        type="time"
+        value={time}
+        onChange={(e) => setTime(e.target.value)}
+        className="w-full border p-4 rounded-xl"
+      />
+    </div>
+
+  </div>
+
+  <div className="px-5 mb-6 text-xl font-semibold">
+    Total: ₹{total}
+  </div>
+
+</div>
+
+<div className="fixed bottom-20 left-0 right-0 px-5">
+  <button
+    onClick={handleOrder}
+    className="w-full bg-orange-500 text-white py-4 rounded-2xl"
+  >
+    Order on WhatsApp
+  </button>
+</div>
+
+</div>
+);
 };
 
 export default LiteMeal;
