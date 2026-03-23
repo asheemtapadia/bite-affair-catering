@@ -105,8 +105,8 @@ const LiteMeal = () => {
         </div>
       )}
 
-      {/* HEADER */}
-      <div className="relative w-full h-[300px] overflow-hidden">
+      {/* HEADER (HEIGHT REDUCED) */}
+      <div className="relative w-full h-[240px] md:h-[260px] overflow-hidden">
 
         <img
           src="/images/lite-meal/litebox-hero.jpg"
@@ -144,7 +144,7 @@ const LiteMeal = () => {
           ← Back
         </button>
 
-        {/* ✅ FIXED GUEST SECTION */}
+        {/* GUEST */}
         <div className="px-5 mt-8 mb-10">
           <h2 className="text-sm text-gray-500 mb-4 text-center tracking-wide">
             Number of Guests
@@ -258,6 +258,23 @@ const LiteMeal = () => {
                 {item}
               </button>
             ))}
+          </div>
+        </div>
+
+        {/* ✅ COMPLIMENTARY (NON-CLICKABLE) */}
+        <div className="px-5 mb-10">
+          <h2 className="flex justify-between mb-3">
+            <span>Complimentary</span>
+            <span className="text-green-600 text-sm font-medium">Included</span>
+          </h2>
+
+          <div className="flex gap-3">
+            <div className="px-4 py-2 rounded-full text-sm bg-green-50 text-green-700 border border-green-200">
+              Raita
+            </div>
+            <div className="px-4 py-2 rounded-full text-sm bg-green-50 text-green-700 border border-green-200">
+              Salad
+            </div>
           </div>
         </div>
 
