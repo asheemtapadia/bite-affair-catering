@@ -49,17 +49,15 @@ const LiteMeal = () => {
 
   const total = pax * 300;
 
-  // ✅ CORE LOGIC (CLIENT BASED)
-
-  const quantity = (pax * 0.1).toFixed(1); // kg items
+  const quantity = (pax * 0.1).toFixed(1);
 
   const riceQty =
     rice === "Plain Rice" || rice === "Jeera Rice"
       ? ((pax / 15) * 2).toFixed(1)
       : ((pax / 15) * 1).toFixed(1);
 
-  const dessertQty = pax * 2; // 2 pcs per person
-  const rotiQty = pax; // 1 per person
+  const dessertQty = pax * 2;
+  const rotiQty = pax;
 
   const handleOrder = () => {
 
@@ -96,8 +94,9 @@ const LiteMeal = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf7f2] px-5 py-8 pb-40">
+    <div className="min-h-screen bg-[#faf7f2] pb-40">
 
+      {/* ERROR */}
       {error && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
           <div className="bg-white/90 backdrop-blur-md border border-red-200 text-red-600 px-5 py-3 rounded-full shadow-xl text-sm font-medium">
@@ -106,39 +105,40 @@ const LiteMeal = () => {
         </div>
       )}
 
-      <div className="max-w-2xl mx-auto">
+      {/* 🔥 PREMIUM HEADER */}
+      <div className="px-5 pt-8 pb-10 text-center">
 
         <button
           onClick={() => navigate(-1)}
-          className="mb-6 text-sm text-gray-500"
+          className="mb-6 text-sm text-gray-400"
         >
           ← Back
         </button>
 
-        <h1 className="text-3xl font-semibold text-center mb-2">
+        <h1 className="text-4xl font-serif text-[#1a1a1a] tracking-tight mb-2">
           Bite Affair Lite Box
         </h1>
 
-        <p className="text-center text-sm text-gray-500 mb-6">
+        <p className="text-gray-500 text-sm mb-6">
           ₹300 per person • Starting ₹4500
         </p>
 
-        {/* GUEST */}
-        <div className="mb-10">
-          <h2 className="text-sm text-gray-500 mb-3 text-center">
-            Number of Guests
-          </h2>
+        {/* GUEST SELECTOR */}
+        <div>
+          <p className="text-xs text-gray-400 mb-3 tracking-wide">
+            NUMBER OF GUESTS
+          </p>
 
           <div className="flex flex-wrap justify-center gap-3">
             {[15, 20, 25, 30, 40, 50].map((p) => (
               <button
                 key={p}
                 onClick={() => setPax(p)}
-                className={`px-5 py-2 rounded-full border text-sm transition-all duration-200
+                className={`px-6 py-2 rounded-full text-sm transition-all duration-200
                 ${
                   pax === p
-                    ? "bg-orange-500 text-white border-orange-500 shadow-lg scale-105"
-                    : "bg-white border-gray-200 text-gray-600"
+                    ? "bg-orange-500 text-white shadow-lg scale-105"
+                    : "bg-white border border-gray-200 text-gray-600"
                 }`}
               >
                 {p}
@@ -147,27 +147,34 @@ const LiteMeal = () => {
           </div>
         </div>
 
+      </div>
+
+      <div className="px-5 max-w-2xl mx-auto">
+
         {/* MENU */}
         {Object.entries(menu).map(([key, value]) => {
 
           const items = value.items;
 
           return (
-            <div key={key} className="mb-10">
+            <div key={key} className="mb-12">
 
               <div className="relative mb-4">
                 <img
                   src={value.img}
                   alt={key}
-                  className="w-full h-32 object-cover rounded-2xl shadow-sm"
+                  className="w-full h-32 object-cover rounded-2xl"
                 />
                 <div className="absolute inset-0 bg-black/25 rounded-2xl" />
               </div>
 
-              <h2 className="font-medium capitalize mb-3 text-base flex justify-between">
-                <span>Select {key}</span>
+              <h2 className="flex justify-between items-center mb-3">
+                <span className="capitalize text-lg font-medium">
+                  Select {key}
+                </span>
 
-                <span className="text-lg font-bold text-orange-600">
+                {/* 🔥 BIGGER QUANTITY */}
+                <span className="text-2xl font-bold text-orange-600 tracking-tight">
                   {key === "rice" && `${riceQty} ltr`}
                   {key === "dessert" && `${dessertQty} pcs`}
                   {(key !== "rice" && key !== "dessert") && `${quantity} kg`}
@@ -194,11 +201,11 @@ const LiteMeal = () => {
                         if (key === "rice") setRice(item);
                         if (key === "dessert") setDessert(item);
                       }}
-                      className={`px-4 py-2 rounded-full text-sm border transition-all duration-200
+                      className={`px-4 py-2 rounded-full text-sm transition-all duration-200
                       ${
                         selected
-                          ? "bg-orange-100 text-orange-700 border-orange-300 shadow-sm"
-                          : "bg-white border-gray-200 text-gray-700"
+                          ? "bg-orange-100 text-orange-700 border border-orange-300 shadow-sm"
+                          : "bg-white border border-gray-200 text-gray-700"
                       }`}
                     >
                       {item}
@@ -211,73 +218,67 @@ const LiteMeal = () => {
           );
         })}
 
-        {/* ROTI */}
-        <div className="mb-10">
-          <h2 className="font-medium mb-3 text-base flex justify-between">
+        {/* BREADS (FIXED) */}
+        <div className="mb-12">
+          <h2 className="flex justify-between mb-3 text-lg font-medium">
             <span>Breads</span>
-            <span className="text-lg font-bold text-orange-600">
+            <span className="text-2xl font-bold text-orange-600">
               {rotiQty} pcs
             </span>
           </h2>
 
-          <div className="flex flex-wrap gap-3">
-            <div className="px-4 py-2 rounded-full text-sm border bg-white border-gray-200 text-gray-700">
+          <div className="flex gap-3">
+            <div className="px-4 py-2 rounded-full border bg-white border-gray-200 text-sm">
               Lachha Paratha
             </div>
-            <div className="px-4 py-2 rounded-full text-sm border bg-white border-gray-200 text-gray-700">
+            <div className="px-4 py-2 rounded-full border bg-white border-gray-200 text-sm">
               Tandoori Roti
             </div>
           </div>
         </div>
 
         {/* COMPLIMENTARY */}
-        <div className="mb-10">
-          <h2 className="font-medium mb-3 text-base">
+        <div className="mb-12">
+          <h2 className="text-lg font-medium mb-3">
             Complimentary
           </h2>
 
           <div className="flex gap-3">
-            <div className="px-4 py-2 rounded-full text-sm border bg-white border-gray-200 text-gray-700">
+            <div className="px-4 py-2 rounded-full border bg-white border-gray-200 text-sm">
               Raita
             </div>
-            <div className="px-4 py-2 rounded-full text-sm border bg-white border-gray-200 text-gray-700">
+            <div className="px-4 py-2 rounded-full border bg-white border-gray-200 text-sm">
               Salad
             </div>
           </div>
         </div>
 
         {/* FORM */}
-        <div className="space-y-7 mb-12">
+        <div className="space-y-6 mb-12">
 
           <input
             placeholder="Name"
-            className="w-full border border-gray-200 p-4 rounded-xl bg-white shadow-sm"
+            className="w-full border border-gray-200 p-4 rounded-xl bg-white"
             onChange={(e) => setName(e.target.value)}
           />
 
           <input
             placeholder="Address"
-            className="w-full border border-gray-200 p-4 rounded-xl bg-white shadow-sm"
+            className="w-full border border-gray-200 p-4 rounded-xl bg-white"
             onChange={(e) => setAddress(e.target.value)}
           />
 
-          <div>
-            <p className="text-sm text-gray-500 mb-2">Delivery Date</p>
-            <input
-              type="date"
-              className="w-full border border-gray-200 p-4 rounded-xl bg-white"
-              onChange={(e) => setDate(e.target.value)}
-            />
-          </div>
+          <input
+            type="date"
+            className="w-full border border-gray-200 p-4 rounded-xl bg-white"
+            onChange={(e) => setDate(e.target.value)}
+          />
 
-          <div>
-            <p className="text-sm text-gray-500 mb-2">Delivery Time</p>
-            <input
-              type="time"
-              className="w-full border border-gray-200 p-4 rounded-xl bg-white"
-              onChange={(e) => setTime(e.target.value)}
-            />
-          </div>
+          <input
+            type="time"
+            className="w-full border border-gray-200 p-4 rounded-xl bg-white"
+            onChange={(e) => setTime(e.target.value)}
+          />
 
         </div>
 
@@ -290,7 +291,7 @@ const LiteMeal = () => {
       <div className="fixed bottom-20 left-0 right-0 px-5">
         <button
           onClick={handleOrder}
-          className="w-full bg-orange-500 text-white py-4 rounded-2xl font-medium shadow-lg active:scale-[0.98] transition"
+          className="w-full bg-orange-500 text-white py-4 rounded-2xl shadow-lg active:scale-[0.98] transition"
         >
           Order on WhatsApp
         </button>
