@@ -5,8 +5,9 @@ const LiteMeal = () => {
 
   const navigate = useNavigate();
 
+  // ✅ AUTO SCROLL FIX
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
 
   const menu = {
@@ -37,6 +38,7 @@ const LiteMeal = () => {
   const [veg, setVeg] = useState("Mix Veg");
   const [rice, setRice] = useState("Plain Rice");
   const [dessert, setDessert] = useState("Gulab Jamun");
+  const [bread, setBread] = useState("Lachha Paratha");
 
   const [pax, setPax] = useState(15);
 
@@ -84,7 +86,7 @@ const LiteMeal = () => {
 🍚 Rice: ${rice} (${riceQty} ltr)
 🍰 Dessert: ${dessert} (${dessertQty} pcs)
 
-🥖 Breads: Lachha Paratha & Tandoori Roti (${rotiQty} pcs)
+🥖 Bread: ${bread} (${rotiQty} pcs)
 🥗 Raita & Salad: Included
 
 💰 Total: ₹${total}`
@@ -94,9 +96,8 @@ const LiteMeal = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf7f2] pb-40">
+    <div className="min-h-screen bg-[#faf7f2] px-5 py-6 pb-40">
 
-      {/* ERROR */}
       {error && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
           <div className="bg-white/90 backdrop-blur-md border border-red-200 text-red-600 px-5 py-3 rounded-full shadow-xl text-sm font-medium">
@@ -105,40 +106,44 @@ const LiteMeal = () => {
         </div>
       )}
 
-      {/* 🔥 PREMIUM HEADER */}
-      <div className="px-5 pt-8 pb-10 text-center">
+      <div className="max-w-2xl mx-auto">
 
         <button
           onClick={() => navigate(-1)}
-          className="mb-6 text-sm text-gray-400"
+          className="mb-6 text-sm text-gray-500"
         >
           ← Back
         </button>
 
-        <h1 className="text-4xl font-serif text-[#1a1a1a] tracking-tight mb-2">
-          Bite Affair Lite Box
-        </h1>
+        {/* 🔥 PREMIUM HEADER */}
+        <div className="mb-10 text-center bg-white/60 backdrop-blur-xl border border-white/40 shadow-lg rounded-3xl py-6 px-4">
 
-        <p className="text-gray-500 text-sm mb-6">
-          ₹300 per person • Starting ₹4500
-        </p>
+          <h1 className="text-3xl font-semibold tracking-tight bg-gradient-to-r from-[#3a2b1d] to-[#c08b2c] bg-clip-text text-transparent">
+            Bite Affair Lite Box
+          </h1>
 
-        {/* GUEST SELECTOR */}
-        <div>
-          <p className="text-xs text-gray-400 mb-3 tracking-wide">
-            NUMBER OF GUESTS
+          <p className="text-sm text-gray-500 mt-2">
+            ₹300 per person • Starting ₹4500
           </p>
+
+        </div>
+
+        {/* GUEST */}
+        <div className="mb-10">
+          <h2 className="text-sm text-gray-500 mb-3 text-center">
+            Number of Guests
+          </h2>
 
           <div className="flex flex-wrap justify-center gap-3">
             {[15, 20, 25, 30, 40, 50].map((p) => (
               <button
                 key={p}
                 onClick={() => setPax(p)}
-                className={`px-6 py-2 rounded-full text-sm transition-all duration-200
+                className={`px-5 py-2 rounded-full border text-sm transition-all duration-200
                 ${
                   pax === p
-                    ? "bg-orange-500 text-white shadow-lg scale-105"
-                    : "bg-white border border-gray-200 text-gray-600"
+                    ? "bg-orange-500 text-white border-orange-500 shadow-lg scale-105"
+                    : "bg-white border-gray-200 text-gray-600"
                 }`}
               >
                 {p}
@@ -147,34 +152,27 @@ const LiteMeal = () => {
           </div>
         </div>
 
-      </div>
-
-      <div className="px-5 max-w-2xl mx-auto">
-
         {/* MENU */}
         {Object.entries(menu).map(([key, value]) => {
 
           const items = value.items;
 
           return (
-            <div key={key} className="mb-12">
+            <div key={key} className="mb-10">
 
               <div className="relative mb-4">
                 <img
                   src={value.img}
                   alt={key}
-                  className="w-full h-32 object-cover rounded-2xl"
+                  className="w-full h-32 object-cover rounded-2xl shadow-sm"
                 />
                 <div className="absolute inset-0 bg-black/25 rounded-2xl" />
               </div>
 
-              <h2 className="flex justify-between items-center mb-3">
-                <span className="capitalize text-lg font-medium">
-                  Select {key}
-                </span>
+              <h2 className="font-medium capitalize mb-3 text-base flex justify-between">
+                <span>Select {key}</span>
 
-                {/* 🔥 BIGGER QUANTITY */}
-                <span className="text-2xl font-bold text-orange-600 tracking-tight">
+                <span className="text-xl font-bold text-orange-600">
                   {key === "rice" && `${riceQty} ltr`}
                   {key === "dessert" && `${dessertQty} pcs`}
                   {(key !== "rice" && key !== "dessert") && `${quantity} kg`}
@@ -201,11 +199,11 @@ const LiteMeal = () => {
                         if (key === "rice") setRice(item);
                         if (key === "dessert") setDessert(item);
                       }}
-                      className={`px-4 py-2 rounded-full text-sm transition-all duration-200
+                      className={`px-4 py-2 rounded-full text-sm border transition-all duration-200
                       ${
                         selected
-                          ? "bg-orange-100 text-orange-700 border border-orange-300 shadow-sm"
-                          : "bg-white border border-gray-200 text-gray-700"
+                          ? "bg-orange-100 text-orange-700 border-orange-300 shadow-sm"
+                          : "bg-white border-gray-200 text-gray-700"
                       }`}
                     >
                       {item}
@@ -218,67 +216,89 @@ const LiteMeal = () => {
           );
         })}
 
-        {/* BREADS (FIXED) */}
-        <div className="mb-12">
-          <h2 className="flex justify-between mb-3 text-lg font-medium">
-            <span>Breads</span>
-            <span className="text-2xl font-bold text-orange-600">
+        {/* BREADS */}
+        <div className="mb-10">
+          <h2 className="flex justify-between mb-3 text-base font-medium">
+            <span>Select Bread</span>
+            <span className="text-xl font-bold text-orange-600">
               {rotiQty} pcs
             </span>
           </h2>
 
           <div className="flex gap-3">
-            <div className="px-4 py-2 rounded-full border bg-white border-gray-200 text-sm">
-              Lachha Paratha
-            </div>
-            <div className="px-4 py-2 rounded-full border bg-white border-gray-200 text-sm">
-              Tandoori Roti
-            </div>
+            {["Lachha Paratha", "Tandoori Roti"].map((item) => {
+              const selected = bread === item;
+
+              return (
+                <button
+                  key={item}
+                  onClick={() => setBread(item)}
+                  className={`px-4 py-2 rounded-full text-sm border transition-all duration-200
+                  ${
+                    selected
+                      ? "bg-orange-100 text-orange-700 border-orange-300 shadow-sm"
+                      : "bg-white border-gray-200 text-gray-700"
+                  }`}
+                >
+                  {item}
+                </button>
+              );
+            })}
           </div>
         </div>
 
         {/* COMPLIMENTARY */}
-        <div className="mb-12">
-          <h2 className="text-lg font-medium mb-3">
+        <div className="mb-10">
+          <h2 className="font-medium mb-3 text-base">
             Complimentary
           </h2>
 
           <div className="flex gap-3">
-            <div className="px-4 py-2 rounded-full border bg-white border-gray-200 text-sm">
+            <div className="px-4 py-2 rounded-full text-sm border bg-white border-gray-200 text-gray-700">
               Raita
             </div>
-            <div className="px-4 py-2 rounded-full border bg-white border-gray-200 text-sm">
+            <div className="px-4 py-2 rounded-full text-sm border bg-white border-gray-200 text-gray-700">
               Salad
             </div>
           </div>
         </div>
 
         {/* FORM */}
-        <div className="space-y-6 mb-12">
+        <div className="space-y-7 mb-12">
 
           <input
             placeholder="Name"
-            className="w-full border border-gray-200 p-4 rounded-xl bg-white"
+            className="w-full border border-gray-200 p-4 rounded-xl bg-white shadow-sm"
             onChange={(e) => setName(e.target.value)}
           />
 
           <input
             placeholder="Address"
-            className="w-full border border-gray-200 p-4 rounded-xl bg-white"
+            className="w-full border border-gray-200 p-4 rounded-xl bg-white shadow-sm"
             onChange={(e) => setAddress(e.target.value)}
           />
 
-          <input
-            type="date"
-            className="w-full border border-gray-200 p-4 rounded-xl bg-white"
-            onChange={(e) => setDate(e.target.value)}
-          />
+          {/* DATE */}
+          <div>
+            <p className="text-sm text-gray-500 mb-2">Delivery Date</p>
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full border border-gray-200 p-4 rounded-xl bg-white shadow-sm focus:ring-2 focus:ring-orange-400 focus:outline-none"
+            />
+          </div>
 
-          <input
-            type="time"
-            className="w-full border border-gray-200 p-4 rounded-xl bg-white"
-            onChange={(e) => setTime(e.target.value)}
-          />
+          {/* TIME */}
+          <div>
+            <p className="text-sm text-gray-500 mb-2">Delivery Time</p>
+            <input
+              type="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              className="w-full border border-gray-200 p-4 rounded-xl bg-white shadow-sm focus:ring-2 focus:ring-orange-400 focus:outline-none"
+            />
+          </div>
 
         </div>
 
@@ -291,7 +311,7 @@ const LiteMeal = () => {
       <div className="fixed bottom-20 left-0 right-0 px-5">
         <button
           onClick={handleOrder}
-          className="w-full bg-orange-500 text-white py-4 rounded-2xl shadow-lg active:scale-[0.98] transition"
+          className="w-full bg-orange-500 text-white py-4 rounded-2xl font-medium shadow-lg active:scale-[0.98] transition"
         >
           Order on WhatsApp
         </button>
