@@ -5,7 +5,6 @@ const LiteMeal = () => {
 
   const navigate = useNavigate();
 
-  // ✅ AUTO SCROLL FIX
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
@@ -115,16 +114,34 @@ const LiteMeal = () => {
           ← Back
         </button>
 
-        {/* 🔥 PREMIUM HEADER */}
-        <div className="mb-10 text-center bg-white/60 backdrop-blur-xl border border-white/40 shadow-lg rounded-3xl py-6 px-4">
+        {/* 🔥 PREMIUM IMAGE HEADER */}
+        <div className="relative mb-12 rounded-3xl overflow-hidden shadow-xl">
 
-          <h1 className="text-3xl font-semibold tracking-tight bg-gradient-to-r from-[#3a2b1d] to-[#c08b2c] bg-clip-text text-transparent">
-            Bite Affair Lite Box
-          </h1>
+          <img
+            src="/images/lite-meal/litebox-hero.jpg"
+            alt="Bite Affair"
+            className="w-full h-56 object-cover scale-105"
+          />
 
-          <p className="text-sm text-gray-500 mt-2">
-            ₹300 per person • Starting ₹4500
-          </p>
+          {/* DARK LUXURY OVERLAY */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+
+          {/* CONTENT */}
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4">
+
+            <h1 className="text-3xl font-semibold text-white tracking-wide">
+              Bite Affair Lite Box
+            </h1>
+
+            <p className="text-sm text-gray-200 mt-2">
+              ₹300 per person • Starting ₹4500
+            </p>
+
+            <p className="text-xs text-orange-300 mt-2 tracking-wide">
+              Simplicity is Luxury
+            </p>
+
+          </div>
 
         </div>
 
@@ -278,7 +295,6 @@ const LiteMeal = () => {
             onChange={(e) => setAddress(e.target.value)}
           />
 
-          {/* DATE */}
           <div>
             <p className="text-sm text-gray-500 mb-2">Delivery Date</p>
             <input
@@ -289,7 +305,6 @@ const LiteMeal = () => {
             />
           </div>
 
-          {/* TIME */}
           <div>
             <p className="text-sm text-gray-500 mb-2">Delivery Time</p>
             <input
