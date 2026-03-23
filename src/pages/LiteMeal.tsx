@@ -106,7 +106,7 @@ return (
   </div>  
 )}  
 
-{/* 🔥 FULL BLEED HEADER (NO BOX FEEL) */}
+{/* HEADER */}
 <div className="relative w-full h-[300px] overflow-hidden">
 
   <img
@@ -115,24 +115,24 @@ return (
     className="absolute inset-0 w-full h-full object-cover scale-105"
   />
 
-  {/* deep luxury overlay */}
   <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70" />
 
-  {/* content */}
   <div className="relative z-10 flex flex-col justify-center items-center h-full text-center px-6">
 
     <h1 className="text-3xl md:text-4xl font-semibold text-white tracking-tight drop-shadow-xl">
       Bite Affair Lite Box
     </h1>
 
-    <p className="text-sm md:text-base text-white/85 mt-2">
-      ₹300 per person • Starting ₹4500
+    {/* ✅ FIXED */}
+    <p className="text-sm md:text-base text-white/90 mt-2">
+      ₹300 per person
     </p>
 
     <div className="w-14 h-[2px] bg-orange-400 my-3 rounded-full opacity-90" />
 
+    {/* ✅ TAGLINE BACK */}
     <p className="text-xs tracking-[4px] text-orange-300 uppercase">
-      
+      Simplicity is Luxury
     </p>
 
   </div>
@@ -148,9 +148,9 @@ return (
     ← Back  
   </button>  
 
-  {/* GUEST */}  
+  {/* 🔥 PREMIUM GUEST */}
   <div className="px-5 mt-8 mb-10">  
-    <h2 className="text-sm text-gray-500 mb-3 text-center">  
+    <h2 className="text-sm text-gray-500 mb-4 text-center tracking-wide">  
       Number of Guests  
     </h2>  
 
@@ -159,11 +159,11 @@ return (
         <button  
           key={p}  
           onClick={() => setPax(p)}  
-          className={`px-5 py-2 rounded-full border text-sm  
+          className={`px-5 py-2.5 rounded-full border text-sm transition-all duration-200  
           ${  
             pax === p  
-              ? "bg-orange-500 text-white border-orange-500"  
-              : "bg-white border-gray-200 text-gray-600"  
+              ? "bg-orange-500 text-white border-orange-500 shadow-lg scale-105"  
+              : "bg-white border-gray-200 text-gray-600 hover:shadow-md"  
           }`}  
         >  
           {p}  
@@ -189,10 +189,11 @@ return (
           <div className="absolute inset-0 bg-black/10 rounded-2xl" />
         </div>
 
-        <h2 className="font-medium capitalize mb-3 flex justify-between">
+        <h2 className="font-medium capitalize mb-3 flex justify-between items-center">
           <span>Select {key}</span>
 
-          <span className="text-orange-600 font-bold">
+          {/* 🔥 KG UPGRADE */}
+          <span className="text-orange-600 font-extrabold text-lg tracking-wide">
             {key === "rice" && `${riceQty} ltr`}
             {key === "dessert" && `${dessertQty} pcs`}
             {(key !== "rice" && key !== "dessert") && `${quantity} kg`}
