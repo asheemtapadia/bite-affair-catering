@@ -155,22 +155,26 @@ return (
     </h2>  
 
     <div className="flex flex-wrap justify-center gap-3">  
-      {[15, 20, 25, 30, 40, 50].map((p) => (  
-        <button  
-          key={p}  
-          onClick={() => setPax(p)}  
-          className={`px-5 py-2.5 rounded-full border text-sm transition-all duration-200  
-          ${  
-            pax === p  
-              ? "bg-orange-500 text-white border-orange-500 shadow-lg scale-105"  
-              : "bg-white border-gray-200 text-gray-600 hover:shadow-md"  
-          }`}  
-        >  
-          {p}  
-        </button>  
-      ))}  
-    </div>  
-  </div>  
+<div className="flex flex-wrap justify-center gap-3">
+  {[15, 20, 25, 30, 40, 50].map((p) => {
+    const active = pax === p;
+
+    return (
+      <button
+        key={p}
+        onClick={() => setPax(p)}
+        className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300
+        ${
+          active
+            ? "bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-[0_8px_20px_rgba(249,115,22,0.35)] scale-105"
+            : "bg-white/70 backdrop-blur-md border border-gray-200 text-gray-700 hover:shadow-md"
+        }`}
+      >
+        {p}
+      </button>
+    );
+  })}
+</div>
 
   {/* MENU */}
   {Object.entries(menu).map(([key, value]) => {
