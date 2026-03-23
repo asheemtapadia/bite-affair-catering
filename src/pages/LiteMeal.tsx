@@ -132,7 +132,7 @@ return (
     <div className="w-14 h-[2px] bg-orange-400 my-3 rounded-full opacity-90" />
 
     <p className="text-xs tracking-[4px] text-orange-300 uppercase">
-      Simplicity is Luxury
+      
     </p>
 
   </div>
