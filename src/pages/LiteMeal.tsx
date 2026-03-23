@@ -95,7 +95,7 @@ const LiteMeal = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf7f2] px-5 py-6 pb-40">
+    <div className="min-h-screen bg-[#faf7f2] pb-40">
 
       {error && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
@@ -105,48 +105,50 @@ const LiteMeal = () => {
         </div>
       )}
 
-      <div className="max-w-2xl mx-auto">
+      {/* 🔥 FULL WIDTH HERO HEADER */}
+      <div className="relative w-full h-[280px] overflow-hidden">
+
+        <img
+          src="/images/lite-meal/lite-box-banner.png"
+          alt="Bite Affair"
+          className="w-full h-full object-cover scale-105"
+        />
+
+        {/* DARK OVERLAY */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
+
+        {/* GOLD LIGHT */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(192,139,44,0.15),transparent_70%)]" />
+
+        {/* TEXT */}
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6">
+
+          <h1 className="text-3xl font-semibold text-white tracking-wide drop-shadow-[0_5px_20px_rgba(0,0,0,0.9)]">
+            Bite Affair Lite Box
+          </h1>
+
+          <p className="text-sm text-gray-200 mt-2">
+            ₹300 per person • Starting ₹4500
+          </p>
+
+          <div className="w-12 h-[2px] bg-orange-400 mt-3 opacity-70" />
+
+          <p className="text-xs text-orange-200 mt-2 tracking-[2px]">
+            SIMPLICITY IS LUXURY
+          </p>
+
+        </div>
+
+      </div>
+
+      <div className="px-5">
 
         <button
           onClick={() => navigate(-1)}
-          className="mb-6 text-sm text-gray-500"
+          className="mt-4 mb-6 text-sm text-gray-500"
         >
           ← Back
         </button>
-
-        {/* 🔥 ULTRA PREMIUM HEADER */}
-        <div className="relative mb-12 rounded-3xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
-
-          <img
-            src="/images/lite-meal/lite-box-banner.png"
-            alt="Bite Affair"
-            className="w-full h-[240px] object-cover scale-105"
-          />
-
-          {/* DARK + GOLD OVERLAY */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/65 to-black/85" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(192,139,44,0.25),transparent_60%)]" />
-
-          {/* CONTENT */}
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6">
-
-            <h1 className="text-3xl font-semibold text-white tracking-wide drop-shadow-[0_4px_20px_rgba(0,0,0,0.9)]">
-              Bite Affair Lite Box
-            </h1>
-
-            <p className="text-sm text-gray-200 mt-3">
-              ₹300 per person • Starting ₹4500
-            </p>
-
-            <div className="w-16 h-[2px] bg-gradient-to-r from-transparent via-orange-400 to-transparent mt-4" />
-
-            <p className="text-sm text-orange-200 mt-3 tracking-widest uppercase">
-              Simplicity is Luxury
-            </p>
-
-          </div>
-
-        </div>
 
         {/* GUEST */}
         <div className="mb-10">
@@ -180,14 +182,14 @@ const LiteMeal = () => {
           return (
             <div key={key} className="mb-10">
 
-              {/* 🔥 IMAGE REFINED (LESS DISTRACTION) */}
+              {/* ✅ SUBTLE TEXTURE IMAGE (NOT FADED) */}
               <div className="relative mb-4 rounded-2xl overflow-hidden">
                 <img
                   src={value.img}
                   alt={key}
-                  className="w-full h-32 object-cover scale-105 brightness-[0.75] contrast-[0.95] saturate-[0.9]"
+                  className="w-full h-32 object-cover brightness-[0.9] contrast-[1.05]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#faf7f2] via-[#faf7f2]/40 to-transparent" />
+                <div className="absolute inset-0 bg-black/10" />
               </div>
 
               <h2 className="font-medium capitalize mb-3 text-base flex justify-between">
@@ -284,7 +286,6 @@ const LiteMeal = () => {
           </div>
         </div>
 
-        {/* FORM */}
         <div className="space-y-7 mb-12">
 
           <input
