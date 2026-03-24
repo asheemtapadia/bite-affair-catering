@@ -6,7 +6,6 @@ import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 import MobileBottomNav from "@/components/MobileBottomNav";
-import LocationSection from "@/components/LocationSection"; // ✅ ADDED
 
 import Index from "./pages/Index";
 import MenuDetailPage from "./pages/MenuDetailPage";
@@ -27,17 +26,7 @@ const App = () => (
         <Router>
 
           <Routes>
-            {/* ✅ HOME PAGE WITH MAP */}
-            <Route
-              path="/"
-              element={
-                <>
-                  <Index />
-                  <LocationSection />
-                </>
-              }
-            />
-
+            <Route path="/" element={<Index />} />
             <Route path="/menu/:slug" element={<MenuDetailPage />} />
             <Route path="/packages" element={<Packages />} />
             <Route path="/cart" element={<Cart />} />
