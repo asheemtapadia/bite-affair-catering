@@ -24,14 +24,18 @@ const LocationSection = () => {
           </p>
 
           <div className="w-full max-w-xl h-[180px] rounded-2xl overflow-hidden border border-white/10 shadow-xl">
+            
+            {/* ✅ FIXED MAP */}
             <iframe
-              src="https://www.google.com/maps?q=BASEMENT-1,+F-28,+Sarswati+Kunj+II,+Ardee+City,+Sector+52,+Gurugram,+Haryana+122003&output=embed"
+              src="https://maps.google.com/maps?q=BASEMENT-1,%20F-28,%20Sarswati%20Kunj%20II,%20Ardee%20City,%20Sector%2052,%20Gurugram,%20Haryana%20122003&t=&z=15&ie=UTF8&iwloc=&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0 }}
               loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
               title="Google Map"
             ></iframe>
+
           </div>
 
           <a
