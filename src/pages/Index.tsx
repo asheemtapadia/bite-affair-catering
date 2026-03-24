@@ -11,6 +11,7 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import Testimonials from "@/components/Testimonials";
 import HowOrderingWorks from "@/components/HowOrderingWorks";
 import CTASection from "@/components/CTASection";
+import LocationSection from "@/components/LocationSection"; // ✅ ADDED
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
@@ -47,6 +48,8 @@ const Index = () => {
       <HowOrderingWorks />
 
       <CTASection />
+
+      <LocationSection /> {/* ✅ ADDED */}
 
       <FAQSection />
 
