@@ -6,6 +6,7 @@ const LocationSection = () => {
     <section className="py-20 lg:py-28 section-beige">
       <div className="container mx-auto px-4 text-center max-w-2xl">
 
+        {/* Heading */}
         <ScrollReveal>
           <MapPin className="mx-auto mb-4 text-primary" size={36} strokeWidth={1.5} />
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-navy mb-6">
@@ -13,6 +14,7 @@ const LocationSection = () => {
           </h2>
         </ScrollReveal>
 
+        {/* Address */}
         <ScrollReveal delay={0.1}>
           <p className="font-body text-foreground/80 leading-relaxed mb-4">
             Basement-1, F-28, Saraswati Kunj II, Ardee City, Sector 52, Gurugram, Haryana 122003
@@ -21,21 +23,23 @@ const LocationSection = () => {
           <p className="font-body text-sm font-medium text-primary mb-6">
             Serving Gurugram & Delhi NCR
           </p>
+        </ScrollReveal>
 
-          {/* ✅ FIXED MAP (NO BLOCK ISSUE) */}
-          <div className="w-full h-[220px] rounded-2xl overflow-hidden border border-black/10 shadow-md mb-8">
-            <iframe
-              src="https://www.google.com/maps?q=BASEMENT-1,+F-28,+Saraswati+Kunj+II,+Ardee+City,+Sector+52,+Gurugram,+Haryana+122003&output=embed"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Google Map"
-            ></iframe>
-          </div>
+        {/* ✅ MAP (SCROLLREVEAL KE BAHAR — IMPORTANT FIX) */}
+        <div className="w-full h-[260px] md:h-[320px] rounded-2xl overflow-hidden border border-black/10 shadow-md mb-10">
+          <iframe
+            src="https://www.google.com/maps?q=28.4371197,77.077991&z=17&output=embed"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Bite Affairs Location Map"
+          ></iframe>
+        </div>
 
-          {/* Instagram */}
+        {/* Instagram */}
+        <ScrollReveal delay={0.2}>
           <div className="text-center">
             <h3 className="font-heading text-xl font-semibold text-navy mb-3">
               See Real Catering Moments
@@ -55,8 +59,8 @@ const LocationSection = () => {
               Follow @bite_affair
             </a>
           </div>
-
         </ScrollReveal>
+
       </div>
     </section>
   );
