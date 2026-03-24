@@ -25,16 +25,15 @@ const LocationSection = () => {
           </p>
         </ScrollReveal>
 
-        {/* ✅ MAP (SCROLLREVEAL KE BAHAR — IMPORTANT FIX) */}
+        {/* ✅ MAP (FINAL FIX — NO BLOCK ISSUE) */}
         <div className="w-full h-[260px] md:h-[320px] rounded-2xl overflow-hidden border border-black/10 shadow-md mb-10">
           <iframe
-            src="https://www.google.com/maps?q=28.4371197,77.077991&z=17&output=embed"
+            src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=28.4371197,77.077991&z=17&output=embed"
             width="100%"
             height="100%"
             style={{ border: 0 }}
             loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Bite Affairs Location Map"
+            title="Bite Affairs Location"
           ></iframe>
         </div>
 
