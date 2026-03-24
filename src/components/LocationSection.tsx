@@ -18,21 +18,9 @@ const LocationSection = () => {
             Basement-1, F-28, Saraswati Kunj II, Ardee City, Sector 52, Gurugram, Haryana 122003
           </p>
 
-          <p className="font-body text-sm font-medium text-primary mb-6">
+          <p className="font-body text-sm font-medium text-primary mb-10">
             Serving Gurugram & Delhi NCR
           </p>
-
-          {/* ✅ CLEAN MAP */}
-          <div className="w-full h-[220px] rounded-2xl overflow-hidden border border-black/10 shadow-md mb-8">
-            <iframe
-              src="https://maps.google.com/maps?q=28.4395,77.0830&z=15&output=embed"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              loading="lazy"
-              title="Google Map"
-            ></iframe>
-          </div>
 
           {/* Instagram */}
           <div className="text-center">
