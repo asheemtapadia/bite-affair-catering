@@ -25,25 +25,24 @@ const LocationSection = () => {
           </p>
         </ScrollReveal>
 
-        {/* ✅ FINAL MAP (NO BLOCK EVER) */}
+        {/* 🔥 REAL MAP LOOK */}
         <div className="w-full rounded-2xl overflow-hidden border border-black/10 shadow-md mb-10">
 
-          {/* Static Map Image (no API needed) */}
-          <img
-            src="https://maps.gstatic.com/tactile/basepage/pegman_sherlock.png"
-            alt="Map placeholder"
-            className="w-full h-[260px] md:h-[320px] object-cover bg-gray-200"
-          />
-
-          {/* Open Map Button */}
           <a
             href="https://www.google.com/maps?q=28.4371197,77.077991"
             target="_blank"
             rel="noopener noreferrer"
-            className="block text-center py-4 bg-primary text-white font-medium hover:opacity-90 transition"
           >
-            Open Location in Google Maps
+            <img
+              src="https://maps.googleapis.com/maps/api/staticmap?center=28.4371197,77.077991&zoom=15&size=800x400&markers=color:red%7C28.4371197,77.077991"
+              alt="Bite Affairs Location"
+              className="w-full h-[260px] md:h-[320px] object-cover"
+            />
           </a>
+
+          <div className="text-center py-3 bg-primary text-white font-medium">
+            Tap to Open in Google Maps
+          </div>
 
         </div>
 
