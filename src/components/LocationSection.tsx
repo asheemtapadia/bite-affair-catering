@@ -25,25 +25,17 @@ const LocationSection = () => {
           </p>
         </ScrollReveal>
 
-        {/* 🔥 REAL MAP LOOK */}
-        <div className="w-full rounded-2xl overflow-hidden border border-black/10 shadow-md mb-10">
-
-          <a
-            href="https://www.google.com/maps?q=28.4371197,77.077991"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="https://maps.googleapis.com/maps/api/staticmap?center=28.4371197,77.077991&zoom=15&size=800x400&markers=color:red%7C28.4371197,77.077991"
-              alt="Bite Affairs Location"
-              className="w-full h-[260px] md:h-[320px] object-cover"
-            />
-          </a>
-
-          <div className="text-center py-3 bg-primary text-white font-medium">
-            Tap to Open in Google Maps
-          </div>
-
+        {/* ✅ MAP (SAME AS SCHOOL PROJECT — WORKING) */}
+        <div className="w-full h-[260px] md:h-[320px] rounded-2xl overflow-hidden border border-black/10 shadow-md mb-10">
+          <iframe
+            src="https://www.google.com/maps?q=Basement-1,+F-28,+Saraswati+Kunj+II,+Ardee+City,+Sector+52,+Gurugram,+Haryana+122003&output=embed"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Bite Affairs Location"
+          ></iframe>
         </div>
 
         {/* Instagram */}
