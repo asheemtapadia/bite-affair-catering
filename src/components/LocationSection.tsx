@@ -25,16 +25,26 @@ const LocationSection = () => {
           </p>
         </ScrollReveal>
 
-        {/* ✅ MAP (FINAL FIX — NO BLOCK ISSUE) */}
-        <div className="w-full h-[260px] md:h-[320px] rounded-2xl overflow-hidden border border-black/10 shadow-md mb-10">
-          <iframe
-            src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=28.4371197,77.077991&z=17&output=embed"
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            loading="lazy"
-            title="Bite Affairs Location"
-          ></iframe>
+        {/* ✅ FINAL MAP (NO BLOCK EVER) */}
+        <div className="w-full rounded-2xl overflow-hidden border border-black/10 shadow-md mb-10">
+
+          {/* Static Map Image (no API needed) */}
+          <img
+            src="https://maps.gstatic.com/tactile/basepage/pegman_sherlock.png"
+            alt="Map placeholder"
+            className="w-full h-[260px] md:h-[320px] object-cover bg-gray-200"
+          />
+
+          {/* Open Map Button */}
+          <a
+            href="https://www.google.com/maps?q=28.4371197,77.077991"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block text-center py-4 bg-primary text-white font-medium hover:opacity-90 transition"
+          >
+            Open Location in Google Maps
+          </a>
+
         </div>
 
         {/* Instagram */}
