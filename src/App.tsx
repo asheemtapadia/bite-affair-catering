@@ -28,6 +28,10 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/menu/:slug" element={<MenuDetailPage />} />
+
+            {/* ✅ SAME PAGE FOR PLAN */}
+            <Route path="/plan" element={<Packages />} />
+
             <Route path="/packages" element={<Packages />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/lite-meal" element={<LiteMeal />} />
