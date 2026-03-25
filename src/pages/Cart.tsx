@@ -153,25 +153,20 @@ return (
             className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary"
           />
 
-          <select
+          <input
+            type="date"
             value={date}
+            min={new Date().toISOString().split("T")[0]}
             onChange={(e)=>setDate(e.target.value)}
             className="w-full border border-gray-200 p-4 rounded-xl text-gray-700 focus:outline-none focus:ring-1 focus:ring-primary"
-          >
-            <option value="">Select Delivery Date</option>
-            <option value="Today">Today</option>
-            <option value="Tomorrow">Tomorrow</option>
-          </select>
+          />
 
-          <select
+          <input
+            type="time"
             value={time}
             onChange={(e)=>setTime(e.target.value)}
             className="w-full border border-gray-200 p-4 rounded-xl text-gray-700 focus:outline-none focus:ring-1 focus:ring-primary"
-          >
-            <option value="">Select Delivery Time</option>
-            <option value="Lunch (12–3 PM)">Lunch (12–3 PM)</option>
-            <option value="Evening (6–9 PM)">Evening (6–9 PM)</option>
-          </select>
+          />
 
         </div>
 
