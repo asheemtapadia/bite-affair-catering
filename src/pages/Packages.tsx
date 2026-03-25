@@ -8,9 +8,8 @@ const Packages = () => {
 const [searchParams] = useSearchParams();
 const navigate = useNavigate();
 
-const vegGuests = Number(searchParams.get("veg") || 0);
+const vegGuests = Number(searchParams.get("veg") || 10);
 const nonVegGuests = Number(searchParams.get("nonveg") || 0);
-
 const area = searchParams.get("area");
 const date = searchParams.get("date");
 const time = searchParams.get("time");
