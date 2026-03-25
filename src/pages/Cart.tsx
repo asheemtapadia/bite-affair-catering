@@ -8,6 +8,9 @@ const Cart = () => {
 const [cart,setCart] = useState<any[]>([]);
 const [customerName,setCustomerName] = useState("");
 const [phone,setPhone] = useState("");
+const [address,setAddress] = useState("");
+const [date,setDate] = useState("");
+const [time,setTime] = useState("");
 
 useEffect(() => {
   window.scrollTo(0,0);
@@ -33,6 +36,12 @@ localStorage.setItem("cart", JSON.stringify(updated));
 const total = cart.reduce((sum,item)=> sum + item.price,0);
 
 const whatsappOrder = () => {
+
+if(!customerName || !phone || !address || !date || !time){
+  alert("Please fill all details");
+  return;
+}
+
 const message = cart.map(
 (item)=>`• ${item.name} (₹${item.price})
 Request: ${item.request || "None"}`
@@ -45,21 +54,19 @@ I'd like to order:
 
 ${message}
 
-Name: ${customerName}
-Phone: ${phone}
+👤 Name: ${customerName}
+📞 Phone: ${phone}
+📍 Address: ${address}
+
+📅 Date: ${date}
+⏰ Time: ${time}
+
+💰 Total: ₹${total}
 
 Please confirm.`
 );
 
 window.open(`https://wa.me/919211570030?text=${text}`,"_blank");
-};
-
-const handlePlaceOrder = () => {
-if(!customerName || !phone){
-  alert("Please enter name and phone");
-  return;
-}
-alert("Order saved successfully");
 };
 
 return (
@@ -148,24 +155,36 @@ return (
             className="w-full border p-3 rounded-lg"
           />
 
+          <input
+            placeholder="Delivery Address"
+            value={address}
+            onChange={(e)=>setAddress(e.target.value)}
+            className="w-full border p-3 rounded-lg"
+          />
+
+          <input
+            type="date"
+            value={date}
+            onChange={(e)=>setDate(e.target.value)}
+            className="w-full border p-3 rounded-lg"
+          />
+
+          <input
+            type="time"
+            value={time}
+            onChange={(e)=>setTime(e.target.value)}
+            className="w-full border p-3 rounded-lg"
+          />
+
         </div>
 
-        {/* BUTTONS */}
-        <div className="mt-5 space-y-3">
+        {/* ONLY WHATSAPP BUTTON */}
+        <div className="mt-5">
 
           <Button
             size="lg"
-            onClick={handlePlaceOrder}
-            className="w-full bg-orange-500 text-white text-base"
-          >
-            Place Order
-          </Button>
-
-          <Button
-            size="lg"
-            variant="outline"
             onClick={whatsappOrder}
-            className="w-full text-base"
+            className="w-full bg-orange-500 text-white text-base"
           >
             Order on WhatsApp
           </Button>
