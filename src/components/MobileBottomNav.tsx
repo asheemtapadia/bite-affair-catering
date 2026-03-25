@@ -49,7 +49,7 @@ const MobileBottomNav = () => {
 
         {/* Plan Event */}
 <button
-  onClick={() => navigate("/plan")}
+  onClick={() => goToSection("packages")}
   className="flex flex-col items-center text-xs text-primary"
 >
   <ClipboardList size={22} />
