@@ -48,14 +48,13 @@ const MobileBottomNav = () => {
         </button>
 
         {/* Plan Event */}
-        <button
-          onClick={() => navigate("/packages")}
-          className="flex flex-col items-center text-xs text-primary"
-        >
-          <ClipboardList size={22} />
-          Plan
-        </button>
-
+<button
+  onClick={() => navigate("/plan")}
+  className="flex flex-col items-center text-xs text-primary"
+>
+  <ClipboardList size={22} />
+  Plan
+</button>
         {/* Call */}
         <a
           href="tel:+919211570030"
