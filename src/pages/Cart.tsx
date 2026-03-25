@@ -137,36 +137,54 @@ return (
         </div>
 
         {/* INPUTS */}
-        <div className="space-y-4">
+        <div className="space-y-5">
 
-          <input
-            placeholder="Your Name"
-            value={customerName}
-            onChange={(e)=>setCustomerName(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary"
-          />
+          <div>
+            <label className="text-sm text-gray-500 mb-1 block">
+              Your Name
+            </label>
+            <input
+              value={customerName}
+              onChange={(e)=>setCustomerName(e.target.value)}
+              className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+          </div>
 
-          <input
-            placeholder="Delivery Address"
-            value={address}
-            onChange={(e)=>setAddress(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary"
-          />
+          <div>
+            <label className="text-sm text-gray-500 mb-1 block">
+              Delivery Address
+            </label>
+            <input
+              value={address}
+              onChange={(e)=>setAddress(e.target.value)}
+              className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+          </div>
 
-          <input
-            type="date"
-            value={date}
-            min={new Date().toISOString().split("T")[0]}
-            onChange={(e)=>setDate(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl text-gray-700 focus:outline-none focus:ring-1 focus:ring-primary"
-          />
+          <div>
+            <label className="text-sm text-gray-500 mb-1 block">
+              Delivery Date
+            </label>
+            <input
+              type="date"
+              value={date}
+              min={new Date().toISOString().split("T")[0]}
+              onChange={(e)=>setDate(e.target.value)}
+              className="w-full border border-gray-200 p-4 rounded-xl text-gray-700 focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+          </div>
 
-          <input
-            type="time"
-            value={time}
-            onChange={(e)=>setTime(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl text-gray-700 focus:outline-none focus:ring-1 focus:ring-primary"
-          />
+          <div>
+            <label className="text-sm text-gray-500 mb-1 block">
+              Delivery Time
+            </label>
+            <input
+              type="time"
+              value={time}
+              onChange={(e)=>setTime(e.target.value)}
+              className="w-full border border-gray-200 p-4 rounded-xl text-gray-700 focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+          </div>
 
         </div>
 
