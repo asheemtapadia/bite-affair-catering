@@ -7,7 +7,6 @@ const Cart = () => {
 
 const [cart,setCart] = useState<any[]>([]);
 const [customerName,setCustomerName] = useState("");
-const [phone,setPhone] = useState("");
 const [address,setAddress] = useState("");
 const [date,setDate] = useState("");
 const [time,setTime] = useState("");
@@ -37,7 +36,7 @@ const total = cart.reduce((sum,item)=> sum + item.price,0);
 
 const whatsappOrder = () => {
 
-if(!customerName || !phone || !address || !date || !time){
+if(!customerName || !address || !date || !time){
   alert("Please fill all details");
   return;
 }
@@ -55,7 +54,6 @@ I'd like to order:
 ${message}
 
 👤 Name: ${customerName}
-📞 Phone: ${phone}
 📍 Address: ${address}
 
 📅 Date: ${date}
@@ -91,7 +89,7 @@ return (
       {cart.map((item)=>(
         <div
           key={item.id}
-          className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition"
+          className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm"
         >
 
           <div className="flex justify-between items-start">
@@ -116,7 +114,7 @@ return (
 
           <textarea
             placeholder="Special request (spice level, timing, extras...)"
-            className="w-full border rounded-lg p-2 text-sm mt-4"
+            className="w-full border rounded-lg p-3 text-sm mt-4"
             value={item.request || ""}
             onChange={(e)=>updateRequest(item.id,e.target.value)}
           />
@@ -128,10 +126,10 @@ return (
 
     {cart.length > 0 && (
 
-      <div className="mt-10 bg-white p-5 rounded-xl border shadow-sm">
+      <div className="mt-10 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
 
         {/* TOTAL */}
-        <div className="flex justify-between mb-5">
+        <div className="flex justify-between mb-6">
           <span className="text-lg font-medium">Total</span>
           <span className="text-lg font-semibold text-primary">
             ₹{total}
@@ -139,55 +137,53 @@ return (
         </div>
 
         {/* INPUTS */}
-        <div className="space-y-3">
+        <div className="space-y-4">
 
           <input
             placeholder="Your Name"
             value={customerName}
             onChange={(e)=>setCustomerName(e.target.value)}
-            className="w-full border p-3 rounded-lg"
-          />
-
-          <input
-            placeholder="Phone Number"
-            value={phone}
-            onChange={(e)=>setPhone(e.target.value)}
-            className="w-full border p-3 rounded-lg"
+            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary"
           />
 
           <input
             placeholder="Delivery Address"
             value={address}
             onChange={(e)=>setAddress(e.target.value)}
-            className="w-full border p-3 rounded-lg"
+            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary"
           />
 
-          <input
-            type="date"
+          <select
             value={date}
             onChange={(e)=>setDate(e.target.value)}
-            className="w-full border p-3 rounded-lg"
-          />
+            className="w-full border border-gray-200 p-4 rounded-xl text-gray-700 focus:outline-none focus:ring-1 focus:ring-primary"
+          >
+            <option value="">Select Delivery Date</option>
+            <option value="Today">Today</option>
+            <option value="Tomorrow">Tomorrow</option>
+          </select>
 
-          <input
-            type="time"
+          <select
             value={time}
             onChange={(e)=>setTime(e.target.value)}
-            className="w-full border p-3 rounded-lg"
-          />
+            className="w-full border border-gray-200 p-4 rounded-xl text-gray-700 focus:outline-none focus:ring-1 focus:ring-primary"
+          >
+            <option value="">Select Delivery Time</option>
+            <option value="Lunch (12–3 PM)">Lunch (12–3 PM)</option>
+            <option value="Evening (6–9 PM)">Evening (6–9 PM)</option>
+          </select>
 
         </div>
 
-        {/* ONLY WHATSAPP BUTTON */}
-        <div className="mt-5">
+        {/* BUTTON */}
+        <div className="mt-6">
 
-          <Button
-            size="lg"
+          <button
             onClick={whatsappOrder}
-            className="w-full bg-orange-500 text-white text-base"
+            className="w-full py-4 rounded-xl text-white text-base font-medium bg-primary hover:opacity-90 transition"
           >
             Order on WhatsApp
-          </Button>
+          </button>
 
         </div>
 
