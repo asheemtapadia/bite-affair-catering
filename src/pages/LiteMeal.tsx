@@ -145,32 +145,33 @@ const LiteMeal = () => {
         </button>
 
         {/* GUEST */}
-        <div className="px-5 mt-8 mb-10">
-          <h2 className="text-sm text-gray-500 mb-4 text-center tracking-wide">
-            Number of Guests
-          </h2>
+<div className="px-5 mt-8 mb-10">
+  <h2 className="text-sm text-gray-500 mb-4 text-center tracking-wide">
+    Number of Guests
+  </h2>
 
-          <div className="flex flex-wrap justify-center gap-3">
-            {[15, 20, 25, 30, 40, 50].map((p) => {
-              const active = pax === p;
+  <div className="flex justify-center">
+    <input
+      type="number"
+      min={15}
+      max={50}
+      value={pax}
+      onChange={(e) => {
+        let value = Number(e.target.value);
 
-              return (
-                <button
-                  key={p}
-                  onClick={() => setPax(p)}
-                  className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300
-                  ${
-                    active
-                      ? "bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-[0_8px_20px_rgba(249,115,22,0.35)] scale-105"
-                      : "bg-white/70 backdrop-blur-md border border-gray-200 text-gray-700 hover:shadow-md"
-                  }`}
-                >
-                  {p}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        if (value < 15) value = 15;
+        if (value > 50) value = 50;
+
+        setPax(value);
+      }}
+      className="w-40 text-center px-5 py-3 rounded-full text-lg font-medium border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
+    />
+  </div>
+
+  <p className="text-center text-xs text-gray-400 mt-2">
+    Min 15 • Max 50 guests
+  </p>
+</div>
 
         {/* MENU */}
         {Object.entries(menu).map(([key, value]) => {
