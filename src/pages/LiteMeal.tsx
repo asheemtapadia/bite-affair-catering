@@ -369,14 +369,14 @@ window.open(`https://wa.me/919211570030?text=${text}`, "_blank");
     + Add More Items
   </button>
 </div>
- {/* ADD-ONS POPUP */}
+{/* ADD-ONS POPUP */}
 {showAddons && (
-  <div className="fixed inset-0 bg-black/40 z-50 flex items-end">
+  <div className="fixed inset-0 bg-black/40 z-50 flex items-end pb-24">
     
-    <div className="bg-white w-full rounded-t-3xl max-h-[80vh] flex flex-col">
+    <div className="bg-white w-full rounded-t-3xl h-[75vh] flex flex-col shadow-2xl">
 
       {/* HEADER */}
-      <div className="flex justify-between items-center mb-4 p-5">
+      <div className="flex justify-between items-center p-5 border-b">
         <h2 className="text-lg font-semibold">Add More Items</h2>
         <button onClick={() => setShowAddons(false)}>✕</button>
       </div>
@@ -420,7 +420,7 @@ window.open(`https://wa.me/919211570030?text=${text}`, "_blank");
       </div>
 
       {/* DONE BUTTON */}
-      <div className="sticky bottom-0 bg-white p-5">
+      <div className="sticky bottom-0 bg-white p-5 border-t">
         <button
           onClick={() => setShowAddons(false)}
           className="w-full bg-orange-500 text-white py-3 rounded-xl font-medium"
