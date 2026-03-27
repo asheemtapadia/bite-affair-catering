@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const LiteMeal = () => {
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,7 +60,6 @@ const LiteMeal = () => {
   const rotiQty = pax;
 
   const handleOrder = () => {
-
     if (!name || !address || !date || !time) {
       setError("Complete all details to proceed");
       setTimeout(() => setError(""), 2500);
@@ -99,18 +97,24 @@ const LiteMeal = () => {
 
       {error && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
-          <div className="bg-white/90 border border-red-200 text-red-600 px-5 py-3 rounded-full shadow-xl text-sm">
+          <div className="bg-white/90 backdrop-blur-md border border-red-200 text-red-600 px-5 py-3 rounded-full shadow-xl text-sm font-medium">
             {error}
           </div>
         </div>
       )}
 
-      {/* HEADER */}
+      {/* HERO */}
       <div className="relative w-full h-[240px] overflow-hidden">
         <img
           src="/images/lite-meal/litebox-hero.jpg"
           className="absolute inset-0 w-full h-full object-cover"
         />
+        <div className="absolute inset-0 bg-black/50" />
+
+        <div className="relative z-10 flex flex-col items-center justify-center h-full text-white">
+          <h1 className="text-3xl font-semibold">Bite Affair Lite Box</h1>
+          <p className="text-sm mt-2">₹300 per person</p>
+        </div>
       </div>
 
       <div className="max-w-2xl mx-auto">
@@ -124,47 +128,44 @@ const LiteMeal = () => {
 
         {/* GUEST */}
         <div className="px-5 mt-8 mb-10 text-center">
-          <h2 className="text-sm text-gray-500 mb-4">
-            Number of Guests
-          </h2>
+          <h2 className="text-sm text-gray-500 mb-4">Number of Guests</h2>
 
           <select
             value={pax}
             onChange={(e) => setPax(Number(e.target.value))}
-            className="px-5 py-3 rounded-2xl border"
+            className="px-5 py-3 rounded-xl border"
           >
             {Array.from({ length: 36 }, (_, i) => i + 15).map((num) => (
-              <option key={num} value={num}>
-                {num} Guests
-              </option>
+              <option key={num}>{num} Guests</option>
             ))}
           </select>
         </div>
 
         {/* MENU */}
-        {Object.entries(menu).map(([key, value]) => {
+        {Object.entries(menu).map(([key, value]) => (
+          <div key={key} className="px-5 mb-10">
 
-          const items = value.items;
+            <img src={value.img} className="w-full h-32 object-cover rounded-xl mb-3" />
 
-          return (
-            <div key={key} className="px-5 mb-10">
+            <h2 className="flex justify-between mb-3">
+              <span>Select {key}</span>
+              <span className="text-orange-600 font-bold">
+                {key === "rice" ? `${riceQty} ltr` :
+                 key === "dessert" ? `${dessertQty} pcs` :
+                 `${quantity} kg`}
+              </span>
+            </h2>
 
-              <img
-                src={value.img}
-                className="w-full h-32 object-cover rounded-2xl mb-4"
-              />
+            <div className="flex flex-wrap gap-3">
+              {value.items.map((item) => {
+                const selected =
+                  (key === "dal" && dal === item) ||
+                  (key === "paneer" && paneer === item) ||
+                  (key === "veg" && veg === item) ||
+                  (key === "rice" && rice === item) ||
+                  (key === "dessert" && dessert === item);
 
-              <h2 className="mb-3 flex justify-between">
-                <span>Select {key}</span>
-                <span className="text-orange-600">
-                  {key === "rice" && `${riceQty} ltr`}
-                  {key === "dessert" && `${dessertQty} pcs`}
-                  {(key !== "rice" && key !== "dessert") && `${quantity} kg`}
-                </span>
-              </h2>
-
-              <div className="flex flex-wrap gap-3">
-                {items.map((item) => (
+                return (
                   <button
                     key={item}
                     onClick={() => {
@@ -174,30 +175,48 @@ const LiteMeal = () => {
                       if (key === "rice") setRice(item);
                       if (key === "dessert") setDessert(item);
                     }}
-                    className="px-4 py-2 rounded-full border"
+                    className={`px-4 py-2 rounded-full border ${
+                      selected
+                        ? "bg-orange-100 border-orange-300"
+                        : "bg-white border-gray-200"
+                    }`}
                   >
                     {item}
                   </button>
-                ))}
-              </div>
-
+                );
+              })}
             </div>
-          );
-        })}
+
+          </div>
+        ))}
 
         {/* FORM */}
-        <div className="px-5 space-y-4 mb-12">
-          <input placeholder="Name" className="w-full border p-4 rounded-xl" onChange={(e) => setName(e.target.value)} />
-          <input placeholder="Address" className="w-full border p-4 rounded-xl" onChange={(e) => setAddress(e.target.value)} />
-          <input type="date" className="w-full border p-4 rounded-xl" onChange={(e) => setDate(e.target.value)} />
-          <input type="time" className="w-full border p-4 rounded-xl" onChange={(e) => setTime(e.target.value)} />
+        <div className="px-5 space-y-6 mb-12">
+
+          <input placeholder="Name" className="w-full border p-4 rounded-xl"
+            onChange={(e) => setName(e.target.value)} />
+
+          <input placeholder="Address" className="w-full border p-4 rounded-xl"
+            onChange={(e) => setAddress(e.target.value)} />
+
+          <div>
+            <p className="text-sm mb-1">Delivery Date</p>
+            <input type="date" className="w-full border p-4 rounded-xl"
+              onChange={(e) => setDate(e.target.value)} />
+          </div>
+
+          <div>
+            <p className="text-sm mb-1">Delivery Time</p>
+            <input type="time" className="w-full border p-4 rounded-xl"
+              onChange={(e) => setTime(e.target.value)} />
+          </div>
+
         </div>
 
         <div className="px-5 mb-6 text-xl font-semibold">
           Total: ₹{total}
         </div>
 
-        {/* ORDER */}
         <div className="fixed bottom-20 left-0 right-0 px-5">
           <button
             onClick={handleOrder}
