@@ -372,7 +372,7 @@ ${addons.map(a => `• ${a.name} (${a.qty} ${a.unit})`).join("\n")}` : ""}
 {showAddons && (
   <div className="fixed inset-0 bg-black/40 z-50 flex items-end">
 
-    <div className="bg-white w-full rounded-t-3xl p-5 max-h-[80vh] overflow-y-auto">
+    <div className="bg-white w-full rounded-t-3xl max-h-[80vh] flex flex-col">
 
       {/* HEADER */}
       <div className="flex justify-between items-center mb-4">
