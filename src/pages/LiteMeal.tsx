@@ -432,7 +432,6 @@ window.open(`https://wa.me/919211570030?text=${text}`, "_blank");
   </div>
 )}       
 
-      </div>
 
       <div className="fixed bottom-20 left-0 right-0 px-5">
         <button
