@@ -8,7 +8,7 @@ const CTASection = () => {
       <div className="container mx-auto px-4 text-center">
         <ScrollReveal>
           <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy-foreground mb-6">
-            Order Directly. No Cart. No Checkout.
+            Order Directly.
           </h2>
         </ScrollReveal>
         <ScrollReveal delay={0.1}>
