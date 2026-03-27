@@ -25,11 +25,12 @@ const Index = () => {
 
       <HeroSection />
 
-      <MenuCards />
-
+      {/* ✅ LiteBox just below hero */}
       <div className="bg-[#faf7f2] py-10 px-4">
         <LiteMealBanner />
       </div>
+
+      <MenuCards />
 
       <AboutSection />
 
