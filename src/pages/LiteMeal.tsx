@@ -134,8 +134,9 @@ ${addons.length ? `➕ Add-ons:
 ${addons.map(a => `• ${a.name} (${a.qty} ${a.unit})`).join("\n")}` : ""}
 
 💰 Total: ₹${total}`
+); // ✅ YE LINE MUST HAI
 
-    window.open(`https://wa.me/919211570030?text=${text}`, "_blank");
+window.open(`https://wa.me/919211570030?text=${text}`, "_blank");
   };
 
   return (
