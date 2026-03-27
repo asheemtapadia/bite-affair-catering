@@ -11,11 +11,10 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import Testimonials from "@/components/Testimonials";
 import HowOrderingWorks from "@/components/HowOrderingWorks";
 import CTASection from "@/components/CTASection";
-import LocationSection from "@/components/LocationSection"; // ✅ ADDED
+import LocationSection from "@/components/LocationSection";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
-import AIChatbot from "@/components/AIChatbot";
 
 const Index = () => {
   return (
@@ -50,15 +49,13 @@ const Index = () => {
 
       <CTASection />
 
-      <LocationSection /> {/* ✅ ADDED */}
+      <LocationSection />
 
       <FAQSection />
 
       <Footer />
 
       <FloatingWhatsApp />
-
-      <AIChatbot />
 
     </div>
   );
