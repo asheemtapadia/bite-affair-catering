@@ -381,9 +381,9 @@ ${addons.map(a => `• ${a.name} (${a.qty} ${a.unit})`).join("\n")}` : ""}
       </div>
 
       {/* LIST */}
-      {addonMenu.map((item) => {
-        const selected = addons.find((i) => i.name === item.name);
-
+<div className="overflow-y-auto p-5 flex-1">
+  {addonMenu.map((item) => {
+    const selected = addons.find((i) => i.name === item.name);
         return (
           <div key={item.name} className="flex justify-between items-center border-b py-3">
 
