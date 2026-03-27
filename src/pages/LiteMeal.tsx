@@ -150,33 +150,22 @@ const LiteMeal = () => {
     Number of Guests
   </h2>
 
-  <div className="flex justify-center items-center gap-6">
-
-    {/* MINUS */}
-    <button
-      onClick={() => setPax((prev) => Math.max(15, prev - 1))}
-      className="w-12 h-12 rounded-full bg-white border border-gray-300 text-xl font-bold shadow-sm"
+  <div className="flex justify-center">
+    <select
+      value={pax}
+      onChange={(e) => setPax(Number(e.target.value))}
+      className="w-52 px-5 py-3 rounded-2xl border border-gray-300 bg-white text-center text-lg font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
     >
-      −
-    </button>
-
-    {/* VALUE */}
-    <div className="text-3xl font-semibold text-orange-600 w-16 text-center">
-      {pax}
-    </div>
-
-    {/* PLUS */}
-    <button
-      onClick={() => setPax((prev) => Math.min(50, prev + 1))}
-      className="w-12 h-12 rounded-full bg-orange-500 text-white text-xl font-bold shadow-md"
-    >
-      +
-    </button>
-
+      {Array.from({ length: 36 }, (_, i) => i + 15).map((num) => (
+        <option key={num} value={num}>
+          {num} Guests
+        </option>
+      ))}
+    </select>
   </div>
 
   <p className="text-center text-xs text-gray-400 mt-3">
-    Min 15 • Max 50 guests
+    Select between 15–50 guests
   </p>
 </div>
 
