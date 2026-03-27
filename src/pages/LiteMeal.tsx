@@ -97,46 +97,42 @@ const LiteMeal = () => {
 
       {error && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
-          <div className="bg-white/90 backdrop-blur-md border border-red-200 text-red-600 px-5 py-3 rounded-full shadow-xl text-sm font-medium">
+          <div className="bg-white/90 border text-red-600 px-5 py-3 rounded-full shadow text-sm">
             {error}
           </div>
         </div>
       )}
 
       {/* HERO */}
-      <div className="relative w-full h-[240px] overflow-hidden">
-        <img
-          src="/images/lite-meal/litebox-hero.jpg"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+      <div className="relative w-full h-[260px] overflow-hidden">
+        <img src="/images/lite-meal/litebox-hero.jpg" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/50" />
 
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-white">
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
           <h1 className="text-3xl font-semibold">Bite Affair Lite Box</h1>
-          <p className="text-sm mt-2">₹300 per person</p>
+          <p className="mt-2">₹300 per person</p>
         </div>
       </div>
 
       <div className="max-w-2xl mx-auto">
 
-        <button
-          onClick={() => navigate(-1)}
-          className="mt-6 ml-4 text-sm text-gray-500"
-        >
+        <button onClick={() => navigate(-1)} className="mt-6 ml-4 text-gray-500">
           ← Back
         </button>
 
         {/* GUEST */}
         <div className="px-5 mt-8 mb-10 text-center">
-          <h2 className="text-sm text-gray-500 mb-4">Number of Guests</h2>
+          <h2 className="text-gray-500 mb-4">Number of Guests</h2>
 
           <select
             value={pax}
-            onChange={(e) => setPax(Number(e.target.value))}
-            className="px-5 py-3 rounded-xl border"
+            onChange={(e) => setPax(parseInt(e.target.value))}
+            className="px-5 py-3 border rounded-xl"
           >
             {Array.from({ length: 36 }, (_, i) => i + 15).map((num) => (
-              <option key={num}>{num} Guests</option>
+              <option key={num} value={num}>
+                {num} Guests
+              </option>
             ))}
           </select>
         </div>
@@ -145,7 +141,7 @@ const LiteMeal = () => {
         {Object.entries(menu).map(([key, value]) => (
           <div key={key} className="px-5 mb-10">
 
-            <img src={value.img} className="w-full h-32 object-cover rounded-xl mb-3" />
+            <img src={value.img} className="w-full h-32 rounded-xl object-cover mb-3" />
 
             <h2 className="flex justify-between mb-3">
               <span>Select {key}</span>
@@ -176,9 +172,7 @@ const LiteMeal = () => {
                       if (key === "dessert") setDessert(item);
                     }}
                     className={`px-4 py-2 rounded-full border ${
-                      selected
-                        ? "bg-orange-100 border-orange-300"
-                        : "bg-white border-gray-200"
+                      selected ? "bg-orange-100 border-orange-300" : "bg-white border-gray-200"
                     }`}
                   >
                     {item}
@@ -189,6 +183,28 @@ const LiteMeal = () => {
 
           </div>
         ))}
+
+        {/* BREAD */}
+        <div className="px-5 mb-10">
+          <h2 className="flex justify-between mb-3">
+            <span>Select Bread</span>
+            <span className="text-orange-600 font-bold">{rotiQty} pcs</span>
+          </h2>
+
+          <div className="flex gap-3">
+            {["Lachha Paratha", "Tandoori Roti"].map((item) => (
+              <button
+                key={item}
+                onClick={() => setBread(item)}
+                className={`px-4 py-2 rounded-full border ${
+                  bread === item ? "bg-orange-100 border-orange-300" : "bg-white border-gray-200"
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
 
         {/* FORM */}
         <div className="px-5 space-y-6 mb-12">
@@ -218,10 +234,7 @@ const LiteMeal = () => {
         </div>
 
         <div className="fixed bottom-20 left-0 right-0 px-5">
-          <button
-            onClick={handleOrder}
-            className="w-full bg-orange-500 text-white py-4 rounded-2xl"
-          >
+          <button onClick={handleOrder} className="w-full bg-orange-500 text-white py-4 rounded-2xl">
             Order on WhatsApp
           </button>
         </div>
