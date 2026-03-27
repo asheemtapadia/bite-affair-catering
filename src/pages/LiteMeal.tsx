@@ -417,6 +417,7 @@ ${addons.map(a => `• ${a.name} (${a.qty} ${a.unit})`).join("\n")}` : ""}
           </div>
         );
       })}
+  </div>
 
   {/* DONE BUTTON (STICKY) */}
 <div className="sticky bottom-0 bg-white pt-3 pb-2">
