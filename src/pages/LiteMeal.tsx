@@ -442,3 +442,11 @@ window.open(`https://wa.me/919211570030?text=${text}`, "_blank");
     Order on WhatsApp
   </button>
 </div>
+
+</div>
+</div>
+
+);
+};
+
+export default LiteMeal;
