@@ -39,13 +39,13 @@ const MobileBottomNav = () => {
         </button>
 
         {/* Menu */}
-        <button
-          onClick={() => goToSection("menu")}
-          className="flex flex-col items-center text-xs text-gray-700"
-        >
-          <UtensilsCrossed size={20} />
-          Menu
-        </button>
+<button
+  onClick={() => goToSection("menu")}
+  className="flex flex-col items-center text-xs text-gray-700"
+>
+  <UtensilsCrossed size={20} />
+  Packages
+</button>
 
         {/* Plan Event */}
 <button
