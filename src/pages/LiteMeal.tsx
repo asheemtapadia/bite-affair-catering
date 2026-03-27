@@ -47,7 +47,49 @@ const LiteMeal = () => {
   const [time, setTime] = useState("");
 
   const [error, setError] = useState("");
+// ✅ ADD-ONS FEATURE START
 
+const [showAddons, setShowAddons] = useState(false);
+
+const addonMenu = [
+  { name: "Kheer", unit: "kg" },
+  { name: "Mango Phirni", unit: "kg" },
+  { name: "Brownie", unit: "pcs" },
+  { name: "Ice Cream", unit: "cups" },
+  { name: "Extra Paneer Dish", unit: "kg" },
+  { name: "Extra Dal", unit: "kg" },
+  { name: "Extra Veg Dish", unit: "kg" },
+  { name: "Extra Rice", unit: "ltr" }
+];
+
+const [addons, setAddons] = useState([]);
+
+const updateAddon = (item, change) => {
+  setAddons((prev) => {
+    const existing = prev.find((i) => i.name === item.name);
+
+    if (!existing && change > 0) {
+      return [...prev, { ...item, qty: 5 }];
+    }
+
+    if (existing) {
+      const newQty = existing.qty + change;
+
+      if (newQty <= 0) {
+        return prev.filter((i) => i.name !== item.name);
+      }
+
+      return prev.map((i) =>
+        i.name === item.name ? { ...i, qty: newQty } : i
+      );
+    }
+
+    return prev;
+  });
+};
+
+// ✅ ADD-ONS FEATURE END
+  
   const total = pax * 300;
 
   const quantity = (pax * 0.1).toFixed(1);
