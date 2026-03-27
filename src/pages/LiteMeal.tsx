@@ -420,7 +420,7 @@ ${addons.map(a => `• ${a.name} (${a.qty} ${a.unit})`).join("\n")}` : ""}
   </div>
 
   {/* DONE BUTTON (STICKY) */}
-<div className="sticky bottom-0 bg-white pt-3 pb-2">
+<div className="sticky bottom-0 bg-white pt-3 pb-6">
   <button
     onClick={() => setShowAddons(false)}
     className="w-full bg-orange-500 text-white py-3 rounded-xl font-medium"
