@@ -429,8 +429,8 @@ window.open(`https://wa.me/919211570030?text=${text}`, "_blank");
         </button>
       </div>
 
-    </div> {/* white box close */}
-  </div>   {/* overlay close */}
+    </div>
+  </div>
 )}
 
 {/* ORDER BUTTON */}
