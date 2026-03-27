@@ -357,6 +357,15 @@ const updateAddon = (item, change) => {
         <div className="px-5 mb-6 text-xl font-semibold">
           Total: ₹{total}
         </div>
+        {/* ✅ ADD MORE ITEMS BUTTON */}
+<div className="px-5 mb-10">
+  <button
+    onClick={() => setShowAddons(true)}
+    className="w-full border border-orange-400 text-orange-500 py-3 rounded-xl font-medium"
+  >
+    + Add More Items
+  </button>
+</div>
 
       </div>
 
