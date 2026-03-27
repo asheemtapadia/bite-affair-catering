@@ -6,8 +6,8 @@ import logo from "@/assets/bite-affair-logo.png";
 
 const navLinks = [
   { label: "Home", href: "/#home" },
-  { label: "Menu", href: "/#menu" },
-  { label: "Packages", href: "/#packages" },
+  { label: "Packages", href: "/#menu" }, // 🔥 renamed
+  { label: "Plan My Event", href: "/#packages" }, // 🔥 renamed
   { label: "How it Works", href: "/#how-it-works" },
   { label: "About", href: "/#about" },
   { label: "Testimonials", href: "/#testimonials" },
