@@ -418,15 +418,15 @@ ${addons.map(a => `• ${a.name} (${a.qty} ${a.unit})`).join("\n")}` : ""}
         );
       })}
 
-      {/* DONE BUTTON */}
-      <button
-        onClick={() => setShowAddons(false)}
-        className="w-full mt-5 bg-orange-500 text-white py-3 rounded-xl"
-      >
-        Done
-      </button>
-
-    </div>
+  {/* DONE BUTTON (STICKY) */}
+<div className="sticky bottom-0 bg-white pt-3 pb-2">
+  <button
+    onClick={() => setShowAddons(false)}
+    className="w-full bg-orange-500 text-white py-3 rounded-xl font-medium"
+  >
+    Done
+  </button>
+</div>
   </div>
 )}       
 
