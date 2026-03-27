@@ -52,7 +52,7 @@ const HeroSection = () => {
           Delivered across Delhi NCR
         </motion.p>
 
-        {/* Premium Wide Buttons */}
+        {/* Premium Buttons */}
         <motion.div
           className="mt-10 grid grid-cols-2 gap-5 max-w-lg mx-auto"
           initial={{ opacity: 0, y: 20 }}
@@ -62,13 +62,6 @@ const HeroSection = () => {
 
           <Button
             onClick={() => scrollTo("menu")}
-            className="h-12 rounded-full bg-primary text-white text-sm shadow-md hover:scale-[1.02] transition"
-          >
-            Browse Menu
-          </Button>
-
-          <Button
-            onClick={() => scrollTo("packages")}
             className="h-12 rounded-full border border-primary text-primary bg-white text-sm shadow-sm hover:bg-primary hover:text-white transition"
           >
             View Packages
@@ -79,13 +72,6 @@ const HeroSection = () => {
             className="h-12 rounded-full border border-primary text-primary bg-white text-sm shadow-sm hover:bg-primary hover:text-white transition"
           >
             Plan My Event
-          </Button>
-
-          <Button
-            onClick={() => scrollTo("how-it-works")}
-            className="h-12 rounded-full border border-primary text-primary bg-white text-sm shadow-sm hover:bg-primary hover:text-white transition"
-          >
-            How It Works
           </Button>
 
         </motion.div>
