@@ -150,26 +150,26 @@ const LiteMeal = () => {
     Number of Guests
   </h2>
 
-  <div className="flex justify-center">
+  <div className="flex flex-col items-center gap-4">
+
+    <div className="text-3xl font-semibold text-orange-600">
+      {pax}
+    </div>
+
     <input
-      type="number"
+      type="range"
       min={15}
       max={50}
+      step={1}
       value={pax}
-      onChange={(e) => {
-        let value = Number(e.target.value);
-
-        if (value < 15) value = 15;
-        if (value > 50) value = 50;
-
-        setPax(value);
-      }}
-      className="w-40 text-center px-5 py-3 rounded-full text-lg font-medium border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
+      onChange={(e) => setPax(Number(e.target.value))}
+      className="w-full accent-orange-500"
     />
+
   </div>
 
   <p className="text-center text-xs text-gray-400 mt-2">
-    Min 15 • Max 50 guests
+    Slide to select guests (15–50)
   </p>
 </div>
 
