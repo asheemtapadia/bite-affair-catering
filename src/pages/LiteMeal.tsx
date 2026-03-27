@@ -127,8 +127,10 @@ const updateAddon = (item, change) => {
 🍚 Rice: ${rice} (${riceQty} ltr)
 🍰 Dessert: ${dessert} (${dessertQty} pcs)
 
-🥖 Bread: ${bread} (${rotiQty} pcs)
-🥗 Raita & Salad: Included
+🥖 Bread: ${bread} (${rotiQty} pcs🥗 Raita & Salad: Included
+
+${addons.length ? `➕ Add-ons:
+${addons.map(a => `• ${a.name} (${a.qty} ${a.unit})`).join("\n")}` : ""}
 
 💰 Total: ₹${total}`
     );
