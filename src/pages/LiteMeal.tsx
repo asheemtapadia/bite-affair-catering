@@ -366,6 +366,67 @@ const updateAddon = (item, change) => {
     + Add More Items
   </button>
 </div>
+ {/* ✅ ADD-ONS POPUP */}
+{showAddons && (
+  <div className="fixed inset-0 bg-black/40 z-50 flex items-end">
+
+    <div className="bg-white w-full rounded-t-3xl p-5 max-h-[80vh] overflow-y-auto">
+
+      {/* HEADER */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-semibold">Add More Items</h2>
+        <button onClick={() => setShowAddons(false)}>✕</button>
+      </div>
+
+      {/* LIST */}
+      {addonMenu.map((item) => {
+        const selected = addons.find((i) => i.name === item.name);
+
+        return (
+          <div key={item.name} className="flex justify-between items-center border-b py-3">
+
+            <div>
+              <p className="font-medium">{item.name}</p>
+              <p className="text-xs text-gray-400">{item.unit}</p>
+            </div>
+
+            <div className="flex items-center gap-3">
+
+              <button
+                onClick={() => updateAddon(item, -5)}
+                className="w-8 h-8 rounded-full border"
+              >
+                −
+              </button>
+
+              <span className="w-8 text-center">
+                {selected ? selected.qty : 0}
+              </span>
+
+              <button
+                onClick={() => updateAddon(item, 5)}
+                className="w-8 h-8 rounded-full bg-orange-500 text-white"
+              >
+                +
+              </button>
+
+            </div>
+
+          </div>
+        );
+      })}
+
+      {/* DONE BUTTON */}
+      <button
+        onClick={() => setShowAddons(false)}
+        className="w-full mt-5 bg-orange-500 text-white py-3 rounded-xl"
+      >
+        Done
+      </button>
+
+    </div>
+  </div>
+)}       
 
       </div>
 
