@@ -8,7 +8,7 @@ const Packages = () => {
 const [searchParams] = useSearchParams();
 const navigate = useNavigate();
 
-/* ✅ FIX 1: SCROLL TOP */
+/* SCROLL TOP */
 useEffect(() => {
   window.scrollTo(0, 0);
 }, []);
@@ -16,10 +16,7 @@ useEffect(() => {
 const vegGuests = Number(searchParams.get("veg") || 10);
 const nonVegGuests = Number(searchParams.get("nonveg") || 0);
 
-/* ❌ OLD */
-// const area = searchParams.get("area");
-
-/* ✅ FIX 2: DELIVERY FIELDS */
+/* DELIVERY FIELDS */
 const name = searchParams.get("name");
 const phone = searchParams.get("phone");
 const address = searchParams.get("address");
@@ -46,7 +43,7 @@ selectedNonVegPackage ? nonVegGuests * selectedNonVegPackage.price : 0;
 const grandTotal = vegTotal + nonVegTotal;
 
 
-/* ✅ FIX 3: WHATSAPP MESSAGE */
+/* WHATSAPP MESSAGE */
 
 const handleSubmit = () => {
 
@@ -110,12 +107,12 @@ goToEventSection();
 
 return (
 
-<div className="min-h-screen py-20 px-6 pb-32">
+<div className="min-h-screen py-20 px-6 pb-28 bg-gradient-to-b from-white to-gray-50">
 
 {/* EVENT BAR */}
-<div className="max-w-6xl mx-auto mb-10 px-4">
+<div className="max-w-6xl mx-auto mb-12 px-4">
 
-  <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
+  <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-gray-200 shadow-sm p-5">
 
     <div className="flex flex-wrap gap-3 text-sm text-gray-600 mb-4">
 
@@ -174,7 +171,7 @@ return (
 </div>
 
 
-<h1 className="text-3xl font-bold text-center mb-12">
+<h1 className="text-3xl font-bold text-center mb-14 tracking-tight">
 Available Packages
 </h1>
 
@@ -191,9 +188,9 @@ Veg Packages
 
 {vegPackages.map((pkg) => (
 
-<div key={pkg.slug} className={`relative border rounded-xl p-6 shadow-sm flex flex-col transition hover:shadow-xl hover:-translate-y-1 ${
+<div key={pkg.slug} className={`relative rounded-2xl border p-5 bg-white shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col ${
 selectedVegPackage?.slug === pkg.slug
-? "border-primary ring-2 ring-primary bg-primary/5"
+? "ring-2 ring-primary border-primary bg-primary/5"
 : ""
 }`}>
 
@@ -207,11 +204,13 @@ Premium
 </span>
 )}
 
-<img src={`/images/packages/${pkg.slug}.jpg`} className="h-48 w-full object-cover rounded-lg mb-4" />
+<img src={`/images/packages/${pkg.slug}.jpg`} className="h-48 w-full object-cover rounded-xl mb-4" />
 
 <h3 className="text-lg font-semibold mb-1">{pkg.name}</h3>
 
-<p className="text-xl font-semibold text-primary mb-3">₹{pkg.price} / person</p>
+<p className="text-xl font-semibold text-primary mb-3">
+₹{pkg.price} <span className="text-sm text-gray-500">/ person</span>
+</p>
 
 <p className="text-sm text-muted-foreground mb-4">
 {pkg.previewItems.slice(0,3).join(" • ")}
@@ -221,12 +220,19 @@ Premium
 View Full Menu
 </Link>
 
-<Button onClick={() =>
+<Button
+className={`w-full ${
+selectedVegPackage?.slug === pkg.slug
+? "bg-green-600 hover:bg-green-700"
+: ""
+}`}
+onClick={() =>
 selectedVegPackage?.slug === pkg.slug
 ? setSelectedVegPackage(null)
 : setSelectedVegPackage(pkg)
-}>
-{selectedVegPackage?.slug === pkg.slug ? "Selected ✓ (Tap to remove)" : "Select Package"}
+}
+>
+{selectedVegPackage?.slug === pkg.slug ? "✓ Selected" : "Select Package"}
 </Button>
 
 </div>
@@ -250,9 +256,9 @@ Non Veg Packages
 
 {nonVegPackages.map((pkg) => (
 
-<div key={pkg.slug} className={`relative border rounded-xl p-6 shadow-sm flex flex-col transition hover:shadow-xl hover:-translate-y-1 ${
+<div key={pkg.slug} className={`relative rounded-2xl border p-5 bg-white shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col ${
 selectedNonVegPackage?.slug === pkg.slug
-? "border-primary ring-2 ring-primary bg-primary/5"
+? "ring-2 ring-primary border-primary bg-primary/5"
 : ""
 }`}>
 
@@ -266,11 +272,13 @@ Premium
 </span>
 )}
 
-<img src={`/images/packages/${pkg.slug}.jpg`} className="h-48 w-full object-cover rounded-lg mb-4" />
+<img src={`/images/packages/${pkg.slug}.jpg`} className="h-48 w-full object-cover rounded-xl mb-4" />
 
 <h3 className="text-lg font-semibold mb-1">{pkg.name}</h3>
 
-<p className="text-xl font-semibold text-primary mb-3">₹{pkg.price} / person</p>
+<p className="text-xl font-semibold text-primary mb-3">
+₹{pkg.price} <span className="text-sm text-gray-500">/ person</span>
+</p>
 
 <p className="text-sm text-muted-foreground mb-4">
 {pkg.previewItems.slice(0,3).join(" • ")}
@@ -280,12 +288,19 @@ Premium
 View Full Menu
 </Link>
 
-<Button onClick={() =>
+<Button
+className={`w-full ${
+selectedNonVegPackage?.slug === pkg.slug
+? "bg-green-600 hover:bg-green-700"
+: ""
+}`}
+onClick={() =>
 selectedNonVegPackage?.slug === pkg.slug
 ? setSelectedNonVegPackage(null)
 : setSelectedNonVegPackage(pkg)
-}>
-{selectedNonVegPackage?.slug === pkg.slug ? "Selected ✓ (Tap to remove)" : "Select Package"}
+}
+>
+{selectedNonVegPackage?.slug === pkg.slug ? "✓ Selected" : "Select Package"}
 </Button>
 
 </div>
@@ -297,26 +312,22 @@ selectedNonVegPackage?.slug === pkg.slug
 )}
 
 
-{/* FLOATING BAR */}
+{/* ULTRA PREMIUM FLOATING CTA */}
 
-<div className={`fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t px-4 py-3 ${
-selectedVegPackage || selectedNonVegPackage ? "translate-y-0" : "translate-y-3"
-}`}>
+<div className={`fixed bottom-0 left-0 right-0 px-4 pb-5 ${
+selectedVegPackage || selectedNonVegPackage
+? "opacity-100 translate-y-0"
+: "opacity-0 translate-y-10 pointer-events-none"
+} transition-all duration-300`}>
 
-<div className="max-w-4xl mx-auto flex justify-between items-center">
-
-<p>
-Selected:
-{selectedVegPackage && ` Veg - ${selectedVegPackage.name}`}
-{selectedNonVegPackage && ` | Non Veg - ${selectedNonVegPackage.name}`}
-{!selectedVegPackage && !selectedNonVegPackage && " None"}
-</p>
-
-<Button onClick={handleSubmit}>
-Get Quote on WhatsApp
-</Button>
-
-</div>
+  <div className="max-w-md mx-auto">
+    <Button
+      onClick={handleSubmit}
+      className="w-full h-14 text-lg rounded-2xl shadow-xl bg-primary hover:scale-[1.02] transition-all duration-200"
+    >
+      Get Quote on WhatsApp
+    </Button>
+  </div>
 
 </div>
 
