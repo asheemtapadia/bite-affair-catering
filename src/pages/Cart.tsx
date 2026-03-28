@@ -6,8 +6,16 @@ import { Button } from "@/components/ui/button";
 const Cart = () => {
 
 const [cart,setCart] = useState<any[]>([]);
-const [customerName,setCustomerName] = useState("");
+
+// ✅ NEW FIELDS
+const [firstName,setFirstName] = useState("");
 const [address,setAddress] = useState("");
+const [apartment,setApartment] = useState("");
+const [city,setCity] = useState("");
+const [userState,setUserState] = useState("");
+const [pin,setPin] = useState("");
+const [phone,setPhone] = useState("");
+
 const [date,setDate] = useState("");
 const [time,setTime] = useState("");
 
@@ -36,7 +44,7 @@ const total = cart.reduce((sum,item)=> sum + item.price,0);
 
 const whatsappOrder = () => {
 
-if(!customerName || !address || !date || !time){
+if(!firstName || !address || !city || !userState || !pin || !phone || !date || !time){
   alert("Please fill all details");
   return;
 }
@@ -53,8 +61,13 @@ I'd like to order:
 
 ${message}
 
-👤 Name: ${customerName}
-📍 Address: ${address}
+👤 Name: ${firstName}
+📞 Phone: ${phone}
+
+📍 Address:
+${address}
+${apartment ? apartment : ""}
+${city}, ${userState} - ${pin}
 
 📅 Date: ${date}
 ⏰ Time: ${time}
@@ -136,53 +149,85 @@ return (
           </span>
         </div>
 
-        {/* INPUTS */}
+        {/* FORM */}
         <div className="space-y-5">
 
-          <div>
-            <label className="text-sm text-gray-500 mb-1 block">
-              Your Name
-            </label>
-            <input
-              value={customerName}
-              onChange={(e)=>setCustomerName(e.target.value)}
-              className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-          </div>
+          {/* FIRST NAME */}
+          <input
+            placeholder="First Name"
+            value={firstName}
+            onChange={(e)=>setFirstName(e.target.value)}
+            className="w-full border border-gray-200 p-4 rounded-xl"
+          />
 
-          <div>
-            <label className="text-sm text-gray-500 mb-1 block">
-              Delivery Address
-            </label>
-            <input
-              value={address}
-              onChange={(e)=>setAddress(e.target.value)}
-              className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary"
-            />
-          </div>
+          {/* ADDRESS */}
+          <input
+            placeholder="Address"
+            value={address}
+            onChange={(e)=>setAddress(e.target.value)}
+            className="w-full border border-gray-200 p-4 rounded-xl"
+          />
 
+          {/* APARTMENT */}
+          <input
+            placeholder="Apartment, suite, etc."
+            value={apartment}
+            onChange={(e)=>setApartment(e.target.value)}
+            className="w-full border border-gray-200 p-4 rounded-xl"
+          />
+
+          {/* CITY */}
+          <input
+            placeholder="City"
+            value={city}
+            onChange={(e)=>setCity(e.target.value)}
+            className="w-full border border-gray-200 p-4 rounded-xl"
+          />
+
+          {/* STATE */}
+          <input
+            placeholder="State"
+            value={userState}
+            onChange={(e)=>setUserState(e.target.value)}
+            className="w-full border border-gray-200 p-4 rounded-xl"
+          />
+
+          {/* PIN */}
+          <input
+            placeholder="PIN Code"
+            value={pin}
+            onChange={(e)=>setPin(e.target.value)}
+            className="w-full border border-gray-200 p-4 rounded-xl"
+          />
+
+          {/* PHONE */}
+          <input
+            placeholder="Phone"
+            value={phone}
+            onChange={(e)=>setPhone(e.target.value)}
+            className="w-full border border-gray-200 p-4 rounded-xl"
+          />
+
+          {/* DATE */}
           <div>
-            <label className="text-sm text-gray-500 mb-1 block">
-              Delivery Date
-            </label>
+            <p className="text-sm mb-1">Delivery Date</p>
             <input
               type="date"
               value={date}
               min={new Date().toISOString().split("T")[0]}
               onChange={(e)=>setDate(e.target.value)}
-              className="w-full border border-gray-200 p-4 rounded-xl text-gray-700 focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full border p-4 rounded-xl"
             />
           </div>
 
+          {/* TIME */}
           <div>
-            <label className="text-sm text-gray-500 mb-1 block">
-              Delivery Time
-            </label>
+            <p className="text-sm mb-1">Delivery Time</p>
             <input
               type="time"
               value={time}
               onChange={(e)=>setTime(e.target.value)}
-              className="w-full border border-gray-200 p-4 rounded-xl text-gray-700 focus:outline-none focus:ring-1 focus:ring-primary"
+              className="w-full border p-4 rounded-xl"
             />
           </div>
 
@@ -190,14 +235,12 @@ return (
 
         {/* BUTTON */}
         <div className="mt-6">
-
           <button
             onClick={whatsappOrder}
-            className="w-full py-4 rounded-xl text-white text-base font-medium bg-primary hover:opacity-90 transition"
+            className="w-full py-4 rounded-xl text-white text-base font-medium bg-primary"
           >
             Order on WhatsApp
           </button>
-
         </div>
 
       </div>
