@@ -8,11 +8,11 @@ const Packages = () => {
 const [searchParams] = useSearchParams();
 const navigate = useNavigate();
 
-/* SCROLL TOP */
 useEffect(() => {
-  window.scrollTo(0, 0);
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 0);
 }, []);
-
 const vegGuests = Number(searchParams.get("veg") || 10);
 const nonVegGuests = Number(searchParams.get("nonveg") || 0);
 
