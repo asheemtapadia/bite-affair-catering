@@ -55,7 +55,6 @@ const PackagesSection = () => {
       return;
     }
 
-    // ✅ Guest validation
     if (
       (vegGuests && (vegGuests < 15 || vegGuests > 50)) ||
       (nonVegGuests && (nonVegGuests < 15 || nonVegGuests > 50))
@@ -64,7 +63,6 @@ const PackagesSection = () => {
       return;
     }
 
-    // ✅ Phone validation
     if (!/^[0-9]{10}$/.test(phone)) {
       alert("Enter valid 10 digit phone number");
       return;
@@ -197,6 +195,7 @@ const PackagesSection = () => {
                 />
               </div>
 
+              {/* ✅ FIXED HERE */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Veg Guests</label>
                 <Input
@@ -206,14 +205,23 @@ const PackagesSection = () => {
                   className="h-11 rounded-lg"
                   value={vegGuests}
                   onChange={(e) => {
-                    let value = Number(e.target.value);
-                    if (value < 15) value = 15;
-                    if (value > 50) value = 50;
-                    setVegGuests(value);
+                    const value = e.target.value;
+
+                    if (value === "") {
+                      setVegGuests("");
+                      return;
+                    }
+
+                    const num = Number(value);
+
+                    if (num >= 15 && num <= 50) {
+                      setVegGuests(num);
+                    }
                   }}
                 />
               </div>
 
+              {/* ✅ FIXED HERE */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Non Veg Guests</label>
                 <Input
@@ -223,10 +231,18 @@ const PackagesSection = () => {
                   className="h-11 rounded-lg"
                   value={nonVegGuests}
                   onChange={(e) => {
-                    let value = Number(e.target.value);
-                    if (value < 15) value = 15;
-                    if (value > 50) value = 50;
-                    setNonVegGuests(value);
+                    const value = e.target.value;
+
+                    if (value === "") {
+                      setNonVegGuests("");
+                      return;
+                    }
+
+                    const num = Number(value);
+
+                    if (num >= 15 && num <= 50) {
+                      setNonVegGuests(num);
+                    }
                   }}
                 />
               </div>
