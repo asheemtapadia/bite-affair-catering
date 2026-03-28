@@ -41,8 +41,9 @@ const PackagesSection = () => {
       setState(data.state || "");
       setPin(data.pin || "");
 
-      setDate(data.date || "");
-      setTime(data.time || "");
+      // ❌ IMPORTANT FIX: Date & Time auto-fill remove
+      // setDate(data.date || "");
+      // setTime(data.time || "");
     }
   }, []);
 
@@ -112,49 +113,41 @@ const PackagesSection = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-              {/* NAME */}
               <div>
                 <label className="text-sm mb-1 block">Name</label>
                 <Input value={name} onChange={(e) => setName(e.target.value)} />
               </div>
 
-              {/* PHONE */}
               <div>
                 <label className="text-sm mb-1 block">Phone</label>
                 <Input value={phone} onChange={(e) => setPhone(e.target.value)} />
               </div>
 
-              {/* ADDRESS */}
               <div className="md:col-span-2">
                 <label className="text-sm mb-1 block">Address</label>
                 <Input value={address} onChange={(e) => setAddress(e.target.value)} />
               </div>
 
-              {/* APARTMENT */}
               <div className="md:col-span-2">
                 <label className="text-sm mb-1 block">Apartment / Suite</label>
                 <Input value={apartment} onChange={(e) => setApartment(e.target.value)} />
               </div>
 
-              {/* CITY */}
               <div>
                 <label className="text-sm mb-1 block">City</label>
                 <Input value={city} onChange={(e) => setCity(e.target.value)} />
               </div>
 
-              {/* STATE */}
               <div>
                 <label className="text-sm mb-1 block">State</label>
                 <Input value={state} onChange={(e) => setState(e.target.value)} />
               </div>
 
-              {/* PIN */}
               <div>
                 <label className="text-sm mb-1 block">PIN Code</label>
                 <Input value={pin} onChange={(e) => setPin(e.target.value)} />
               </div>
 
-              {/* VEG */}
               <div>
                 <label className="text-sm mb-1 block">Veg Guests</label>
                 <Input
@@ -164,7 +157,6 @@ const PackagesSection = () => {
                 />
               </div>
 
-              {/* NON VEG */}
               <div>
                 <label className="text-sm mb-1 block">Non Veg Guests</label>
                 <Input
@@ -174,16 +166,22 @@ const PackagesSection = () => {
                 />
               </div>
 
-              {/* DATE */}
               <div>
                 <label className="text-sm mb-1 block">Date</label>
-                <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                <Input
+                  type="date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                />
               </div>
 
-              {/* TIME */}
               <div>
                 <label className="text-sm mb-1 block">Delivery Time</label>
-                <Input type="time" value={time} onChange={(e) => setTime(e.target.value)} />
+                <Input
+                  type="time"
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                />
               </div>
 
             </div>
