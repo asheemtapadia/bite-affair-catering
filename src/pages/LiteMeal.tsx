@@ -286,11 +286,20 @@ ${city}, ${userState} - ${pin}
         <div className="h-20"></div>
 
         {/* CTA */}
-        <div className="fixed bottom-20 left-0 right-0 px-5 bg-[#faf7f2] pt-3 pb-5 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-          <button onClick={handleOrder} className="w-full bg-orange-500 text-white py-4 rounded-2xl shadow-lg">
-            Order on WhatsApp
-          </button>
-        </div>
+<div className="fixed bottom-[72px] left-0 right-0 px-4 z-50">
+
+  <div className="max-w-md mx-auto bg-white/80 backdrop-blur-xl border border-gray-200 rounded-2xl shadow-lg px-3 py-3">
+
+    <button
+      onClick={handleOrder}
+      className="w-full h-14 rounded-xl text-lg font-medium bg-orange-500 text-white shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+    >
+      Order on WhatsApp
+    </button>
+
+  </div>
+
+</div>
 
       </div>
     </div>
