@@ -195,56 +195,36 @@ const PackagesSection = () => {
                 />
               </div>
 
-              {/* ✅ FIXED HERE */}
+              {/* ✅ DROPDOWN */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Veg Guests</label>
-                <Input
-                  type="number"
-                  min={15}
-                  max={50}
-                  className="h-11 rounded-lg"
+                <select
+                  className="h-11 w-full rounded-lg border border-gray-300 px-3"
                   value={vegGuests}
-                  onChange={(e) => {
-                    const value = e.target.value;
-
-                    if (value === "") {
-                      setVegGuests("");
-                      return;
-                    }
-
-                    const num = Number(value);
-
-                    if (num >= 15 && num <= 50) {
-                      setVegGuests(num);
-                    }
-                  }}
-                />
+                  onChange={(e) => setVegGuests(e.target.value)}
+                >
+                  <option value="">Select</option>
+                  {Array.from({ length: 36 }, (_, i) => {
+                    const num = i + 15;
+                    return <option key={num} value={num}>{num}</option>;
+                  })}
+                </select>
               </div>
 
-              {/* ✅ FIXED HERE */}
+              {/* ✅ DROPDOWN */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Non Veg Guests</label>
-                <Input
-                  type="number"
-                  min={15}
-                  max={50}
-                  className="h-11 rounded-lg"
+                <select
+                  className="h-11 w-full rounded-lg border border-gray-300 px-3"
                   value={nonVegGuests}
-                  onChange={(e) => {
-                    const value = e.target.value;
-
-                    if (value === "") {
-                      setNonVegGuests("");
-                      return;
-                    }
-
-                    const num = Number(value);
-
-                    if (num >= 15 && num <= 50) {
-                      setNonVegGuests(num);
-                    }
-                  }}
-                />
+                  onChange={(e) => setNonVegGuests(e.target.value)}
+                >
+                  <option value="">Select</option>
+                  {Array.from({ length: 36 }, (_, i) => {
+                    const num = i + 15;
+                    return <option key={num} value={num}>{num}</option>;
+                  })}
+                </select>
               </div>
 
               <div>
