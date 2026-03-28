@@ -8,7 +8,8 @@ import { toast } from "sonner";
 
 const MenuCards = () => {
 
-  const [typeFilter, setTypeFilter] = useState<"veg" | "nonveg" | null>(null);
+  /* ✅ DEFAULT VEG SELECTED */
+  const [typeFilter, setTypeFilter] = useState<"veg" | "nonveg">("veg");
   const [priceFilter, setPriceFilter] = useState("all");
 
   const filteredPackages = menuPackages.filter((pkg) => {
@@ -22,17 +23,8 @@ const MenuCards = () => {
     return true;
   });
 
-  const mainCards = [
-    menuPackages.find(pkg => pkg.isVeg),
-    menuPackages.find(pkg => !pkg.isVeg)
-  ].filter(Boolean);
-
-  const cardsToRender =
-  typeFilter === null && priceFilter === "all"
-    ? mainCards
-    : filteredPackages.length > 0
-    ? filteredPackages
-    : [];
+  /* ✅ ALWAYS SHOW FILTERED (NO 2 CARD BUG) */
+  const cardsToRender = filteredPackages;
 
   const handleAddToCart = (e:any, pkg:any) => {
 
@@ -68,28 +60,29 @@ const MenuCards = () => {
               Designed for gatherings of 15–50 guests. Structured bulk menus with generous portions and consistent quality across Delhi NCR.
             </p>
 
+            {/* 🔥 FILTER UI */}
             <div className="flex flex-wrap justify-center gap-4 mb-8">
 
               <button
                 onClick={() => setTypeFilter("veg")}
-                className={`px-6 py-2 rounded-full text-sm shadow-sm transition ${
+                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   typeFilter === "veg"
-                    ? "bg-green-600 text-white"
-                    : "bg-white border"
+                    ? "bg-green-600 text-white shadow-lg scale-105"
+                    : "bg-white border border-gray-200 text-gray-600"
                 }`}
               >
-                Veg
+                🥦 Veg
               </button>
 
               <button
                 onClick={() => setTypeFilter("nonveg")}
-                className={`px-6 py-2 rounded-full text-sm shadow-sm transition ${
+                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   typeFilter === "nonveg"
-                    ? "bg-red-600 text-white"
-                    : "bg-white border"
+                    ? "bg-red-500 text-white shadow-lg scale-105"
+                    : "bg-white border border-gray-200 text-gray-600"
                 }`}
               >
-                Non-Veg
+                🍗 Non-Veg
               </button>
 
               <select
