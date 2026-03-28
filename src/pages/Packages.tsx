@@ -100,45 +100,66 @@ return (
 
 <div className="min-h-screen py-20 px-6 pb-32">
 
+{/* IMPROVED EVENT BAR */}
+<div className="max-w-6xl mx-auto mb-10 px-4">
 
-{/* EVENT BAR */}
+  <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
 
-<div className="max-w-6xl mx-auto mb-10">
+    {/* TOP INFO */}
+    <div className="flex flex-wrap gap-3 text-sm text-gray-600 mb-4">
 
-<div className="flex items-center justify-between bg-card border rounded-lg px-6 py-4 shadow-sm">
+      {vegGuests > 0 && (
+        <span className="bg-green-50 text-green-700 px-3 py-1 rounded-full">
+          🥦 {vegGuests} Veg
+        </span>
+      )}
 
-<div className="text-sm font-medium text-muted-foreground">
+      {nonVegGuests > 0 && (
+        <span className="bg-red-50 text-red-600 px-3 py-1 rounded-full">
+          🍗 {nonVegGuests} Non-Veg
+        </span>
+      )}
 
-{vegGuests > 0 && `${vegGuests} Veg`}
-{vegGuests > 0 && nonVegGuests > 0 && " • "}
-{nonVegGuests > 0 && `${nonVegGuests} Non-Veg`}
-{(vegGuests > 0 || nonVegGuests > 0) && " • "}
+      {area && (
+        <span className="bg-gray-100 px-3 py-1 rounded-full">
+          📍 {area}
+        </span>
+      )}
 
-{area && `${area} • `}
-{date && `${date} • `}
-{time && `${time}`}
+      {date && (
+        <span className="bg-gray-100 px-3 py-1 rounded-full">
+          📅 {date}
+        </span>
+      )}
 
-</div>
+      {time && (
+        <span className="bg-gray-100 px-3 py-1 rounded-full">
+          ⏰ {time}
+        </span>
+      )}
 
-<div className="flex gap-3">
+    </div>
 
-<Button
-onClick={handleBack}
-className="bg-primary text-white hover:bg-primary/90 shadow-md px-4 py-2"
->
-← Back
-</Button>
+    {/* ACTION BUTTONS */}
+    <div className="flex gap-3">
 
-<Button
-variant="outline"
-onClick={handleEditEvent}
->
-Edit Event Details
-</Button>
+      <button
+        onClick={handleBack}
+        className="bg-primary text-white px-4 py-2 rounded-xl text-sm shadow hover:opacity-90"
+      >
+        ← Back
+      </button>
 
-</div>
+      <button
+        onClick={handleEditEvent}
+        className="border px-4 py-2 rounded-xl text-sm"
+      >
+        Edit Details
+      </button>
 
-</div>
+    </div>
+
+  </div>
 
 </div>
 
