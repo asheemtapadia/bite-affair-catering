@@ -40,7 +40,7 @@ const LiteMeal = () => {
 
   const [pax, setPax] = useState(15);
 
-  // ✅ NEW DELIVERY FIELDS
+  // DELIVERY FIELDS
   const [firstName, setFirstName] = useState("");
   const [address, setAddress] = useState("");
   const [apartment, setApartment] = useState("");
@@ -54,7 +54,9 @@ const LiteMeal = () => {
 
   const [error, setError] = useState("");
 
-  const total = pax * 300;
+  /* ✅ PRICE FIX */
+  const total = pax * 275;
+
   const quantity = (pax * 0.1).toFixed(1);
 
   const riceQty =
@@ -120,7 +122,7 @@ ${city}, ${userState} - ${pin}
         <div className="absolute inset-0 bg-black/50" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
           <h1 className="text-3xl font-semibold">Bite Affair Lite Box</h1>
-          <p className="mt-2">₹300 per person</p>
+          <p className="mt-2 text-lg font-medium">₹275 per person</p>
         </div>
       </div>
 
@@ -137,7 +139,7 @@ ${city}, ${userState} - ${pin}
           <select
             value={pax}
             onChange={(e) => setPax(parseInt(e.target.value))}
-            className="px-5 py-3 border rounded-xl"
+            className="px-5 py-3 border rounded-xl shadow-sm"
           >
             {Array.from({ length: 36 }, (_, i) => i + 15).map((num) => (
               <option key={num} value={num}>
@@ -150,7 +152,7 @@ ${city}, ${userState} - ${pin}
         {/* MENU */}
         {Object.entries(menu).map(([key, value]) => (
           <div key={key} className="px-5 mb-10">
-            <img src={value.img} className="w-full h-32 rounded-xl object-cover mb-3" />
+            <img src={value.img} className="w-full h-32 rounded-xl object-cover mb-3 shadow-sm" />
 
             <h2 className="flex justify-between mb-3">
               <span>Select {key}</span>
@@ -180,8 +182,8 @@ ${city}, ${userState} - ${pin}
                       if (key === "rice") setRice(item);
                       if (key === "dessert") setDessert(item);
                     }}
-                    className={`px-4 py-2 rounded-full border ${
-                      selected ? "bg-orange-100 border-orange-300" : "bg-white border-gray-200"
+                    className={`px-4 py-2 rounded-full border transition ${
+                      selected ? "bg-orange-100 border-orange-400" : "bg-white border-gray-200"
                     }`}
                   >
                     {item}
@@ -204,21 +206,14 @@ ${city}, ${userState} - ${pin}
               <button
                 key={item}
                 onClick={() => setBread(item)}
-                className={`px-4 py-2 rounded-full border ${
-                  bread === item ? "bg-orange-100 border-orange-300" : "bg-white border-gray-200"
+                className={`px-4 py-2 rounded-full border transition ${
+                  bread === item ? "bg-orange-100 border-orange-400" : "bg-white border-gray-200"
                 }`}
               >
                 {item}
               </button>
             ))}
           </div>
-        </div>
-
-        {/* ✅ COMPLIMENTARY */}
-        <div className="px-5 mb-10">
-          <p className="text-sm text-green-600 font-medium">
-            🥗 Raita & Salad – Complimentary
-          </p>
         </div>
 
         {/* FORM */}
@@ -249,7 +244,7 @@ ${city}, ${userState} - ${pin}
         </div>
 
         <div className="fixed bottom-20 left-0 right-0 px-5">
-          <button onClick={handleOrder} className="w-full bg-orange-500 text-white py-4 rounded-2xl">
+          <button onClick={handleOrder} className="w-full bg-orange-500 text-white py-4 rounded-2xl shadow-lg">
             Order on WhatsApp
           </button>
         </div>
