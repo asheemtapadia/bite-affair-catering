@@ -40,15 +40,21 @@ const LiteMeal = () => {
 
   const [pax, setPax] = useState(15);
 
-  const [name, setName] = useState("");
+  // ✅ NEW DELIVERY FIELDS
+  const [firstName, setFirstName] = useState("");
   const [address, setAddress] = useState("");
+  const [apartment, setApartment] = useState("");
+  const [city, setCity] = useState("");
+  const [userState, setUserState] = useState("");
+  const [pin, setPin] = useState("");
+  const [phone, setPhone] = useState("");
+
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
   const [error, setError] = useState("");
 
   const total = pax * 300;
-
   const quantity = (pax * 0.1).toFixed(1);
 
   const riceQty =
@@ -60,7 +66,7 @@ const LiteMeal = () => {
   const rotiQty = pax;
 
   const handleOrder = () => {
-    if (!name || !address || !date || !time) {
+    if (!firstName || !address || !city || !userState || !pin || !phone || !date || !time) {
       setError("Complete all details to proceed");
       setTimeout(() => setError(""), 2500);
       return;
@@ -69,8 +75,13 @@ const LiteMeal = () => {
     const text = encodeURIComponent(
 `Bite Affair Lite Box Order
 
-👤 Name: ${name}
-📍 Address: ${address}
+👤 Name: ${firstName}
+📞 Phone: ${phone}
+
+📍 Address:
+${address}
+${apartment ? apartment : ""}
+${city}, ${userState} - ${pin}
 
 📅 Date: ${date}
 ⏰ Time: ${time}
@@ -84,7 +95,7 @@ const LiteMeal = () => {
 🍰 Dessert: ${dessert} (${dessertQty} pcs)
 
 🥖 Bread: ${bread} (${rotiQty} pcs)
-🥗 Raita & Salad: Included
+🥗 Raita & Salad: Complimentary
 
 💰 Total: ₹${total}`
     );
@@ -97,7 +108,7 @@ const LiteMeal = () => {
 
       {error && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
-          <div className="bg-white/90 border text-red-600 px-5 py-3 rounded-full shadow text-sm">
+          <div className="bg-white border text-red-600 px-5 py-3 rounded-full shadow text-sm">
             {error}
           </div>
         </div>
@@ -107,7 +118,6 @@ const LiteMeal = () => {
       <div className="relative w-full h-[260px] overflow-hidden">
         <img src="/images/lite-meal/litebox-hero.jpg" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/50" />
-
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
           <h1 className="text-3xl font-semibold">Bite Affair Lite Box</h1>
           <p className="mt-2">₹300 per person</p>
@@ -140,7 +150,6 @@ const LiteMeal = () => {
         {/* MENU */}
         {Object.entries(menu).map(([key, value]) => (
           <div key={key} className="px-5 mb-10">
-
             <img src={value.img} className="w-full h-32 rounded-xl object-cover mb-3" />
 
             <h2 className="flex justify-between mb-3">
@@ -180,12 +189,11 @@ const LiteMeal = () => {
                 );
               })}
             </div>
-
           </div>
         ))}
 
         {/* BREAD */}
-        <div className="px-5 mb-10">
+        <div className="px-5 mb-4">
           <h2 className="flex justify-between mb-3">
             <span>Select Bread</span>
             <span className="text-orange-600 font-bold">{rotiQty} pcs</span>
@@ -206,25 +214,32 @@ const LiteMeal = () => {
           </div>
         </div>
 
+        {/* ✅ COMPLIMENTARY */}
+        <div className="px-5 mb-10">
+          <p className="text-sm text-green-600 font-medium">
+            🥗 Raita & Salad – Complimentary
+          </p>
+        </div>
+
         {/* FORM */}
-        <div className="px-5 space-y-6 mb-12">
+        <div className="px-5 space-y-5 mb-12">
 
-          <input placeholder="Name" className="w-full border p-4 rounded-xl"
-            onChange={(e) => setName(e.target.value)} />
-
-          <input placeholder="Address" className="w-full border p-4 rounded-xl"
-            onChange={(e) => setAddress(e.target.value)} />
+          <input placeholder="First Name" onChange={(e)=>setFirstName(e.target.value)} className="w-full border p-4 rounded-xl" />
+          <input placeholder="Address" onChange={(e)=>setAddress(e.target.value)} className="w-full border p-4 rounded-xl" />
+          <input placeholder="Apartment, suite, etc." onChange={(e)=>setApartment(e.target.value)} className="w-full border p-4 rounded-xl" />
+          <input placeholder="City" onChange={(e)=>setCity(e.target.value)} className="w-full border p-4 rounded-xl" />
+          <input placeholder="State" onChange={(e)=>setUserState(e.target.value)} className="w-full border p-4 rounded-xl" />
+          <input placeholder="PIN Code" onChange={(e)=>setPin(e.target.value)} className="w-full border p-4 rounded-xl" />
+          <input placeholder="Phone" onChange={(e)=>setPhone(e.target.value)} className="w-full border p-4 rounded-xl" />
 
           <div>
             <p className="text-sm mb-1">Delivery Date</p>
-            <input type="date" className="w-full border p-4 rounded-xl"
-              onChange={(e) => setDate(e.target.value)} />
+            <input type="date" onChange={(e)=>setDate(e.target.value)} className="w-full border p-4 rounded-xl" />
           </div>
 
           <div>
             <p className="text-sm mb-1">Delivery Time</p>
-            <input type="time" className="w-full border p-4 rounded-xl"
-              onChange={(e) => setTime(e.target.value)} />
+            <input type="time" onChange={(e)=>setTime(e.target.value)} className="w-full border p-4 rounded-xl" />
           </div>
 
         </div>
