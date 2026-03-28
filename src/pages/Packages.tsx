@@ -8,11 +8,15 @@ const Packages = () => {
 const [searchParams] = useSearchParams();
 const navigate = useNavigate();
 
+/* ✅ FILTER STATE (NEW) */
+const [filter, setFilter] = useState<"veg" | "nonveg">("veg");
+
 useEffect(() => {
   setTimeout(() => {
     window.scrollTo(0, 0);
   }, 0);
 }, []);
+
 const vegGuests = Number(searchParams.get("veg") || 10);
 const nonVegGuests = Number(searchParams.get("nonveg") || 0);
 
@@ -171,14 +175,44 @@ return (
 </div>
 
 
-<h1 className="text-3xl font-bold text-center mb-14 tracking-tight">
+<h1 className="text-3xl font-bold text-center mb-6 tracking-tight">
 Available Packages
 </h1>
 
+{/* 🔥 FILTER UI */}
+<p className="text-center text-xs text-gray-500 mb-3">
+  Showing {filter === "veg" ? "Veg" : "Non-Veg"} Packages
+</p>
+
+<div className="flex items-center justify-center gap-3 mb-12">
+
+  <button
+    onClick={() => setFilter("veg")}
+    className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+      filter === "veg"
+        ? "bg-green-600 text-white shadow-lg scale-105"
+        : "bg-white text-gray-600 border border-gray-200"
+    }`}
+  >
+    🥦 Veg
+  </button>
+
+  <button
+    onClick={() => setFilter("nonveg")}
+    className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+      filter === "nonveg"
+        ? "bg-red-500 text-white shadow-lg scale-105"
+        : "bg-white text-gray-600 border border-gray-200"
+    }`}
+  >
+    🍗 Non Veg
+  </button>
+
+</div>
+
 
 {/* VEG PACKAGES */}
-
-{vegGuests > 0 && (
+{filter === "veg" && vegGuests > 0 && (
 <>
 <h2 className="text-2xl font-semibold mb-6">
 Veg Packages
@@ -245,8 +279,7 @@ selectedVegPackage?.slug === pkg.slug
 
 
 {/* NON VEG PACKAGES */}
-
-{nonVegGuests > 0 && (
+{filter === "nonveg" && nonVegGuests > 0 && (
 <>
 <h2 className="text-2xl font-semibold mb-6">
 Non Veg Packages
@@ -312,7 +345,7 @@ selectedNonVegPackage?.slug === pkg.slug
 )}
 
 
-{/* ULTRA PREMIUM FLOATING CTA */}
+{/* CTA */}
 
 <div className={`fixed bottom-0 left-0 right-0 px-4 pb-5 ${
 selectedVegPackage || selectedNonVegPackage
