@@ -1,4 +1,5 @@
 import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { menuPackages, othersInfo } from "@/data/menuData";
 import { ArrowLeft, Leaf, Drumstick, MessageCircle, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,13 @@ const MenuDetailPage = () => {
 const { slug } = useParams<{ slug: string }>();
 const location = useLocation();
 const navigate = useNavigate();
+
+/* ✅ SCROLL FIX */
+useEffect(() => {
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 0);
+}, []);
 
 const pkg = menuPackages.find((p) => p.slug === slug);
 
