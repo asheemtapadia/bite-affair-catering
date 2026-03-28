@@ -152,7 +152,7 @@ export const menuPackages: MenuPackage[] = [
     price: 499,
     isVeg: true,
     tier: "standard",
-    previewItems: ["Paneer Tikka", "Malai Paneer Tikka", "Paneer Butter Masala", "Dal Makhani", "Naan", "Gulab Jamun"],
+    previewItems: ["3 Starters", "3 Main Course", "2 Breads", "1 Dessert"],
     categories: [
       { name: "Veg Starters (Choose 3)", items: standardVegStarters },
       { name: "Veg Mains (Choose 3)", items: vegMains },
@@ -166,7 +166,7 @@ export const menuPackages: MenuPackage[] = [
     price: 599,
     isVeg: true,
     tier: "standard",
-    previewItems: ["Paneer Tikka", "Soya Chaap Tikka", "Spring Rolls", "Malai Kofta", "Dal Makhani", "Brownie"],
+    previewItems: ["5 Starters", "5 Main Course", "3 Breads", "2 Desserts"],
     categories: [
       { name: "Veg Starters (Choose 5)", items: standardVegStarters },
       { name: "Veg Mains (Choose 5)", items: vegMains },
@@ -180,7 +180,7 @@ export const menuPackages: MenuPackage[] = [
     price: 599,
     isVeg: true,
     tier: "premium",
-    previewItems: ["Kesariya Paneer Tikka", "Chilli Basil Tofu", "Paneer Shahi", "Dal Makhani", "Garlic Naan", "Kheer"],
+    previewItems: ["3 Starters", "3 Main Course", "2 Breads", "1 Dessert"],
     categories: [
       { name: "Veg Starters (Choose 3)", items: premiumVegStarters },
       { name: "Veg Mains (Choose 3)", items: vegMains },
@@ -194,7 +194,7 @@ export const menuPackages: MenuPackage[] = [
     price: 699,
     isVeg: true,
     tier: "premium",
-    previewItems: ["Cottage Cheese Satay", "Dahi ke Kabab", "Malai Broccoli Tikka", "Veg Thai Curry", "Lachcha Paratha", "Brownie"],
+    previewItems: ["5 Starters", "5 Main Course", "3 Breads", "2 Desserts"],
     categories: [
       { name: "Veg Starters (Choose 5)", items: premiumVegStarters },
       { name: "Veg Mains (Choose 5)", items: vegMains },
@@ -208,7 +208,7 @@ export const menuPackages: MenuPackage[] = [
     price: 699,
     isVeg: false,
     tier: "standard",
-    previewItems: ["Chicken Tikka", "Paneer Tikka", "Butter Chicken", "Dal Makhani", "Naan", "Gulab Jamun"],
+    previewItems: ["2 Veg Starters", "2 Non Veg Starters", "2 Veg Mains", "2 Non Veg Mains", "2 Breads", "1 Dessert"],
     categories: [
       { name: "Veg Starters (Choose 2)", items: standardVegStarters },
       { name: "Non Veg Starters (Choose 2)", items: standardNonVegStarters },
@@ -224,7 +224,7 @@ export const menuPackages: MenuPackage[] = [
     price: 799,
     isVeg: false,
     tier: "standard",
-    previewItems: ["Chicken Malai Tikka", "Amritsari Fish", "Kadhai Chicken", "Paneer Butter Masala", "Garlic Naan", "Brownie"],
+    previewItems: ["3 Veg Starters", "3 Non Veg Starters", "3 Veg Mains", "3 Non Veg Mains", "3 Breads", "2 Desserts"],
     categories: [
       { name: "Veg Starters (Choose 3)", items: standardVegStarters },
       { name: "Non Veg Starters (Choose 3)", items: standardNonVegStarters },
@@ -240,7 +240,7 @@ export const menuPackages: MenuPackage[] = [
     price: 799,
     isVeg: false,
     tier: "premium",
-    previewItems: ["Chilli Chicken Tikka", "Paneer Malai Tikka", "Butter Chicken", "Mutton Rogan Josh", "Naan", "Kheer"],
+    previewItems: ["2 Veg Starters", "2 Non Veg Starters", "2 Veg Mains", "2 Non Veg Mains", "2 Breads", "1 Dessert"],
     categories: [
       { name: "Veg Starters (Choose 2)", items: premiumVegStarters },
       { name: "Non Veg Starters (Choose 2)", items: premiumNonVegStarters },
@@ -256,7 +256,7 @@ export const menuPackages: MenuPackage[] = [
     price: 899,
     isVeg: false,
     tier: "premium",
-    previewItems: ["BBQ Chicken Wings", "Chilli Garlic Prawns", "Kung Pao Chicken", "Mutton Rogan Josh", "Lachcha Paratha", "Brownie"],
+    previewItems: ["3 Veg Starters", "3 Non Veg Starters", "3 Veg Mains", "3 Non Veg Mains", "3 Breads", "2 Desserts"],
     categories: [
       { name: "Veg Starters (Choose 3)", items: premiumVegStarters },
       { name: "Non Veg Starters (Choose 3)", items: premiumNonVegStarters },
