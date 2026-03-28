@@ -40,10 +40,6 @@ const PackagesSection = () => {
       setCity(data.city || "");
       setState(data.state || "");
       setPin(data.pin || "");
-
-      // ❌ IMPORTANT FIX: Date & Time auto-fill remove
-      // setDate(data.date || "");
-      // setTime(data.time || "");
     }
   }, []);
 
@@ -56,6 +52,21 @@ const PackagesSection = () => {
 
     if (!vegGuests && !nonVegGuests) {
       alert("Please enter number of guests");
+      return;
+    }
+
+    // ✅ Guest validation
+    if (
+      (vegGuests && (vegGuests < 15 || vegGuests > 50)) ||
+      (nonVegGuests && (nonVegGuests < 15 || nonVegGuests > 50))
+    ) {
+      alert("Guests must be between 15 and 50");
+      return;
+    }
+
+    // ✅ Phone validation
+    if (!/^[0-9]{10}$/.test(phone)) {
+      alert("Enter valid 10 digit phone number");
       return;
     }
 
@@ -91,94 +102,150 @@ const PackagesSection = () => {
   };
 
   return (
-    <section id="packages" className="py-20 lg:py-28 section-white">
+    <section id="packages" className="py-20 lg:py-28 bg-gradient-to-b from-white to-gray-50">
 
       <div className="container mx-auto px-4">
 
         <ScrollReveal>
-          <div className="text-center mb-16">
-            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-navy mb-4">
+          <div className="text-center mb-14">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
               Plan Your Event
             </h2>
 
-            <p className="font-body text-muted-foreground text-lg max-w-xl mx-auto">
-              Select your event details to explore suitable packages.
+            <p className="text-gray-500 mt-3 text-lg max-w-xl mx-auto">
+              Fill in your details to discover curated catering packages.
             </p>
           </div>
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
 
-          <div className="bg-card border rounded-lg p-6 md:p-8 max-w-4xl mx-auto shadow-sm mb-12">
+          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-10 max-w-4xl mx-auto shadow-lg">
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
               <div>
-                <label className="text-sm mb-1 block">Name</label>
-                <Input value={name} onChange={(e) => setName(e.target.value)} />
+                <label className="text-sm mb-1 block text-gray-600">Name</label>
+                <Input
+                  className="h-11 rounded-lg"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
               </div>
 
               <div>
-                <label className="text-sm mb-1 block">Phone</label>
-                <Input value={phone} onChange={(e) => setPhone(e.target.value)} />
+                <label className="text-sm mb-1 block text-gray-600">Phone</label>
+                <Input
+                  type="tel"
+                  maxLength={10}
+                  className="h-11 rounded-lg"
+                  value={phone}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/[^0-9]/g, "");
+                    setPhone(val);
+                  }}
+                />
               </div>
 
               <div className="md:col-span-2">
-                <label className="text-sm mb-1 block">Address</label>
-                <Input value={address} onChange={(e) => setAddress(e.target.value)} />
+                <label className="text-sm mb-1 block text-gray-600">Address</label>
+                <Input
+                  className="h-11 rounded-lg"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
               </div>
 
               <div className="md:col-span-2">
-                <label className="text-sm mb-1 block">Apartment / Suite</label>
-                <Input value={apartment} onChange={(e) => setApartment(e.target.value)} />
+                <label className="text-sm mb-1 block text-gray-600">Apartment / Suite</label>
+                <Input
+                  className="h-11 rounded-lg"
+                  value={apartment}
+                  onChange={(e) => setApartment(e.target.value)}
+                />
               </div>
 
               <div>
-                <label className="text-sm mb-1 block">City</label>
-                <Input value={city} onChange={(e) => setCity(e.target.value)} />
+                <label className="text-sm mb-1 block text-gray-600">City</label>
+                <Input
+                  className="h-11 rounded-lg"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                />
               </div>
 
               <div>
-                <label className="text-sm mb-1 block">State</label>
-                <Input value={state} onChange={(e) => setState(e.target.value)} />
+                <label className="text-sm mb-1 block text-gray-600">State</label>
+                <Input
+                  className="h-11 rounded-lg"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                />
               </div>
 
               <div>
-                <label className="text-sm mb-1 block">PIN Code</label>
-                <Input value={pin} onChange={(e) => setPin(e.target.value)} />
+                <label className="text-sm mb-1 block text-gray-600">PIN Code</label>
+                <Input
+                  type="tel"
+                  maxLength={6}
+                  className="h-11 rounded-lg"
+                  value={pin}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/[^0-9]/g, "");
+                    setPin(val);
+                  }}
+                />
               </div>
 
               <div>
-                <label className="text-sm mb-1 block">Veg Guests</label>
+                <label className="text-sm mb-1 block text-gray-600">Veg Guests</label>
                 <Input
                   type="number"
+                  min={15}
+                  max={50}
+                  className="h-11 rounded-lg"
                   value={vegGuests}
-                  onChange={(e) => setVegGuests(e.target.value)}
+                  onChange={(e) => {
+                    let value = Number(e.target.value);
+                    if (value < 15) value = 15;
+                    if (value > 50) value = 50;
+                    setVegGuests(value);
+                  }}
                 />
               </div>
 
               <div>
-                <label className="text-sm mb-1 block">Non Veg Guests</label>
+                <label className="text-sm mb-1 block text-gray-600">Non Veg Guests</label>
                 <Input
                   type="number"
+                  min={15}
+                  max={50}
+                  className="h-11 rounded-lg"
                   value={nonVegGuests}
-                  onChange={(e) => setNonVegGuests(e.target.value)}
+                  onChange={(e) => {
+                    let value = Number(e.target.value);
+                    if (value < 15) value = 15;
+                    if (value > 50) value = 50;
+                    setNonVegGuests(value);
+                  }}
                 />
               </div>
 
               <div>
-                <label className="text-sm mb-1 block">Date</label>
+                <label className="text-sm mb-1 block text-gray-600">Date</label>
                 <Input
                   type="date"
+                  className="h-11 rounded-lg"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                 />
               </div>
 
               <div>
-                <label className="text-sm mb-1 block">Delivery Time</label>
+                <label className="text-sm mb-1 block text-gray-600">Delivery Time</label>
                 <Input
                   type="time"
+                  className="h-11 rounded-lg"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
                 />
@@ -186,10 +253,10 @@ const PackagesSection = () => {
 
             </div>
 
-            <div className="text-center mt-8">
+            <div className="text-center mt-10">
               <Button
                 size="lg"
-                className="px-10 py-6"
+                className="px-12 py-6 text-lg rounded-xl bg-black hover:bg-gray-900 text-white shadow-md"
                 onClick={handleFindPackages}
               >
                 Find Packages
