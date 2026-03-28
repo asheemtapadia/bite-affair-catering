@@ -1,5 +1,5 @@
 import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { menuPackages, othersInfo } from "@/data/menuData";
 import { ArrowLeft, Leaf, Drumstick, MessageCircle, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,12 @@ const { slug } = useParams<{ slug: string }>();
 const location = useLocation();
 const navigate = useNavigate();
 
+/* ✅ NEW STATE (selection) */
+const [selectedItems, setSelectedItems] = useState<any>({});
+
+/* ✅ LIMIT */
+const LIMIT = 2;
+
 /* ✅ SCROLL FIX */
 useEffect(() => {
   setTimeout(() => {
@@ -24,10 +30,37 @@ const pkg = menuPackages.find((p) => p.slug === slug);
 
 const cameFromPackages = location.search.includes("from=packages");
 
+/* ✅ TOGGLE FUNCTION */
+const toggleItem = (category: string, item: string) => {
+  setSelectedItems((prev:any) => {
+    const current = prev[category] || [];
+
+    if (current.includes(item)) {
+      return {
+        ...prev,
+        [category]: current.filter((i:string) => i !== item),
+      };
+    }
+
+    if (current.length >= LIMIT) return prev;
+
+    return {
+      ...prev,
+      [category]: [...current, item],
+    };
+  });
+};
+
+/* ✅ UPDATED WHATSAPP */
 const whatsappMessage = encodeURIComponent(
 `Hi Bite Affair,
 
 I'm interested in the ${pkg?.name} package.
+
+Selected Items:
+${Object.entries(selectedItems)
+  .map(([cat, items]) => `\n${cat}: ${(items as string[]).join(", ")}`)
+  .join("")}
 
 Event Date:
 Number of Guests:
@@ -104,8 +137,6 @@ Back to Packages
 </span>
 </p>
 
-{/* preview items */}
-
 <p className="mt-4 text-sm text-white/70 max-w-xl">
 {pkg.previewItems.join(" • ")}
 </p>
@@ -125,21 +156,37 @@ Back to Packages
 <div className="bg-white rounded-xl border border-border p-6 shadow-sm">
 
 <h3 className="font-heading text-xl font-semibold text-navy mb-4 pb-2 border-b border-border">
-{cat.name}
+{cat.name} <span className="text-sm text-gray-400">(Choose 2)</span>
 </h3>
 
-<ul className="space-y-2">
+<div className="flex flex-wrap gap-2">
 
-{cat.items.map((item) => (
-<li
+{cat.items.map((item) => {
+
+const selected = selectedItems[cat.name]?.includes(item);
+const disabled =
+!selected && (selectedItems[cat.name]?.length || 0) >= LIMIT;
+
+return (
+<button
 key={item}
-className="font-body text-sm text-foreground/80 py-1.5 border-b border-border/40 last:border-0 hover:text-primary transition-colors"
+onClick={() => toggleItem(cat.name, item)}
+disabled={disabled}
+className={`px-3 py-1.5 rounded-full text-sm border transition-all
+${selected
+? "bg-primary text-white border-primary"
+: disabled
+? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
+: "bg-white hover:border-primary"
+}`}
 >
 {item}
-</li>
-))}
+</button>
+);
 
-</ul>
+})}
+
+</div>
 
 </div>
 </ScrollReveal>
