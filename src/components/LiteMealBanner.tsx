@@ -22,7 +22,7 @@ const LiteMealBanner = () => {
         <p className="text-sm text-gray-300 mb-4 leading-relaxed">
           Build your own catering box for 15–50 guests.
           <br />
-          <span className="text-orange-400 font-medium">₹300 per person</span>
+          <span className="text-orange-400 font-medium">₹275 per person</span>
         </p>
 
         <button
