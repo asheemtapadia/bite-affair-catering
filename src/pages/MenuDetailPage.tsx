@@ -27,7 +27,7 @@ const getLimit = (category: string) => {
   return category.toLowerCase().includes("dessert") ? 1 : 2;
 };
 
-/* ✅ CLEAN CATEGORY NAME (REMOVE "Choose 3") */
+/* ✅ CLEAN CATEGORY NAME */
 const cleanCategoryName = (name: string) => {
   return name.replace(/\(.*?\)/g, "").trim();
 };
@@ -61,7 +61,7 @@ const allSelected = pkg?.categories.every((cat) => {
   return (selectedItems[cat.name]?.length || 0) === limit;
 });
 
-/* ✅ ADD TO CART */
+/* ✅ ADD TO CART (FIXED - ARRAY SUPPORT) */
 const handleAddToCart = () => {
   if (!allSelected) {
     setShowError(true);
@@ -69,15 +69,19 @@ const handleAddToCart = () => {
     return;
   }
 
-  const order = {
-    packageName: pkg?.name,
+  const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+  const newItem = {
+    id: Date.now(),
+    name: pkg?.name,
     price: pkg?.price,
     selectedItems,
   };
 
-  localStorage.setItem("cart", JSON.stringify(order));
+  const updatedCart = [...existingCart, newItem];
 
-  // ✅ SAFE NAVIGATION (no crash)
+  localStorage.setItem("cart", JSON.stringify(updatedCart));
+
   try {
     navigate("/cart");
   } catch {
@@ -229,7 +233,7 @@ ${selected
 
 </div>
 
-{/* ✅ STICKY CTA */}
+{/* CTA */}
 <div className="fixed bottom-20 left-0 right-0 px-4 z-50">
 <button
 onClick={handleAddToCart}
