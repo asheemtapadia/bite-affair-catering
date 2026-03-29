@@ -113,20 +113,19 @@ const desserts = [
   "Brownie",
 ];
 
-/* ✅ COMMON STRUCTURE (FIXED CLIENT LOGIC) */
+/* ✅ VEG STRUCTURE */
 const commonVegCategories = (starters: string[]) => [
-  { name: "Veg Starters (Choose 2)", items: starters },
-  { name: "Veg Mains (Choose 2)", items: vegMains },
+  { name: "Starters (Choose 2)", items: starters },
+  { name: "Main Course (Choose 2)", items: vegMains },
   { name: "Rice (Choose 1)", items: riceItems },
   { name: "Breads (Choose 2)", items: breads },
   { name: "Desserts (Choose 1)", items: desserts },
 ];
 
-const commonNonVegCategories = (vegS: string[], nonVegS: string[]) => [
-  { name: "Veg Starters (Choose 1)", items: vegS },
-  { name: "Non Veg Starters (Choose 1)", items: nonVegS },
-  { name: "Veg Mains (Choose 1)", items: vegMains },
-  { name: "Non Veg Mains (Choose 1)", items: nonVegMains },
+/* ✅ FIXED NON VEG (ONLY NON VEG — NO MIX) */
+const commonNonVegCategories = (nonVegS: string[]) => [
+  { name: "Starters (Choose 2)", items: nonVegS },
+  { name: "Main Course (Choose 2)", items: nonVegMains },
   { name: "Rice (Choose 1)", items: riceItems },
   { name: "Breads (Choose 2)", items: breads },
   { name: "Desserts (Choose 1)", items: desserts },
@@ -177,7 +176,7 @@ export const menuPackages: MenuPackage[] = [
     isVeg: false,
     tier: "standard",
     previewItems: ["2 Starters", "2 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
-    categories: commonNonVegCategories(standardVegStarters, standardNonVegStarters),
+    categories: commonNonVegCategories(standardNonVegStarters),
   },
   {
     slug: "standard-plus-non-veg",
@@ -186,7 +185,7 @@ export const menuPackages: MenuPackage[] = [
     isVeg: false,
     tier: "standard",
     previewItems: ["2 Starters", "2 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
-    categories: commonNonVegCategories(standardVegStarters, standardNonVegStarters),
+    categories: commonNonVegCategories(standardNonVegStarters),
   },
   {
     slug: "premium-non-veg",
@@ -195,7 +194,7 @@ export const menuPackages: MenuPackage[] = [
     isVeg: false,
     tier: "premium",
     previewItems: ["2 Starters", "2 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
-    categories: commonNonVegCategories(premiumVegStarters, premiumNonVegStarters),
+    categories: commonNonVegCategories(premiumNonVegStarters),
   },
   {
     slug: "premium-plus-non-veg",
@@ -204,7 +203,7 @@ export const menuPackages: MenuPackage[] = [
     isVeg: false,
     tier: "premium",
     previewItems: ["2 Starters", "2 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
-    categories: commonNonVegCategories(premiumVegStarters, premiumNonVegStarters),
+    categories: commonNonVegCategories(premiumNonVegStarters),
   },
 ];
 
