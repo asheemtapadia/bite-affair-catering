@@ -30,7 +30,6 @@ const MenuCards = () => {
     <section id="menu" className="py-20 lg:py-28 section-beige">
       <div className="container mx-auto px-4">
 
-        {/* ✅ PREMIUM POPUP (UPDATED) */}
         {showPopup && (
           <div className="fixed top-32 left-1/2 -translate-x-1/2 z-50 animate-[fadeIn_0.4s_ease]">
             <div className="backdrop-blur-xl bg-black/80 text-white px-7 py-4 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] text-sm flex items-center gap-3 border border-white/10">
@@ -121,7 +120,6 @@ const MenuCards = () => {
 
                 </div>
 
-                {/* ✅ CART BUTTON */}
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -171,19 +169,22 @@ const MenuCards = () => {
                     </span>
                   </p>
 
+                  {/* ✅ UPDATED CONTENT (CLIENT FIX) */}
                   <ul className="space-y-1.5 mb-6">
-                    {pkg.previewItems.slice(0,2).map((item) => (
-                      <li
-                        key={item}
-                        className="text-sm font-body text-foreground/80 flex items-start gap-2"
-                      >
-                        <span className="text-primary mt-1 text-xs">●</span>
-                        {item}
-                      </li>
-                    ))}
+                    <li className="text-sm font-body text-foreground/80 flex items-start gap-2">
+                      <span className="text-primary mt-1 text-xs">●</span>
+                      2 Starters
+                    </li>
+                    <li className="text-sm font-body text-foreground/80 flex items-start gap-2">
+                      <span className="text-primary mt-1 text-xs">●</span>
+                      2 Main Course
+                    </li>
+                    <li className="text-sm font-body text-foreground/80 flex items-start gap-2">
+                      <span className="text-primary mt-1 text-xs">●</span>
+                      Rice, Bread, Dessert
+                    </li>
                   </ul>
 
-                  {/* ✅ PREMIUM CTA (UPDATED) */}
                   <span
                     className={`relative inline-block font-body text-sm font-semibold transition-all duration-300
                     ${highlightMenu === pkg.slug
