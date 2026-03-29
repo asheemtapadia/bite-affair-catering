@@ -110,7 +110,7 @@ const desserts = [
   "Brownie",
 ];
 
-/* ✅ VEG STRUCTURE (DYNAMIC) */
+/* ✅ VEG STRUCTURE */
 const vegCategories = (
   starters: string[],
   starterCount: number,
@@ -125,23 +125,26 @@ const vegCategories = (
   { name: `Desserts (Choose ${dessertCount})`, items: desserts },
 ];
 
-/* ✅ NON VEG STRUCTURE (STRICT — NO MIX) */
+/* ✅ NON VEG STRUCTURE */
 const nonVegCategories = (
-  starters: string[],
-  starterCount: number,
-  mainCount: number,
-  breadCount: number,
-  dessertCount: number
+  vegStarter: string[],
+  nonVegStarter: string[],
+  vegMainCount: number,
+  nonVegMainCount: number,
+  starterCount: number
 ) => [
-  { name: `Starters (Choose ${starterCount})`, items: starters },
-  { name: `Main Course (Choose ${mainCount})`, items: nonVegMains },
+  { name: `Veg Starters (Choose ${starterCount})`, items: vegStarter },
+  { name: `Non Veg Starters (Choose ${starterCount})`, items: nonVegStarter },
+  { name: `Veg Main Course (Choose ${vegMainCount})`, items: vegMains },
+  { name: `Non Veg Main Course (Choose ${nonVegMainCount})`, items: nonVegMains },
   { name: "Rice (Choose 1)", items: riceItems },
-  { name: `Breads (Choose ${breadCount})`, items: breads },
-  { name: `Desserts (Choose ${dessertCount})`, items: desserts },
+  { name: "Breads (Choose 3)", items: breads },
+  { name: "Desserts (Choose 2)", items: desserts },
 ];
 
 /* ✅ PACKAGES */
 export const menuPackages: MenuPackage[] = [
+
   {
     slug: "standard-veg",
     name: "Standard Veg",
@@ -151,6 +154,7 @@ export const menuPackages: MenuPackage[] = [
     previewItems: ["3 Starters", "3 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
     categories: vegCategories(standardVegStarters, 3, 3, 2, 1),
   },
+
   {
     slug: "standard-plus-veg",
     name: "Standard ++ Veg",
@@ -160,6 +164,7 @@ export const menuPackages: MenuPackage[] = [
     previewItems: ["4 Starters", "3 Main Course", "1 Rice", "3 Breads", "2 Desserts"],
     categories: vegCategories(standardVegStarters, 4, 3, 3, 2),
   },
+
   {
     slug: "premium-veg",
     name: "Premium Veg",
@@ -169,6 +174,7 @@ export const menuPackages: MenuPackage[] = [
     previewItems: ["3 Starters", "3 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
     categories: vegCategories(premiumVegStarters, 3, 3, 2, 1),
   },
+
   {
     slug: "premium-plus-veg",
     name: "Premium ++ Veg",
@@ -185,36 +191,40 @@ export const menuPackages: MenuPackage[] = [
     price: 699,
     isVeg: false,
     tier: "standard",
-    previewItems: ["2 Starters", "2 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
-    categories: nonVegCategories(standardNonVegStarters, 2, 2, 3, 2),
+    previewItems: ["2+2 Starters", "3+1 Main Course", "1 Rice", "3 Breads", "2 Desserts"],
+    categories: nonVegCategories(standardVegStarters, standardNonVegStarters, 3, 1, 2),
   },
+
   {
     slug: "standard-plus-non-veg",
     name: "Standard + Non Veg",
     price: 799,
     isVeg: false,
     tier: "standard",
-    previewItems: ["3 Starters", "2 Main Course", "1 Rice", "3 Breads", "2 Desserts"],
-    categories: nonVegCategories(standardNonVegStarters, 3, 2, 3, 2),
+    previewItems: ["3+3 Starters", "4+1 Main Course", "1 Rice", "3 Breads", "2 Desserts"],
+    categories: nonVegCategories(standardVegStarters, standardNonVegStarters, 4, 1, 3),
   },
+
   {
     slug: "premium-non-veg",
     name: "Premium Non Veg",
     price: 799,
     isVeg: false,
     tier: "premium",
-    previewItems: ["2 Starters", "2 Main Course", "1 Rice", "3 Breads", "2 Desserts"],
-    categories: nonVegCategories(premiumNonVegStarters, 2, 2, 3, 2),
+    previewItems: ["2+2 Starters", "3+1 Main Course", "1 Rice", "3 Breads", "2 Desserts"],
+    categories: nonVegCategories(premiumVegStarters, premiumNonVegStarters, 3, 1, 2),
   },
+
   {
     slug: "premium-plus-non-veg",
     name: "Premium + Non Veg",
     price: 899,
     isVeg: false,
     tier: "premium",
-    previewItems: ["3 Starters", "2 Main Course", "1 Rice", "3 Breads", "2 Desserts"],
-    categories: nonVegCategories(premiumNonVegStarters, 3, 2, 3, 2),
+    previewItems: ["3+3 Starters", "4+1 Main Course", "1 Rice", "3 Breads", "2 Desserts"],
+    categories: nonVegCategories(premiumVegStarters, premiumNonVegStarters, 4, 1, 3),
   },
+
 ];
 
 export const othersInfo = [
