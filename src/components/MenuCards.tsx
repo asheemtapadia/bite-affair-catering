@@ -30,12 +30,15 @@ const MenuCards = () => {
     <section id="menu" className="py-20 lg:py-28 section-beige">
       <div className="container mx-auto px-4">
 
-        {/* ✅ PREMIUM POPUP */}
+        {/* ✅ PREMIUM POPUP (UPDATED) */}
         {showPopup && (
-          <div className="fixed top-24 left-1/2 -translate-x-1/2 z-50 animate-[fadeIn_0.3s_ease]">
-            <div className="bg-black text-white px-6 py-4 rounded-2xl shadow-2xl text-sm flex items-center gap-2">
-              <span className="text-lg">👇</span>
-              Select dishes from menu
+          <div className="fixed top-32 left-1/2 -translate-x-1/2 z-50 animate-[fadeIn_0.4s_ease]">
+            <div className="backdrop-blur-xl bg-black/80 text-white px-7 py-4 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.4)] text-sm flex items-center gap-3 border border-white/10">
+              <span className="text-xl animate-bounce">👇</span>
+              <div className="leading-tight">
+                <p className="font-medium">Select dishes from menu</p>
+                <p className="text-xs text-white/60">Customize your package</p>
+              </div>
             </div>
           </div>
         )}
@@ -118,7 +121,7 @@ const MenuCards = () => {
 
                 </div>
 
-                {/* ✅ CART BUTTON (TRIGGER BOTH) */}
+                {/* ✅ CART BUTTON */}
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -180,22 +183,29 @@ const MenuCards = () => {
                     ))}
                   </ul>
 
-                  {/* ✅ PREMIUM ANIMATED CTA */}
+                  {/* ✅ PREMIUM CTA (UPDATED) */}
                   <span
-                    className={`inline-block font-body text-sm font-semibold transition-all duration-300
+                    className={`relative inline-block font-body text-sm font-semibold transition-all duration-300
                     ${highlightMenu === pkg.slug
-                      ? "text-orange-600 scale-110"
+                      ? "text-orange-600"
                       : "text-primary"
                     }`}
                   >
-                    Select dishes from menu →
                     <span
-                      className={`block h-[2px] mt-1 transition-all duration-300
+                      className={`inline-block transition-all duration-300
+                      ${highlightMenu === pkg.slug ? "scale-110" : ""}
+                      `}
+                    >
+                      Select dishes from menu →
+                    </span>
+
+                    <span
+                      className={`absolute left-0 -bottom-1 h-[2px] rounded-full transition-all duration-500
                       ${highlightMenu === pkg.slug
-                        ? "w-full bg-orange-500 animate-pulse"
+                        ? "w-full bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 shadow-[0_0_12px_rgba(255,120,0,0.6)]"
                         : "w-0 bg-transparent"
                       }`}
-                    ></span>
+                    />
                   </span>
 
                 </div>
