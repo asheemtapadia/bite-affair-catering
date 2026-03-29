@@ -49,19 +49,23 @@ if(!firstName || !address || !city || !userState || !pin || !phone || !date || !
   return;
 }
 
-/* ✅ UPDATED MESSAGE WITH DISHES */
+/* ✅ CLEAN PREMIUM MESSAGE */
 const message = cart.map((item) => {
+
   const dishes = item.selectedItems
     ? Object.entries(item.selectedItems)
-        .map(([cat, items]: any) => `${cat}: ${items.join(", ")}`)
+        .map(([cat, items]: any) => {
+          const cleanCat = cat.replace(/\(.*?\)/g, "").trim();
+          return `• ${cleanCat}: ${items.join(", ")}`;
+        })
         .join("\n")
     : "";
 
-  return `• ${item.name} (₹${item.price})
+  return `✨ ${item.name} (₹${item.price})
 
 ${dishes}
 
-Request: ${item.request || "None"}`;
+📝 Request: ${item.request || "None"}`;
 }).join("\n\n");
 
 const text = encodeURIComponent(
@@ -107,51 +111,59 @@ return (
       </p>
     )}
 
-    <div className="space-y-5">
+    <div className="space-y-6">
 
       {cart.map((item)=>(
         <div
           key={item.id}
-          className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm"
+          className="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.05)]"
         >
 
           <div className="flex justify-between items-start">
 
             <div>
-              <h3 className="font-semibold text-lg">
+              <h3 className="font-semibold text-xl text-gray-900">
                 {item.name}
               </h3>
 
-              <p className="text-sm text-muted-foreground mt-1">
+              <p className="text-sm text-gray-500 mt-1">
                 ₹{item.price} / person
               </p>
 
-              {/* ✅ SHOW SELECTED DISHES */}
+              {/* ✅ CLEAN DISHES UI */}
               {item.selectedItems && (
-                <div className="mt-2 text-sm text-gray-600 space-y-1">
-                  {Object.entries(item.selectedItems).map(([cat, items]: any) => (
-                    <div key={cat}>
-                      <span className="font-medium">{cat}:</span>{" "}
-                      {items.join(", ")}
-                    </div>
-                  ))}
+                <div className="mt-4 space-y-3">
+                  {Object.entries(item.selectedItems).map(([cat, items]: any) => {
+                    const cleanCat = cat.replace(/\(.*?\)/g, "").trim();
+
+                    return (
+                      <div key={cat}>
+                        <p className="text-xs uppercase text-gray-400 tracking-wide">
+                          {cleanCat}
+                        </p>
+                        <p className="text-sm text-gray-800 font-medium leading-relaxed">
+                          {items.join(", ")}
+                        </p>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
 
             </div>
 
-            <Button
-              variant="outline"
+            <button
               onClick={()=>removeItem(item.id)}
+              className="text-xs px-3 py-1.5 rounded-full border border-gray-200 hover:border-red-400 hover:text-red-500 transition"
             >
               Remove
-            </Button>
+            </button>
 
           </div>
 
           <textarea
             placeholder="Special request (spice level, timing, extras...)"
-            className="w-full border rounded-lg p-3 text-sm mt-4"
+            className="w-full border border-gray-200 rounded-xl p-4 text-sm mt-5 focus:outline-none focus:ring-2 focus:ring-orange-400"
             value={item.request || ""}
             onChange={(e)=>updateRequest(item.id,e.target.value)}
           />
@@ -163,12 +175,12 @@ return (
 
     {cart.length > 0 && (
 
-      <div className="mt-10 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+      <div className="mt-12 bg-white p-7 rounded-3xl border border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.06)]">
 
         {/* TOTAL */}
-        <div className="flex justify-between mb-6">
+        <div className="flex justify-between items-center mb-8">
           <span className="text-lg font-medium">Total</span>
-          <span className="text-lg font-semibold text-primary">
+          <span className="text-2xl font-bold text-orange-500">
             ₹{total}
           </span>
         </div>
@@ -180,49 +192,53 @@ return (
             placeholder="First Name"
             value={firstName}
             onChange={(e)=>setFirstName(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl"
+            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
 
           <input
             placeholder="Address"
             value={address}
             onChange={(e)=>setAddress(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl"
+            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
 
           <input
             placeholder="Apartment, suite, etc."
             value={apartment}
             onChange={(e)=>setApartment(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl"
+            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
 
           <input
             placeholder="City"
             value={city}
             onChange={(e)=>setCity(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl"
+            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
 
           <input
             placeholder="State"
             value={userState}
             onChange={(e)=>setUserState(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl"
+            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
 
+          {/* ✅ PIN FIX */}
           <input
             placeholder="PIN Code"
             value={pin}
-            onChange={(e)=>setPin(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl"
+            maxLength={6}
+            onChange={(e)=>setPin(e.target.value.replace(/\D/g, ""))}
+            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
 
+          {/* ✅ PHONE FIX */}
           <input
             placeholder="Phone"
             value={phone}
-            onChange={(e)=>setPhone(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl"
+            maxLength={10}
+            onChange={(e)=>setPhone(e.target.value.replace(/\D/g, ""))}
+            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
 
           <div>
@@ -232,7 +248,7 @@ return (
               value={date}
               min={new Date().toISOString().split("T")[0]}
               onChange={(e)=>setDate(e.target.value)}
-              className="w-full border p-4 rounded-xl"
+              className="w-full border p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
 
@@ -242,16 +258,17 @@ return (
               type="time"
               value={time}
               onChange={(e)=>setTime(e.target.value)}
-              className="w-full border p-4 rounded-xl"
+              className="w-full border p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
 
         </div>
 
+        {/* BUTTON */}
         <div className="mt-6">
           <button
             onClick={whatsappOrder}
-            className="w-full py-4 rounded-xl text-white text-base font-medium bg-primary"
+            className="w-full py-4 rounded-xl text-white text-base font-medium bg-orange-500 hover:bg-orange-600 transition-all duration-200 shadow-md"
           >
             Order on WhatsApp
           </button>
