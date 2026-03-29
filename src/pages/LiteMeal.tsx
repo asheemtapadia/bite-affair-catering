@@ -37,11 +37,8 @@ const LiteMeal = () => {
   const [rice, setRice] = useState("Plain Rice");
   const [dessert, setDessert] = useState("Gulab Jamun");
 
-  /* ✅ BREAD FIX */
-  const [bread, setBread] = useState<string[]>([
-    "Lachha Paratha",
-    "Tandoori Roti"
-  ]);
+  /* ✅ FIXED BREAD (ALWAYS SELECTED) */
+  const breads = ["Lachha Paratha", "Tandoori Roti"];
 
   const [pax, setPax] = useState(15);
 
@@ -58,34 +55,29 @@ const LiteMeal = () => {
 
   const [error, setError] = useState("");
 
-  /* ✅ TIME LOGIC */
+  /* ✅ TIME SLOTS */
   const timeSlots = [
     "9:00 AM","10:00 AM","11:00 AM","12:00 PM",
     "1:00 PM","2:00 PM","3:00 PM","4:00 PM",
     "5:00 PM","6:00 PM","7:00 PM","8:00 PM","9:00 PM"
   ];
 
-  const getMinDeliveryTime = () => {
+  /* ✅ 5 HOUR LEAD TIME */
+  const getMinHour = () => {
     const now = new Date();
     now.setHours(now.getHours() + 5);
-    return now;
+    return now.getHours();
   };
 
-  let availableSlots = timeSlots.filter((slot) => {
-    const minTime = getMinDeliveryTime();
-
+  const availableSlots = timeSlots.filter((slot) => {
     const [timePart, period] = slot.split(" ");
     let hour = parseInt(timePart.split(":")[0]);
 
     if (period === "PM" && hour !== 12) hour += 12;
     if (period === "AM" && hour === 12) hour = 0;
 
-    return hour >= minTime.getHours();
+    return hour >= getMinHour();
   });
-
-  if (availableSlots.length === 0) {
-    availableSlots = timeSlots;
-  }
 
   /* PRICE */
   const total = pax * 275;
@@ -128,7 +120,10 @@ ${city}, ${userState} - ${pin}
 🍚 Rice: ${rice} (${riceQty} ltr)
 🍰 Dessert: ${dessert} (${dessertQty} pcs)
 
-🥖 Bread: ${bread.join(", ")} (${rotiQty} pcs)
+🥖 Bread:
+Lachha Paratha (${rotiQty} pcs)
+Tandoori Roti (${rotiQty} pcs)
+
 🥗 Raita & Salad: Complimentary
 
 💰 Total: ₹${total}`
@@ -234,29 +229,15 @@ ${city}, ${userState} - ${pin}
           </h2>
 
           <div className="flex gap-3">
-            {["Lachha Paratha", "Tandoori Roti"].map((item) => {
-              const selected = bread.includes(item);
-
-              return (
-                <button
-                  key={item}
-                  onClick={() => {
-                    setBread((prev) =>
-                      prev.includes(item)
-                        ? prev.filter((b) => b !== item)
-                        : [...prev, item]
-                    );
-                  }}
-                  className={`px-4 py-2 rounded-full border transition ${
-                    selected
-                      ? "bg-orange-100 border-orange-400"
-                      : "bg-white border-gray-200"
-                  }`}
-                >
-                  {item}
-                </button>
-              );
-            })}
+            {breads.map((item) => (
+              <button
+                key={item}
+                disabled
+                className="px-4 py-2 rounded-full border bg-orange-100 border-orange-400 opacity-80 cursor-not-allowed"
+              >
+                {item}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -285,22 +266,33 @@ ${city}, ${userState} - ${pin}
             className="w-full border p-4 rounded-xl"
           />
 
-          <input
-            type="date"
-            min={new Date().toISOString().split("T")[0]}
-            onChange={(e)=>setDate(e.target.value)}
-            className="w-full border p-4 rounded-xl"
-          />
+          <div>
+            <p className="text-sm mb-1">Delivery Date</p>
+            <input
+              type="date"
+              min={new Date().toISOString().split("T")[0]}
+              onChange={(e)=>setDate(e.target.value)}
+              className="w-full border p-4 rounded-xl"
+            />
+          </div>
 
-          <select
-            onChange={(e)=>setTime(e.target.value)}
-            className="w-full border p-4 rounded-xl"
-          >
-            <option value="">Select Delivery Time</option>
-            {availableSlots.map((slot) => (
-              <option key={slot} value={slot}>{slot}</option>
-            ))}
-          </select>
+          <div>
+            <p className="text-sm mb-1">Delivery Time</p>
+
+            <select
+              onChange={(e)=>setTime(e.target.value)}
+              className="w-full border p-4 rounded-xl"
+            >
+              <option value="">Select Delivery Time</option>
+              {(availableSlots.length ? availableSlots : timeSlots).map((slot) => (
+                <option key={slot} value={slot}>{slot}</option>
+              ))}
+            </select>
+
+            <p className="text-xs text-gray-500 mt-2">
+              Orders require a minimum 5-hour preparation time
+            </p>
+          </div>
 
         </div>
 
