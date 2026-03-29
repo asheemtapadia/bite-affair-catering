@@ -255,4 +255,3 @@ ${allSelected
 };
 
 export default MenuDetailPage;
-export { othersInfo };
