@@ -1,4 +1,4 @@
-import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { menuPackages, othersInfo } from "@/data/menuData";
 import { ArrowLeft, Leaf, Drumstick } from "lucide-react";
@@ -25,6 +25,11 @@ const pkg = menuPackages.find((p) => p.slug === slug);
 /* ✅ GET LIMIT */
 const getLimit = (category: string) => {
   return category.toLowerCase().includes("dessert") ? 1 : 2;
+};
+
+/* ✅ CLEAN CATEGORY NAME (REMOVE "Choose 3") */
+const cleanCategoryName = (name: string) => {
+  return name.replace(/\(.*?\)/g, "").trim();
 };
 
 /* ✅ TOGGLE */
@@ -71,7 +76,13 @@ const handleAddToCart = () => {
   };
 
   localStorage.setItem("cart", JSON.stringify(order));
-  navigate("/cart");
+
+  // ✅ SAFE NAVIGATION (no crash)
+  try {
+    navigate("/cart");
+  } catch {
+    alert("Added to cart");
+  }
 };
 
 if (!pkg) {
@@ -112,18 +123,18 @@ className="absolute inset-0 w-full h-full object-cover"
 
 <button
 onClick={() => navigate(-1)}
-className="text-white/70 mb-6"
+className="text-white/70 mb-6 flex items-center gap-1"
 >
 <ArrowLeft size={16} /> Back
 </button>
 
 <div className="flex gap-3 mb-3">
 {pkg.isVeg ? (
-<span className="text-green-300 text-xs border px-2 py-1 rounded">
+<span className="text-green-300 text-xs border px-2 py-1 rounded flex items-center gap-1">
 <Leaf size={12} /> Veg
 </span>
 ) : (
-<span className="text-red-300 text-xs border px-2 py-1 rounded">
+<span className="text-red-300 text-xs border px-2 py-1 rounded flex items-center gap-1">
 <Drumstick size={12} /> Non Veg
 </span>
 )}
@@ -157,9 +168,9 @@ return (
 
 <h3 className="flex justify-between mb-4 font-semibold">
   <span>
-    {cat.name}
+    {cleanCategoryName(cat.name)}
     <span className="text-sm text-gray-400 ml-2">
-      (Select {limit})
+      Select {limit}
     </span>
   </span>
 
@@ -180,14 +191,15 @@ return (
 key={item}
 onClick={() => toggleItem(cat.name, item)}
 disabled={disabled}
-className={`px-4 py-2 rounded-full text-sm border transition
+className={`px-4 py-2 rounded-full text-sm border flex items-center gap-2 transition-all duration-200
 ${selected
-? "bg-orange-500 text-white scale-105 shadow"
+? "bg-orange-500 text-white border-orange-500 shadow-md scale-[1.05]"
 : disabled
-? "bg-gray-100 text-gray-400 cursor-not-allowed"
-: "hover:bg-orange-50"
+? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
+: "bg-white hover:border-orange-400 hover:bg-orange-50"
 }`}
 >
+{selected && <span className="w-2 h-2 bg-white rounded-full"></span>}
 {item}
 </button>
 );
@@ -218,10 +230,10 @@ ${selected
 </div>
 
 {/* ✅ STICKY CTA */}
-<div className="fixed bottom-16 left-0 right-0 px-4 z-50">
+<div className="fixed bottom-20 left-0 right-0 px-4 z-50">
 <button
 onClick={handleAddToCart}
-className={`w-full h-14 rounded-xl text-lg font-medium
+className={`w-full h-14 rounded-xl text-lg font-medium transition-all
 ${allSelected
 ? "bg-orange-500 text-white"
 : "bg-gray-200 text-gray-500"
