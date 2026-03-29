@@ -215,3 +215,12 @@ export const menuPackages: MenuPackage[] = [
 },
 
 ];
+const othersInfo: string[] = [
+  "Servers – ₹1500 each",
+  "Server + dishes – ₹1500 + ₹750 extra",
+  "Complimentary – snacks plates, dips, mint chutney, mouth freshener, tooth picks & napkins",
+  "Quantities taken here are for 20 pax & it will change according to the final pax confirmation",
+  "Transport cost extra",
+];
+
+export { othersInfo };
