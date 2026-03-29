@@ -3,16 +3,15 @@ import { Link } from "react-router-dom";
 import { menuPackages } from "@/data/menuData";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Leaf, Drumstick, ShoppingCart } from "lucide-react";
-import { toast } from "sonner";
 
 const MenuCards = () => {
 
-  /* ✅ DEFAULT VEG SELECTED */
   const [typeFilter, setTypeFilter] = useState<"veg" | "nonveg">("veg");
   const [priceFilter, setPriceFilter] = useState("all");
 
-  /* ✅ POPUP STATE */
+  /* ✅ POPUP + HIGHLIGHT STATE */
   const [showPopup, setShowPopup] = useState(false);
+  const [highlightMenu, setHighlightMenu] = useState<string | null>(null);
 
   const filteredPackages = menuPackages.filter((pkg) => {
 
@@ -31,11 +30,12 @@ const MenuCards = () => {
     <section id="menu" className="py-20 lg:py-28 section-beige">
       <div className="container mx-auto px-4">
 
-        {/* ✅ POPUP */}
+        {/* ✅ PREMIUM POPUP */}
         {showPopup && (
-          <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50">
-            <div className="bg-black text-white px-5 py-3 rounded-full shadow text-sm">
-              Please select items from menu ↓
+          <div className="fixed top-24 left-1/2 -translate-x-1/2 z-50 animate-[fadeIn_0.3s_ease]">
+            <div className="bg-black text-white px-6 py-4 rounded-2xl shadow-2xl text-sm flex items-center gap-2">
+              <span className="text-lg">👇</span>
+              Select dishes from menu
             </div>
           </div>
         )}
@@ -51,7 +51,6 @@ const MenuCards = () => {
               Designed for gatherings of 15–50 guests. Structured bulk menus with generous portions and consistent quality across Delhi NCR.
             </p>
 
-            {/* 🔥 FILTER UI */}
             <div className="flex flex-wrap justify-center gap-4 mb-8">
 
               <button
@@ -101,14 +100,12 @@ const MenuCards = () => {
                 className="group block bg-white rounded-xl border border-border shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-500 relative overflow-hidden h-full"
               >
 
-                {/* PREMIUM BADGE */}
                 {pkg.tier === "premium" && (
                   <span className="absolute left-4 top-4 bg-amber-500 text-white text-xs px-4 py-1 rounded-full shadow z-20">
                     Premium
                   </span>
                 )}
 
-                {/* IMAGE */}
                 <div className="relative overflow-hidden rounded-t-xl">
 
                   <img
@@ -121,21 +118,25 @@ const MenuCards = () => {
 
                 </div>
 
-                {/* ✅ CART BUTTON (FIXED) */}
+                {/* ✅ CART BUTTON (TRIGGER BOTH) */}
                 <button
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
 
                     setShowPopup(true);
-                    setTimeout(() => setShowPopup(false), 2000);
+                    setHighlightMenu(pkg.slug);
+
+                    setTimeout(() => {
+                      setShowPopup(false);
+                      setHighlightMenu(null);
+                    }, 2000);
                   }}
                   className="absolute right-4 top-4 bg-primary text-white p-3 rounded-full shadow-lg hover:scale-110 hover:shadow-xl transition"
                 >
                   <ShoppingCart size={18}/>
                 </button>
 
-                {/* CONTENT */}
                 <div className="p-6">
 
                   <div className="flex items-center gap-2 mb-3">
@@ -179,10 +180,22 @@ const MenuCards = () => {
                     ))}
                   </ul>
 
-                  {/* ✅ HIGHLIGHTED */}
-                  <span className="inline-block font-body text-sm font-medium text-primary relative">
-                    See Full Menu →
-                    <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-orange-400 animate-pulse"></span>
+                  {/* ✅ PREMIUM ANIMATED CTA */}
+                  <span
+                    className={`inline-block font-body text-sm font-semibold transition-all duration-300
+                    ${highlightMenu === pkg.slug
+                      ? "text-orange-600 scale-110"
+                      : "text-primary"
+                    }`}
+                  >
+                    Select dishes from menu →
+                    <span
+                      className={`block h-[2px] mt-1 transition-all duration-300
+                      ${highlightMenu === pkg.slug
+                        ? "w-full bg-orange-500 animate-pulse"
+                        : "w-0 bg-transparent"
+                      }`}
+                    ></span>
                   </span>
 
                 </div>
