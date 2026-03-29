@@ -147,7 +147,7 @@ className="text-white/70 mb-6 flex items-center gap-1"
 </p>
 
 <p className="text-white/70 mt-3">
-Select 2 from each category • Dessert: Select 1
+2 Starters, 2 Main Course, 2 Breads, 1 Dessert 
 </p>
 
 </div>
