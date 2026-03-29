@@ -1,7 +1,7 @@
 import { useParams, Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { menuPackages, othersInfo } from "@/data/menuData";
-import { ArrowLeft, Leaf, Drumstick, MessageCircle, Phone } from "lucide-react";
+import { ArrowLeft, Leaf, Drumstick } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ScrollReveal";
 import Header from "@/components/Header";
@@ -13,8 +13,9 @@ const { slug } = useParams<{ slug: string }>();
 const location = useLocation();
 const navigate = useNavigate();
 
-/* ✅ NEW STATE (selection) */
+/* ✅ STATE */
 const [selectedItems, setSelectedItems] = useState<any>({});
+const [showError, setShowError] = useState(false);
 
 /* ✅ LIMIT */
 const LIMIT = 2;
@@ -28,9 +29,7 @@ useEffect(() => {
 
 const pkg = menuPackages.find((p) => p.slug === slug);
 
-const cameFromPackages = location.search.includes("from=packages");
-
-/* ✅ TOGGLE FUNCTION */
+/* ✅ TOGGLE */
 const toggleItem = (category: string, item: string) => {
   setSelectedItems((prev:any) => {
     const current = prev[category] || [];
@@ -51,25 +50,28 @@ const toggleItem = (category: string, item: string) => {
   });
 };
 
-/* ✅ UPDATED WHATSAPP */
-const whatsappMessage = encodeURIComponent(
-`Hi Bite Affair,
-
-I'm interested in the ${pkg?.name} package.
-
-Selected Items:
-${Object.entries(selectedItems)
-  .map(([cat, items]) => `\n${cat}: ${(items as string[]).join(", ")}`)
-  .join("")}
-
-Event Date:
-Number of Guests:
-Location:
-
-Please share availability and details.`
+/* ✅ CHECK ALL SELECTED */
+const allSelected = pkg?.categories.every(
+  (cat) => (selectedItems[cat.name]?.length || 0) === LIMIT
 );
 
-const whatsappLink = `https://wa.me/919211570030?text=${whatsappMessage}`;
+/* ✅ ADD TO CART */
+const handleAddToCart = () => {
+  if (!allSelected) {
+    setShowError(true);
+    setTimeout(() => setShowError(false), 2000);
+    return;
+  }
+
+  const order = {
+    packageName: pkg?.name,
+    price: pkg?.price,
+    selectedItems,
+  };
+
+  localStorage.setItem("cart", JSON.stringify(order));
+  navigate("/cart");
+};
 
 if (!pkg) {
 return (
@@ -83,19 +85,25 @@ return (
 }
 
 return (
-<div className="min-h-screen">
+<div className="min-h-screen pb-32">
 <Header />
 
-{/* HERO SECTION */}
+{/* ERROR POPUP */}
+{showError && (
+  <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
+    <div className="bg-black text-white px-5 py-3 rounded-full shadow text-sm">
+      Please select dishes from all categories
+    </div>
+  </div>
+)}
 
+{/* HERO */}
 <div className="relative pt-28 pb-16">
-
 <img
 src={`/images/packages/${pkg.slug}.jpg`}
 alt={pkg.name}
 className="absolute inset-0 w-full h-full object-cover"
 />
-
 <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
 
 <div className="relative container mx-auto px-4 max-w-5xl">
@@ -111,30 +119,28 @@ Back to Packages
 <div className="flex items-center gap-3 mb-3">
 
 {pkg.isVeg ? (
-<span className="inline-flex items-center gap-1 text-xs font-body font-medium px-2 py-0.5 rounded border border-green-400 text-green-300">
+<span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded border border-green-400 text-green-300">
 <Leaf size={12} /> Veg
 </span>
 ) : (
-<span className="inline-flex items-center gap-1 text-xs font-body font-medium px-2 py-0.5 rounded border border-red-400 text-red-300">
+<span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded border border-red-400 text-red-300">
 <Drumstick size={12} /> Non Veg
 </span>
 )}
 
-<span className="text-xs font-body uppercase tracking-wider text-white/60">
+<span className="text-xs uppercase tracking-wider text-white/60">
 {pkg.tier} tier
 </span>
 
 </div>
 
-<h1 className="font-heading text-4xl md:text-5xl font-bold text-white">
+<h1 className="text-4xl md:text-5xl font-bold text-white">
 {pkg.name}
 </h1>
 
-<p className="font-heading text-3xl font-bold text-primary mt-3">
+<p className="text-3xl font-bold text-primary mt-3">
 ₹{pkg.price}
-<span className="text-base font-body font-normal text-white/70">
-/- per person
-</span>
+<span className="text-base text-white/70"> /- per person</span>
 </p>
 
 <p className="mt-4 text-sm text-white/70 max-w-xl">
@@ -144,8 +150,7 @@ Back to Packages
 </div>
 </div>
 
-{/* MENU SECTION */}
-
+{/* MENU */}
 <div className="py-20 section-white">
 <div className="container mx-auto px-4 max-w-5xl">
 
@@ -153,10 +158,13 @@ Back to Packages
 
 {pkg.categories.map((cat) => (
 <ScrollReveal key={cat.name} delay={0}>
-<div className="bg-white rounded-xl border border-border p-6 shadow-sm">
+<div className="bg-white rounded-xl border p-6 shadow-sm">
 
-<h3 className="font-heading text-xl font-semibold text-navy mb-4 pb-2 border-b border-border">
-{cat.name} <span className="text-sm text-gray-400">(Choose 2)</span>
+<h3 className="flex justify-between text-lg font-semibold mb-4">
+  <span>{cat.name} (Choose 2)</span>
+  <span className="text-orange-500 text-sm">
+    {(selectedItems[cat.name]?.length || 0)}/2
+  </span>
 </h3>
 
 <div className="flex flex-wrap gap-2">
@@ -172,12 +180,12 @@ return (
 key={item}
 onClick={() => toggleItem(cat.name, item)}
 disabled={disabled}
-className={`px-3 py-1.5 rounded-full text-sm border transition-all
+className={`px-4 py-2 rounded-full text-sm border transition-all duration-200
 ${selected
-? "bg-primary text-white border-primary"
+? "bg-orange-500 text-white border-orange-500 shadow-md scale-[1.05]"
 : disabled
 ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
-: "bg-white hover:border-primary"
+: "bg-white hover:border-orange-300 hover:bg-orange-50"
 }`}
 >
 {item}
@@ -194,55 +202,34 @@ ${selected
 
 </div>
 
-{/* ADDITIONAL INFO */}
-
-<ScrollReveal delay={0.1}>
-<div className="mt-16 bg-beige rounded-xl p-6 md:p-8 shadow-sm">
-
-<h3 className="font-heading text-lg font-semibold text-navy mb-4">
-Additional Information
-</h3>
+{/* INFO */}
+<div className="mt-16 bg-beige rounded-xl p-6 shadow-sm">
+<h3 className="text-lg font-semibold mb-4">Additional Information</h3>
 
 <ul className="space-y-2">
-
 {othersInfo.map((info) => (
-<li key={info} className="font-body text-sm text-foreground/70">
-● {info}
-</li>
+<li key={info} className="text-sm text-gray-600">● {info}</li>
 ))}
-
 </ul>
-
-</div>
-</ScrollReveal>
-
-<ScrollReveal delay={0.15}>
-<p className="mt-12 text-center font-body text-sm text-muted-foreground">
-To order, select your package and contact us directly via WhatsApp or Call.
-</p>
-</ScrollReveal>
-
-{/* CTA BUTTONS */}
-
-<div className="mt-6 text-center flex flex-col sm:flex-row gap-4 justify-center">
-
-<Button size="lg" asChild className="transition-transform duration-200 hover:scale-[1.02]">
-<a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-<MessageCircle size={18} className="mr-2" />
-Order on WhatsApp
-</a>
-</Button>
-
-<Button size="lg" variant="outline" asChild className="transition-transform duration-200 hover:scale-[1.02]">
-<a href="tel:+919211570030">
-<Phone size={18} className="mr-2" />
-Call to Order
-</a>
-</Button>
-
 </div>
 
 </div>
+</div>
+
+{/* ✅ STICKY CTA */}
+<div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 z-50">
+
+<button
+onClick={handleAddToCart}
+className={`w-full h-14 rounded-xl text-lg font-medium transition-all
+${allSelected
+? "bg-orange-500 text-white"
+: "bg-gray-200 text-gray-500"
+}`}
+>
+{allSelected ? "Add to Cart" : "Select dishes to continue"}
+</button>
+
 </div>
 
 <Footer />
