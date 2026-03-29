@@ -113,25 +113,7 @@ const desserts = [
   "Brownie",
 ];
 
-/* ✅ VEG STRUCTURE */
-const commonVegCategories = (starters: string[]) => [
-  { name: "Starters (Choose 2)", items: starters },
-  { name: "Main Course (Choose 2)", items: vegMains },
-  { name: "Rice (Choose 1)", items: riceItems },
-  { name: "Breads (Choose 2)", items: breads },
-  { name: "Desserts (Choose 1)", items: desserts },
-];
-
-/* ✅ FIXED NON VEG (ONLY NON VEG — NO MIX) */
-const commonNonVegCategories = (nonVegS: string[]) => [
-  { name: "Starters (Choose 2)", items: nonVegS },
-  { name: "Main Course (Choose 2)", items: nonVegMains },
-  { name: "Rice (Choose 1)", items: riceItems },
-  { name: "Breads (Choose 2)", items: breads },
-  { name: "Desserts (Choose 1)", items: desserts },
-];
-
-/* ✅ ALL 8 PACKAGES */
+/* ✅ PACKAGES (CLIENT LOGIC EXACT) */
 export const menuPackages: MenuPackage[] = [
   {
     slug: "standard-veg",
@@ -139,8 +121,14 @@ export const menuPackages: MenuPackage[] = [
     price: 499,
     isVeg: true,
     tier: "standard",
-    previewItems: ["2 Starters", "2 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
-    categories: commonVegCategories(standardVegStarters),
+    previewItems: ["3 Starters", "3 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
+    categories: [
+      { name: "Starters (Choose 3)", items: standardVegStarters },
+      { name: "Main Course (Choose 3)", items: vegMains },
+      { name: "Rice (Choose 1)", items: riceItems },
+      { name: "Breads (Choose 2)", items: breads },
+      { name: "Desserts (Choose 1)", items: desserts },
+    ],
   },
   {
     slug: "standard-plus-veg",
@@ -148,8 +136,14 @@ export const menuPackages: MenuPackage[] = [
     price: 599,
     isVeg: true,
     tier: "standard",
-    previewItems: ["2 Starters", "2 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
-    categories: commonVegCategories(standardVegStarters),
+    previewItems: ["4 Starters", "3 Main Course", "1 Rice", "3 Breads", "2 Desserts"],
+    categories: [
+      { name: "Starters (Choose 4)", items: standardVegStarters },
+      { name: "Main Course (Choose 3)", items: vegMains },
+      { name: "Rice (Choose 1)", items: riceItems },
+      { name: "Breads (Choose 3)", items: breads },
+      { name: "Desserts (Choose 2)", items: desserts },
+    ],
   },
   {
     slug: "premium-veg",
@@ -157,8 +151,14 @@ export const menuPackages: MenuPackage[] = [
     price: 599,
     isVeg: true,
     tier: "premium",
-    previewItems: ["2 Starters", "2 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
-    categories: commonVegCategories(premiumVegStarters),
+    previewItems: ["3 Starters", "3 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
+    categories: [
+      { name: "Starters (Choose 3)", items: premiumVegStarters },
+      { name: "Main Course (Choose 3)", items: vegMains },
+      { name: "Rice (Choose 1)", items: riceItems },
+      { name: "Breads (Choose 2)", items: breads },
+      { name: "Desserts (Choose 1)", items: desserts },
+    ],
   },
   {
     slug: "premium-plus-veg",
@@ -166,8 +166,14 @@ export const menuPackages: MenuPackage[] = [
     price: 699,
     isVeg: true,
     tier: "premium",
-    previewItems: ["2 Starters", "2 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
-    categories: commonVegCategories(premiumVegStarters),
+    previewItems: ["4 Starters", "4 Main Course", "1 Rice", "3 Breads", "2 Desserts"],
+    categories: [
+      { name: "Starters (Choose 4)", items: premiumVegStarters },
+      { name: "Main Course (Choose 4)", items: vegMains },
+      { name: "Rice (Choose 1)", items: riceItems },
+      { name: "Breads (Choose 3)", items: breads },
+      { name: "Desserts (Choose 2)", items: desserts },
+    ],
   },
   {
     slug: "standard-non-veg",
@@ -175,8 +181,16 @@ export const menuPackages: MenuPackage[] = [
     price: 699,
     isVeg: false,
     tier: "standard",
-    previewItems: ["2 Starters", "2 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
-    categories: commonNonVegCategories(standardNonVegStarters),
+    previewItems: ["2+2 Starters", "3+1 Main Course", "1 Rice", "3 Breads", "2 Desserts"],
+    categories: [
+      { name: "Veg Starters (Choose 2)", items: standardVegStarters },
+      { name: "Non Veg Starters (Choose 2)", items: standardNonVegStarters },
+      { name: "Veg Mains (Choose 3)", items: vegMains },
+      { name: "Non Veg Mains (Choose 1)", items: nonVegMains },
+      { name: "Rice (Choose 1)", items: riceItems },
+      { name: "Breads (Choose 3)", items: breads },
+      { name: "Desserts (Choose 2)", items: desserts },
+    ],
   },
   {
     slug: "standard-plus-non-veg",
@@ -184,8 +198,16 @@ export const menuPackages: MenuPackage[] = [
     price: 799,
     isVeg: false,
     tier: "standard",
-    previewItems: ["2 Starters", "2 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
-    categories: commonNonVegCategories(standardNonVegStarters),
+    previewItems: ["3+3 Starters", "4+1 Main Course", "1 Rice", "3 Breads", "2 Desserts"],
+    categories: [
+      { name: "Veg Starters (Choose 3)", items: standardVegStarters },
+      { name: "Non Veg Starters (Choose 3)", items: standardNonVegStarters },
+      { name: "Veg Mains (Choose 4)", items: vegMains },
+      { name: "Non Veg Mains (Choose 1)", items: nonVegMains },
+      { name: "Rice (Choose 1)", items: riceItems },
+      { name: "Breads (Choose 3)", items: breads },
+      { name: "Desserts (Choose 2)", items: desserts },
+    ],
   },
   {
     slug: "premium-non-veg",
@@ -193,8 +215,16 @@ export const menuPackages: MenuPackage[] = [
     price: 799,
     isVeg: false,
     tier: "premium",
-    previewItems: ["2 Starters", "2 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
-    categories: commonNonVegCategories(premiumNonVegStarters),
+    previewItems: ["2+2 Starters", "3+1 Main Course", "1 Rice", "3 Breads", "2 Desserts"],
+    categories: [
+      { name: "Veg Starters (Choose 2)", items: premiumVegStarters },
+      { name: "Non Veg Starters (Choose 2)", items: premiumNonVegStarters },
+      { name: "Veg Mains (Choose 3)", items: vegMains },
+      { name: "Non Veg Mains (Choose 1)", items: nonVegMains },
+      { name: "Rice (Choose 1)", items: riceItems },
+      { name: "Breads (Choose 3)", items: breads },
+      { name: "Desserts (Choose 2)", items: desserts },
+    ],
   },
   {
     slug: "premium-plus-non-veg",
@@ -202,11 +232,20 @@ export const menuPackages: MenuPackage[] = [
     price: 899,
     isVeg: false,
     tier: "premium",
-    previewItems: ["2 Starters", "2 Main Course", "1 Rice", "2 Breads", "1 Dessert"],
-    categories: commonNonVegCategories(premiumNonVegStarters),
+    previewItems: ["3+3 Starters", "4+1 Main Course", "1 Rice", "3 Breads", "2 Desserts"],
+    categories: [
+      { name: "Veg Starters (Choose 3)", items: premiumVegStarters },
+      { name: "Non Veg Starters (Choose 3)", items: premiumNonVegStarters },
+      { name: "Veg Mains (Choose 4)", items: vegMains },
+      { name: "Non Veg Mains (Choose 1)", items: nonVegMains },
+      { name: "Rice (Choose 1)", items: riceItems },
+      { name: "Breads (Choose 3)", items: breads },
+      { name: "Desserts (Choose 2)", items: desserts },
+    ],
   },
 ];
 
+/* ✅ INFO */
 export const othersInfo = [
   "Servers – ₹1500 each",
   "Server + dishes – ₹1500 + ₹750 extra",
