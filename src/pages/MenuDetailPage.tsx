@@ -1,4 +1,4 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { menuPackages, othersInfo } from "@/data/menuData";
 import { ArrowLeft, Leaf, Drumstick } from "lucide-react";
@@ -10,30 +10,30 @@ import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 const MenuDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  /* ✅ MODE FIX */
+  const mode = searchParams.get("source") === "plan" ? "plan" : "order";
 
   /* ✅ STATE */
   const [selectedItems, setSelectedItems] = useState<any>({});
   const [showError, setShowError] = useState(false);
 
-  /* ✅ SCROLL FIX */
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const pkg = menuPackages.find((p) => p.slug === slug);
 
-  /* ✅ LIMIT FROM CATEGORY NAME */
   const getLimit = (category: string) => {
     const match = category.match(/Choose\s*(\d+)/i);
     return match ? parseInt(match[1]) : 1;
   };
 
-  /* ✅ CLEAN NAME */
   const cleanCategoryName = (name: string) => {
     return name.split("(")[0].trim();
   };
 
-  /* ✅ TOGGLE */
   const toggleItem = (category: string, item: string) => {
     const LIMIT = getLimit(category);
 
@@ -47,7 +47,8 @@ const MenuDetailPage = () => {
         };
       }
 
-      if (current.length >= LIMIT) return prev;
+      /* ✅ FIX: PLAN MODE ME LIMIT REMOVE */
+      if (mode === "order" && current.length >= LIMIT) return prev;
 
       return {
         ...prev,
@@ -56,13 +57,11 @@ const MenuDetailPage = () => {
     });
   };
 
-  /* ✅ CHECK ALL SELECTED */
   const allSelected = pkg?.categories.every((cat) => {
     const limit = getLimit(cat.name);
     return (selectedItems[cat.name]?.length || 0) === limit;
   });
 
-  /* ✅ ADD TO CART */
   const handleAddToCart = () => {
     if (!allSelected) {
       setShowError(true);
@@ -83,11 +82,7 @@ const MenuDetailPage = () => {
 
     localStorage.setItem("cart", JSON.stringify(updatedCart));
 
-    try {
-      navigate("/cart");
-    } catch {
-      alert("Added to cart");
-    }
+    navigate("/cart");
   };
 
   if (!pkg) {
@@ -105,7 +100,6 @@ const MenuDetailPage = () => {
     <div className="min-h-screen pb-40">
       <Header />
 
-      {/* ERROR */}
       {showError && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
           <div className="bg-black text-white px-5 py-3 rounded-full shadow text-sm">
@@ -195,7 +189,7 @@ const MenuDetailPage = () => {
                         <button
                           key={item}
                           onClick={() => toggleItem(cat.name, item)}
-                          disabled={disabled}
+                          disabled={mode === "order" ? disabled : false}
                           className={`px-4 py-2 rounded-full text-sm border flex items-center gap-2 transition-all duration-200
                           ${selected
                               ? "bg-orange-500 text-white border-orange-500 shadow-md scale-[1.05]"
@@ -221,7 +215,6 @@ const MenuDetailPage = () => {
 
         </div>
 
-        {/* INFO */}
         <div className="mt-16 bg-beige p-6 rounded-xl max-w-5xl mx-auto">
           <h3 className="font-semibold mb-3">Additional Information</h3>
 
@@ -234,18 +227,32 @@ const MenuDetailPage = () => {
 
       </div>
 
-      {/* CTA */}
+      {/* ✅ CTA FIX */}
       <div className="fixed bottom-20 left-0 right-0 px-4 z-50">
-        <button
-          onClick={handleAddToCart}
-          className={`w-full h-14 rounded-xl text-lg font-medium transition-all
-          ${allSelected
-              ? "bg-orange-500 text-white"
-              : "bg-gray-200 text-gray-500"
-            }`}
-        >
-          {allSelected ? "Save & Add to Cart" : "Select dishes to continue"}
-        </button>
+
+        {mode === "plan" ? (
+          <button
+            onClick={() => {
+              const text = encodeURIComponent(`Selected Menu: ${pkg.name}`);
+              window.open(`https://wa.me/919211570030?text=${text}`, "_blank");
+            }}
+            className="w-full h-14 rounded-xl text-lg font-medium bg-black text-white"
+          >
+            Get Quote on WhatsApp
+          </button>
+        ) : (
+          <button
+            onClick={handleAddToCart}
+            className={`w-full h-14 rounded-xl text-lg font-medium
+            ${allSelected
+                ? "bg-orange-500 text-white"
+                : "bg-gray-200 text-gray-500"
+              }`}
+          >
+            {allSelected ? "Save & Add to Cart" : "Select dishes to continue"}
+          </button>
+        )}
+
       </div>
 
       <Footer />
