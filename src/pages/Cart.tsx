@@ -7,7 +7,7 @@ const Cart = () => {
 
 const [cart,setCart] = useState<any[]>([]);
 
-// ✅ NEW FIELDS
+// ✅ FIELDS
 const [firstName,setFirstName] = useState("");
 const [address,setAddress] = useState("");
 const [apartment,setApartment] = useState("");
@@ -18,6 +18,9 @@ const [phone,setPhone] = useState("");
 
 const [date,setDate] = useState("");
 const [time,setTime] = useState("");
+
+/* ✅ GUESTS */
+const [guests,setGuests] = useState(15);
 
 useEffect(() => {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -47,7 +50,10 @@ setCart(updated);
 localStorage.setItem("cart", JSON.stringify(updated));
 };
 
-const total = cart.reduce((sum,item)=> sum + item.price,0);
+/* ✅ CORRECT PAX LOGIC */
+const total = cart.reduce((sum,item)=> {
+  return sum + (Number(item.price) * guests);
+},0);
 
 const whatsappOrder = () => {
 
@@ -56,7 +62,6 @@ if(!firstName || !address || !city || !userState || !pin || !phone || !date || !
   return;
 }
 
-/* ✅ CLEAN PREMIUM MESSAGE */
 const message = cart.map((item) => {
 
   const dishes = item.selectedItems
@@ -71,6 +76,10 @@ const message = cart.map((item) => {
   return `✨ ${item.name} (₹${item.price})
 
 ${dishes}
+
+👥 Guests: ${guests}
+
+💰 Subtotal: ₹${Number(item.price) * guests}
 
 📝 Request: ${item.request || "None"}`;
 }).join("\n\n");
@@ -137,9 +146,13 @@ return (
                 ₹{item.price} / person
               </p>
 
+              {/* ✅ SUBTOTAL */}
+              <p className="text-sm text-orange-500 mt-1 font-medium">
+                ₹{Number(item.price) * guests} total
+              </p>
+
               <div className="mt-3 h-[1px] bg-gray-100"></div>
 
-              {/* ✅ CHIP STYLE DISHES */}
               {item.selectedItems && (
                 <div className="mt-4 space-y-4">
                   {Object.entries(item.selectedItems).map(([cat, items]: any) => {
@@ -194,6 +207,21 @@ return (
 
       <div className="mt-12 bg-white p-8 rounded-3xl border border-gray-100 shadow-[0_25px_80px_rgba(0,0,0,0.08)]">
 
+        {/* GUEST DROPDOWN */}
+        <div className="mb-6">
+          <p className="text-sm mb-1">Number of Guests</p>
+          <select
+            value={guests}
+            onChange={(e)=>setGuests(Number(e.target.value))}
+            className="w-full border p-4 rounded-xl"
+          >
+            {Array.from({ length: 36 }, (_, i) => {
+              const num = i + 15;
+              return <option key={num} value={num}>{num}</option>;
+            })}
+          </select>
+        </div>
+
         {/* TOTAL */}
         <div className="flex justify-between items-center mb-8">
           <span className="text-lg font-medium">Total</span>
@@ -205,87 +233,32 @@ return (
         {/* FORM */}
         <div className="space-y-5">
 
-          <input
-            placeholder="First Name"
-            value={firstName}
-            onChange={(e)=>setFirstName(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
-          />
+          <input placeholder="First Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} className="w-full border p-4 rounded-xl"/>
 
-          <input
-            placeholder="Address"
-            value={address}
-            onChange={(e)=>setAddress(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
-          />
+          <input placeholder="Address" value={address} onChange={(e)=>setAddress(e.target.value)} className="w-full border p-4 rounded-xl"/>
 
-          <input
-            placeholder="Apartment, suite, etc."
-            value={apartment}
-            onChange={(e)=>setApartment(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
-          />
+          <input placeholder="Apartment" value={apartment} onChange={(e)=>setApartment(e.target.value)} className="w-full border p-4 rounded-xl"/>
 
-          <input
-            placeholder="City"
-            value={city}
-            onChange={(e)=>setCity(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
-          />
+          <input placeholder="City" value={city} onChange={(e)=>setCity(e.target.value)} className="w-full border p-4 rounded-xl"/>
 
-          <input
-            placeholder="State"
-            value={userState}
-            onChange={(e)=>setUserState(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
-          />
+          <input placeholder="State" value={userState} onChange={(e)=>setUserState(e.target.value)} className="w-full border p-4 rounded-xl"/>
 
-          {/* ✅ PIN FIX */}
-          <input
-            type="tel"
-            inputMode="numeric"
-            placeholder="PIN Code"
-            value={pin}
-            maxLength={6}
-            onChange={(e)=>setPin(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
-          />
+          <input type="tel" inputMode="numeric" placeholder="PIN Code" value={pin} maxLength={6} onChange={(e)=>setPin(e.target.value)} className="w-full border p-4 rounded-xl"/>
 
-          {/* ✅ PHONE FIX */}
-          <input
-            type="tel"
-            inputMode="numeric"
-            placeholder="Phone"
-            value={phone}
-            maxLength={10}
-            onChange={(e)=>setPhone(e.target.value)}
-            className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
-          />
+          <input type="tel" inputMode="numeric" placeholder="Phone" value={phone} maxLength={10} onChange={(e)=>setPhone(e.target.value)} className="w-full border p-4 rounded-xl"/>
 
           <div>
             <p className="text-sm mb-1">Delivery Date</p>
-            <input
-              type="date"
-              value={date}
-              min={new Date().toISOString().split("T")[0]}
-              onChange={(e)=>setDate(e.target.value)}
-              className="w-full border p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
-            />
+            <input type="date" value={date} min={new Date().toISOString().split("T")[0]} onChange={(e)=>setDate(e.target.value)} className="w-full border p-4 rounded-xl"/>
           </div>
 
           <div>
             <p className="text-sm mb-1">Delivery Time</p>
-            <input
-              type="time"
-              value={time}
-              onChange={(e)=>setTime(e.target.value)}
-              className="w-full border p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
-            />
+            <input type="time" value={time} onChange={(e)=>setTime(e.target.value)} className="w-full border p-4 rounded-xl"/>
           </div>
 
         </div>
 
-        {/* BUTTON */}
         <div className="mt-6">
           <button
             onClick={whatsappOrder}
