@@ -49,10 +49,20 @@ if(!firstName || !address || !city || !userState || !pin || !phone || !date || !
   return;
 }
 
-const message = cart.map(
-(item)=>`• ${item.name} (₹${item.price})
-Request: ${item.request || "None"}`
-).join("\n\n");
+/* ✅ UPDATED MESSAGE WITH DISHES */
+const message = cart.map((item) => {
+  const dishes = item.selectedItems
+    ? Object.entries(item.selectedItems)
+        .map(([cat, items]: any) => `${cat}: ${items.join(", ")}`)
+        .join("\n")
+    : "";
+
+  return `• ${item.name} (₹${item.price})
+
+${dishes}
+
+Request: ${item.request || "None"}`;
+}).join("\n\n");
 
 const text = encodeURIComponent(
 `Hi Bite Affair,
@@ -111,9 +121,23 @@ return (
               <h3 className="font-semibold text-lg">
                 {item.name}
               </h3>
+
               <p className="text-sm text-muted-foreground mt-1">
                 ₹{item.price} / person
               </p>
+
+              {/* ✅ SHOW SELECTED DISHES */}
+              {item.selectedItems && (
+                <div className="mt-2 text-sm text-gray-600 space-y-1">
+                  {Object.entries(item.selectedItems).map(([cat, items]: any) => (
+                    <div key={cat}>
+                      <span className="font-medium">{cat}:</span>{" "}
+                      {items.join(", ")}
+                    </div>
+                  ))}
+                </div>
+              )}
+
             </div>
 
             <Button
@@ -152,7 +176,6 @@ return (
         {/* FORM */}
         <div className="space-y-5">
 
-          {/* FIRST NAME */}
           <input
             placeholder="First Name"
             value={firstName}
@@ -160,7 +183,6 @@ return (
             className="w-full border border-gray-200 p-4 rounded-xl"
           />
 
-          {/* ADDRESS */}
           <input
             placeholder="Address"
             value={address}
@@ -168,7 +190,6 @@ return (
             className="w-full border border-gray-200 p-4 rounded-xl"
           />
 
-          {/* APARTMENT */}
           <input
             placeholder="Apartment, suite, etc."
             value={apartment}
@@ -176,7 +197,6 @@ return (
             className="w-full border border-gray-200 p-4 rounded-xl"
           />
 
-          {/* CITY */}
           <input
             placeholder="City"
             value={city}
@@ -184,7 +204,6 @@ return (
             className="w-full border border-gray-200 p-4 rounded-xl"
           />
 
-          {/* STATE */}
           <input
             placeholder="State"
             value={userState}
@@ -192,7 +211,6 @@ return (
             className="w-full border border-gray-200 p-4 rounded-xl"
           />
 
-          {/* PIN */}
           <input
             placeholder="PIN Code"
             value={pin}
@@ -200,7 +218,6 @@ return (
             className="w-full border border-gray-200 p-4 rounded-xl"
           />
 
-          {/* PHONE */}
           <input
             placeholder="Phone"
             value={phone}
@@ -208,7 +225,6 @@ return (
             className="w-full border border-gray-200 p-4 rounded-xl"
           />
 
-          {/* DATE */}
           <div>
             <p className="text-sm mb-1">Delivery Date</p>
             <input
@@ -220,7 +236,6 @@ return (
             />
           </div>
 
-          {/* TIME */}
           <div>
             <p className="text-sm mb-1">Delivery Time</p>
             <input
@@ -233,7 +248,6 @@ return (
 
         </div>
 
-        {/* BUTTON */}
         <div className="mt-6">
           <button
             onClick={whatsappOrder}
