@@ -36,7 +36,12 @@ const LiteMeal = () => {
   const [veg, setVeg] = useState("Mix Veg");
   const [rice, setRice] = useState("Plain Rice");
   const [dessert, setDessert] = useState("Gulab Jamun");
-  const [bread, setBread] = useState("Lachha Paratha");
+
+  /* ✅ BREAD FIX */
+  const [bread, setBread] = useState<string[]>([
+    "Lachha Paratha",
+    "Tandoori Roti"
+  ]);
 
   const [pax, setPax] = useState(15);
 
@@ -53,7 +58,7 @@ const LiteMeal = () => {
 
   const [error, setError] = useState("");
 
-  /* ✅ TIME LOGIC (ADDED) */
+  /* ✅ TIME LOGIC */
   const timeSlots = [
     "9:00 AM","10:00 AM","11:00 AM","12:00 PM",
     "1:00 PM","2:00 PM","3:00 PM","4:00 PM",
@@ -66,7 +71,7 @@ const LiteMeal = () => {
     return now;
   };
 
-  const availableSlots = timeSlots.filter((slot) => {
+  let availableSlots = timeSlots.filter((slot) => {
     const minTime = getMinDeliveryTime();
 
     const [timePart, period] = slot.split(" ");
@@ -78,9 +83,12 @@ const LiteMeal = () => {
     return hour >= minTime.getHours();
   });
 
-  /* ✅ PRICE FIX */
-  const total = pax * 275;
+  if (availableSlots.length === 0) {
+    availableSlots = timeSlots;
+  }
 
+  /* PRICE */
+  const total = pax * 275;
   const quantity = (pax * 0.1).toFixed(1);
 
   const riceQty =
@@ -120,7 +128,7 @@ ${city}, ${userState} - ${pin}
 🍚 Rice: ${rice} (${riceQty} ltr)
 🍰 Dessert: ${dessert} (${dessertQty} pcs)
 
-🥖 Bread: ${bread} (${rotiQty} pcs)
+🥖 Bread: ${bread.join(", ")} (${rotiQty} pcs)
 🥗 Raita & Salad: Complimentary
 
 💰 Total: ₹${total}`
@@ -226,23 +234,30 @@ ${city}, ${userState} - ${pin}
           </h2>
 
           <div className="flex gap-3">
-            {["Lachha Paratha", "Tandoori Roti"].map((item) => (
-              <button
-                key={item}
-                onClick={() => setBread(item)}
-                className={`px-4 py-2 rounded-full border transition ${
-                  bread === item ? "bg-orange-100 border-orange-400" : "bg-white border-gray-200"
-                }`}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </div>
+            {["Lachha Paratha", "Tandoori Roti"].map((item) => {
+              const selected = bread.includes(item);
 
-        {/* INFO */}
-        <div className="px-5 mb-4 text-xs text-gray-500">
-          ⏱ Delivery available after 5 hours from order time
+              return (
+                <button
+                  key={item}
+                  onClick={() => {
+                    setBread((prev) =>
+                      prev.includes(item)
+                        ? prev.filter((b) => b !== item)
+                        : [...prev, item]
+                    );
+                  }}
+                  className={`px-4 py-2 rounded-full border transition ${
+                    selected
+                      ? "bg-orange-100 border-orange-400"
+                      : "bg-white border-gray-200"
+                  }`}
+                >
+                  {item}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* FORM */}
@@ -277,7 +292,6 @@ ${city}, ${userState} - ${pin}
             className="w-full border p-4 rounded-xl"
           />
 
-          {/* TIME DROPDOWN */}
           <select
             onChange={(e)=>setTime(e.target.value)}
             className="w-full border p-4 rounded-xl"
