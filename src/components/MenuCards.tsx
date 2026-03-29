@@ -169,19 +169,21 @@ const MenuCards = () => {
                     </span>
                   </p>
 
-                  {/* ✅ UPDATED CONTENT (CLIENT FIX) */}
+                  {/* ✅ DYNAMIC CONTENT */}
                   <ul className="space-y-1.5 mb-6">
+                    {pkg.previewItems.map((item, index) => (
+                      <li
+                        key={index}
+                        className="text-sm font-body text-foreground/80 flex items-start gap-2"
+                      >
+                        <span className="text-primary mt-1 text-xs">●</span>
+                        {item}
+                      </li>
+                    ))}
+
                     <li className="text-sm font-body text-foreground/80 flex items-start gap-2">
                       <span className="text-primary mt-1 text-xs">●</span>
-                      2 Starters
-                    </li>
-                    <li className="text-sm font-body text-foreground/80 flex items-start gap-2">
-                      <span className="text-primary mt-1 text-xs">●</span>
-                      2 Main Course
-                    </li>
-                    <li className="text-sm font-body text-foreground/80 flex items-start gap-2">
-                      <span className="text-primary mt-1 text-xs">●</span>
-                      Rice, Bread, Dessert
+                      Raita & Salad
                     </li>
                   </ul>
 
