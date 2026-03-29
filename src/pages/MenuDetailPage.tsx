@@ -22,9 +22,10 @@ useEffect(() => {
 
 const pkg = menuPackages.find((p) => p.slug === slug);
 
-/* ✅ GET LIMIT */
+/* ✅ FIXED GET LIMIT (DYNAMIC) */
 const getLimit = (category: string) => {
-  return category.toLowerCase().includes("dessert") ? 1 : 2;
+  const match = category.match(/Choose\s*(\d+)/i);
+  return match ? parseInt(match[1]) : 1;
 };
 
 /* ✅ CLEAN CATEGORY NAME */
@@ -61,7 +62,7 @@ const allSelected = pkg?.categories.every((cat) => {
   return (selectedItems[cat.name]?.length || 0) === limit;
 });
 
-/* ✅ ADD TO CART (FIXED - ARRAY SUPPORT) */
+/* ✅ ADD TO CART */
 const handleAddToCart = () => {
   if (!allSelected) {
     setShowError(true);
