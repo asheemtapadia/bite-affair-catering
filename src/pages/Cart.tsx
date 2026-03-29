@@ -20,9 +20,16 @@ const [date,setDate] = useState("");
 const [time,setTime] = useState("");
 
 useEffect(() => {
-  window.scrollTo(0,0);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
   const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
-  setCart(savedCart);
+
+  if (Array.isArray(savedCart)) {
+    setCart(savedCart);
+  } else if (savedCart) {
+    setCart([savedCart]);
+  }
+
 }, []);
 
 const removeItem = (id:number) => {
@@ -99,9 +106,9 @@ return (
 
   <Header />
 
-  <div className="container mx-auto px-4 py-28 max-w-3xl">
+  <div className="container mx-auto px-4 pt-28 pb-40 max-w-3xl">
 
-    <h1 className="text-3xl font-serif font-semibold mb-8">
+    <h1 className="text-4xl font-serif font-semibold mb-10 tracking-tight">
       Your Cart
     </h1>
 
@@ -116,12 +123,12 @@ return (
       {cart.map((item)=>(
         <div
           key={item.id}
-          className="bg-white p-6 rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgba(0,0,0,0.05)]"
+          className="bg-white p-6 rounded-3xl border border-gray-100 shadow-[0_20px_60px_rgba(0,0,0,0.08)] backdrop-blur"
         >
 
           <div className="flex justify-between items-start">
 
-            <div>
+            <div className="w-full">
               <h3 className="font-semibold text-xl text-gray-900">
                 {item.name}
               </h3>
@@ -130,20 +137,30 @@ return (
                 ₹{item.price} / person
               </p>
 
-              {/* ✅ CLEAN DISHES UI */}
+              <div className="mt-3 h-[1px] bg-gray-100"></div>
+
+              {/* ✅ CHIP STYLE DISHES */}
               {item.selectedItems && (
-                <div className="mt-4 space-y-3">
+                <div className="mt-4 space-y-4">
                   {Object.entries(item.selectedItems).map(([cat, items]: any) => {
                     const cleanCat = cat.replace(/\(.*?\)/g, "").trim();
 
                     return (
                       <div key={cat}>
-                        <p className="text-xs uppercase text-gray-400 tracking-wide">
+                        <p className="text-xs text-gray-400 uppercase mb-2">
                           {cleanCat}
                         </p>
-                        <p className="text-sm text-gray-800 font-medium leading-relaxed">
-                          {items.join(", ")}
-                        </p>
+
+                        <div className="flex flex-wrap gap-2">
+                          {items.map((dish:string)=>(
+                            <span
+                              key={dish}
+                              className="px-3 py-1.5 text-xs bg-orange-50 text-orange-600 rounded-full border border-orange-100"
+                            >
+                              {dish}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     );
                   })}
@@ -175,7 +192,7 @@ return (
 
     {cart.length > 0 && (
 
-      <div className="mt-12 bg-white p-7 rounded-3xl border border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.06)]">
+      <div className="mt-12 bg-white p-8 rounded-3xl border border-gray-100 shadow-[0_25px_80px_rgba(0,0,0,0.08)]">
 
         {/* TOTAL */}
         <div className="flex justify-between items-center mb-8">
@@ -225,19 +242,23 @@ return (
 
           {/* ✅ PIN FIX */}
           <input
+            type="tel"
+            inputMode="numeric"
             placeholder="PIN Code"
             value={pin}
             maxLength={6}
-            onChange={(e)=>setPin(e.target.value.replace(/\D/g, ""))}
+            onChange={(e)=>setPin(e.target.value)}
             className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
 
           {/* ✅ PHONE FIX */}
           <input
+            type="tel"
+            inputMode="numeric"
             placeholder="Phone"
             value={phone}
             maxLength={10}
-            onChange={(e)=>setPhone(e.target.value.replace(/\D/g, ""))}
+            onChange={(e)=>setPhone(e.target.value)}
             className="w-full border border-gray-200 p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
 
@@ -268,7 +289,7 @@ return (
         <div className="mt-6">
           <button
             onClick={whatsappOrder}
-            className="w-full py-4 rounded-xl text-white text-base font-medium bg-orange-500 hover:bg-orange-600 transition-all duration-200 shadow-md"
+            className="w-full py-4 rounded-xl text-white text-base font-medium bg-gradient-to-r from-orange-500 to-orange-600 shadow-lg active:scale-[0.98] transition-all"
           >
             Order on WhatsApp
           </button>
