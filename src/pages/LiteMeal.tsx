@@ -53,6 +53,31 @@ const LiteMeal = () => {
 
   const [error, setError] = useState("");
 
+  /* ✅ TIME LOGIC (ADDED) */
+  const timeSlots = [
+    "9:00 AM","10:00 AM","11:00 AM","12:00 PM",
+    "1:00 PM","2:00 PM","3:00 PM","4:00 PM",
+    "5:00 PM","6:00 PM","7:00 PM","8:00 PM","9:00 PM"
+  ];
+
+  const getMinDeliveryTime = () => {
+    const now = new Date();
+    now.setHours(now.getHours() + 5);
+    return now;
+  };
+
+  const availableSlots = timeSlots.filter((slot) => {
+    const minTime = getMinDeliveryTime();
+
+    const [timePart, period] = slot.split(" ");
+    let hour = parseInt(timePart.split(":")[0]);
+
+    if (period === "PM" && hour !== 12) hour += 12;
+    if (period === "AM" && hour === 12) hour = 0;
+
+    return hour >= minTime.getHours();
+  });
+
   /* ✅ PRICE FIX */
   const total = pax * 275;
 
@@ -215,34 +240,25 @@ ${city}, ${userState} - ${pin}
           </div>
         </div>
 
-        {/* ✅ Complimentary */}
-        <div className="px-5 mb-6">
-          <div className="bg-green-50 text-green-700 text-sm px-4 py-3 rounded-xl border border-green-200">
-            🥗 Raita & Salad included (Complimentary)
-          </div>
+        {/* INFO */}
+        <div className="px-5 mb-4 text-xs text-gray-500">
+          ⏱ Delivery available after 5 hours from order time
         </div>
 
         {/* FORM */}
         <div className="px-5 space-y-5 mb-12">
 
           <input placeholder="First Name" onChange={(e)=>setFirstName(e.target.value)} className="w-full border p-4 rounded-xl" />
-
           <input placeholder="Address" onChange={(e)=>setAddress(e.target.value)} className="w-full border p-4 rounded-xl" />
-
           <input placeholder="Apartment, suite, etc." onChange={(e)=>setApartment(e.target.value)} className="w-full border p-4 rounded-xl" />
-
           <input placeholder="City" onChange={(e)=>setCity(e.target.value)} className="w-full border p-4 rounded-xl" />
-
           <input placeholder="State" onChange={(e)=>setUserState(e.target.value)} className="w-full border p-4 rounded-xl" />
 
           <input
             placeholder="PIN Code"
             inputMode="numeric"
             maxLength={6}
-            onChange={(e)=>{
-              const val = e.target.value.replace(/[^0-9]/g, "");
-              setPin(val);
-            }}
+            onChange={(e)=>setPin(e.target.value.replace(/[^0-9]/g, ""))}
             className="w-full border p-4 rounded-xl"
           />
 
@@ -250,31 +266,27 @@ ${city}, ${userState} - ${pin}
             placeholder="Phone"
             inputMode="numeric"
             maxLength={10}
-            onChange={(e)=>{
-              const val = e.target.value.replace(/[^0-9]/g, "");
-              setPhone(val);
-            }}
+            onChange={(e)=>setPhone(e.target.value.replace(/[^0-9]/g, ""))}
             className="w-full border p-4 rounded-xl"
           />
 
-          <div>
-            <p className="text-sm mb-1">Delivery Date</p>
-            <input
-              type="date"
-              min={new Date().toISOString().split("T")[0]}
-              onChange={(e)=>setDate(e.target.value)}
-              className="w-full border p-4 rounded-xl"
-            />
-          </div>
+          <input
+            type="date"
+            min={new Date().toISOString().split("T")[0]}
+            onChange={(e)=>setDate(e.target.value)}
+            className="w-full border p-4 rounded-xl"
+          />
 
-          <div>
-            <p className="text-sm mb-1">Delivery Time</p>
-            <input
-              type="time"
-              onChange={(e)=>setTime(e.target.value)}
-              className="w-full border p-4 rounded-xl"
-            />
-          </div>
+          {/* TIME DROPDOWN */}
+          <select
+            onChange={(e)=>setTime(e.target.value)}
+            className="w-full border p-4 rounded-xl"
+          >
+            <option value="">Select Delivery Time</option>
+            {availableSlots.map((slot) => (
+              <option key={slot} value={slot}>{slot}</option>
+            ))}
+          </select>
 
         </div>
 
@@ -282,24 +294,19 @@ ${city}, ${userState} - ${pin}
           Total: ₹{total}
         </div>
 
-        {/* SPACING */}
         <div className="h-20"></div>
 
         {/* CTA */}
-<div className="fixed bottom-[72px] left-0 right-0 px-4 z-50">
-
-  <div className="max-w-md mx-auto bg-white/80 backdrop-blur-xl border border-gray-200 rounded-2xl shadow-lg px-3 py-3">
-
-    <button
-      onClick={handleOrder}
-      className="w-full h-14 rounded-xl text-lg font-medium bg-orange-500 text-white shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
-    >
-      Order on WhatsApp
-    </button>
-
-  </div>
-
-</div>
+        <div className="fixed bottom-[72px] left-0 right-0 px-4 z-50">
+          <div className="max-w-md mx-auto bg-white/80 backdrop-blur-xl border border-gray-200 rounded-2xl shadow-lg px-3 py-3">
+            <button
+              onClick={handleOrder}
+              className="w-full h-14 rounded-xl text-lg font-medium bg-orange-500 text-white shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+            >
+              Order on WhatsApp
+            </button>
+          </div>
+        </div>
 
       </div>
     </div>
