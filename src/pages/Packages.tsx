@@ -179,7 +179,6 @@ return (
 Available Packages
 </h1>
 
-{/* 🔥 FILTER UI */}
 <p className="text-center text-xs text-gray-500 mb-3">
   Showing {filter === "veg" ? "Veg" : "Non-Veg"} Packages
 </p>
@@ -250,7 +249,8 @@ Premium
 {pkg.previewItems.slice(0,3).join(" • ")}
 </p>
 
-<Link to={`/menu/${pkg.slug}?from=packages&${searchParams.toString()}`} className="text-sm text-primary underline mb-3">
+{/* ✅ FIXED */}
+<Link to={`/menu/${pkg.slug}?source=plan&${searchParams.toString()}`} className="text-sm text-primary underline mb-3">
 View Full Menu
 </Link>
 
@@ -317,7 +317,8 @@ Premium
 {pkg.previewItems.slice(0,3).join(" • ")}
 </p>
 
-<Link to={`/menu/${pkg.slug}?from=packages&${searchParams.toString()}`} className="text-sm text-primary underline mb-3">
+{/* ✅ FIXED */}
+<Link to={`/menu/${pkg.slug}?source=plan&${searchParams.toString()}`} className="text-sm text-primary underline mb-3">
 View Full Menu
 </Link>
 
@@ -343,26 +344,6 @@ selectedNonVegPackage?.slug === pkg.slug
 </div>
 </>
 )}
-
-
-{/* CTA */}
-
-<div className={`fixed bottom-0 left-0 right-0 px-4 pb-5 ${
-selectedVegPackage || selectedNonVegPackage
-? "opacity-100 translate-y-0"
-: "opacity-0 translate-y-10 pointer-events-none"
-} transition-all duration-300`}>
-
-  <div className="max-w-md mx-auto">
-    <Button
-      onClick={handleSubmit}
-      className="w-full h-14 text-lg rounded-2xl shadow-xl bg-primary hover:scale-[1.02] transition-all duration-200"
-    >
-      Get Quote on WhatsApp
-    </Button>
-  </div>
-
-</div>
 
 </div>
 );
