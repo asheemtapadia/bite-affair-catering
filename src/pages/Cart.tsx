@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const Cart = () => {
 
@@ -50,7 +51,7 @@ setCart(updated);
 localStorage.setItem("cart", JSON.stringify(updated));
 };
 
-/* ✅ CORRECT PAX LOGIC */
+/* ✅ SAME LOGIC */
 const total = cart.reduce((sum,item)=> {
   return sum + (Number(item.price) * guests);
 },0);
@@ -58,7 +59,9 @@ const total = cart.reduce((sum,item)=> {
 const whatsappOrder = () => {
 
 if(!firstName || !address || !city || !userState || !pin || !phone || !date || !time){
-  alert("Please fill all details");
+  toast.error("Please fill all details", {
+    description: "All fields are required before placing order",
+  });
   return;
 }
 
@@ -132,7 +135,7 @@ return (
       {cart.map((item)=>(
         <div
           key={item.id}
-          className="bg-white p-6 rounded-3xl border border-gray-100 shadow-[0_20px_60px_rgba(0,0,0,0.08)] backdrop-blur"
+          className="bg-white p-6 rounded-3xl border border-gray-100 shadow-[0_25px_70px_rgba(0,0,0,0.08)] backdrop-blur"
         >
 
           <div className="flex justify-between items-start">
@@ -146,8 +149,22 @@ return (
                 ₹{item.price} / person
               </p>
 
-              {/* ✅ SUBTOTAL */}
-              <p className="text-sm text-orange-500 mt-1 font-medium">
+              {/* ✅ GUEST DROPDOWN (MOVED HERE) */}
+              <div className="mt-3">
+                <select
+                  value={guests}
+                  onChange={(e)=>setGuests(Number(e.target.value))}
+                  className="border border-gray-200 px-4 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400"
+                >
+                  {Array.from({ length: 36 }, (_, i) => {
+                    const num = i + 15;
+                    return <option key={num} value={num}>{num} guests</option>;
+                  })}
+                </select>
+              </div>
+
+              {/* SUBTOTAL */}
+              <p className="text-sm text-orange-500 mt-2 font-medium">
                 ₹{Number(item.price) * guests} total
               </p>
 
@@ -206,21 +223,6 @@ return (
     {cart.length > 0 && (
 
       <div className="mt-12 bg-white p-8 rounded-3xl border border-gray-100 shadow-[0_25px_80px_rgba(0,0,0,0.08)]">
-
-        {/* GUEST DROPDOWN */}
-        <div className="mb-6">
-          <p className="text-sm mb-1">Number of Guests</p>
-          <select
-            value={guests}
-            onChange={(e)=>setGuests(Number(e.target.value))}
-            className="w-full border p-4 rounded-xl"
-          >
-            {Array.from({ length: 36 }, (_, i) => {
-              const num = i + 15;
-              return <option key={num} value={num}>{num}</option>;
-            })}
-          </select>
-        </div>
 
         {/* TOTAL */}
         <div className="flex justify-between items-center mb-8">
