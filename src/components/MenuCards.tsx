@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { menuPackages } from "@/data/menuData";
 import ScrollReveal from "@/components/ScrollReveal";
 import { Leaf, Drumstick, ShoppingCart } from "lucide-react";
-import { addToCart } from "@/utils/cart";
 import { toast } from "sonner";
 
 const MenuCards = () => {
@@ -11,6 +10,9 @@ const MenuCards = () => {
   /* ✅ DEFAULT VEG SELECTED */
   const [typeFilter, setTypeFilter] = useState<"veg" | "nonveg">("veg");
   const [priceFilter, setPriceFilter] = useState("all");
+
+  /* ✅ POPUP STATE */
+  const [showPopup, setShowPopup] = useState(false);
 
   const filteredPackages = menuPackages.filter((pkg) => {
 
@@ -23,31 +25,20 @@ const MenuCards = () => {
     return true;
   });
 
-  /* ✅ ALWAYS SHOW FILTERED (NO 2 CARD BUG) */
   const cardsToRender = filteredPackages;
-
-  const handleAddToCart = (e:any, pkg:any) => {
-
-    e.preventDefault();
-    e.stopPropagation();
-
-    addToCart({
-      slug: pkg.slug,
-      name: pkg.name,
-      price: pkg.price
-    });
-
-    window.dispatchEvent(new Event("cartUpdated"));
-
-    toast.success(`${pkg.name} added to cart`, {
-      description: "You can review it in your cart anytime.",
-    });
-
-  };
 
   return (
     <section id="menu" className="py-20 lg:py-28 section-beige">
       <div className="container mx-auto px-4">
+
+        {/* ✅ POPUP */}
+        {showPopup && (
+          <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50">
+            <div className="bg-black text-white px-5 py-3 rounded-full shadow text-sm">
+              Please select items from menu ↓
+            </div>
+          </div>
+        )}
 
         <ScrollReveal>
           <div className="text-center mb-12">
@@ -130,9 +121,15 @@ const MenuCards = () => {
 
                 </div>
 
-                {/* CART BUTTON */}
+                {/* ✅ CART BUTTON (FIXED) */}
                 <button
-                  onClick={(e) => handleAddToCart(e, pkg)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    setShowPopup(true);
+                    setTimeout(() => setShowPopup(false), 2000);
+                  }}
                   className="absolute right-4 top-4 bg-primary text-white p-3 rounded-full shadow-lg hover:scale-110 hover:shadow-xl transition"
                 >
                   <ShoppingCart size={18}/>
@@ -182,8 +179,10 @@ const MenuCards = () => {
                     ))}
                   </ul>
 
-                  <span className="inline-block font-body text-sm font-medium text-primary group-hover:underline">
+                  {/* ✅ HIGHLIGHTED */}
+                  <span className="inline-block font-body text-sm font-medium text-primary relative">
                     See Full Menu →
+                    <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-orange-400 animate-pulse"></span>
                   </span>
 
                 </div>
