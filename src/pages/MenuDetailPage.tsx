@@ -22,10 +22,17 @@ useEffect(() => {
 
 const pkg = menuPackages.find((p) => p.slug === slug);
 
-/* ✅ FIXED GET LIMIT (DYNAMIC) */
+/* ✅ FIXED LIMIT (FORCED LOGIC AS YOU WANT) */
 const getLimit = (category: string) => {
-  const match = category.match(/Choose\s*(\d+)/i);
-  return match ? parseInt(match[1]) : 1;
+  const name = category.toLowerCase();
+
+  if (name.includes("starter")) return 2;
+  if (name.includes("main")) return 2;
+  if (name.includes("bread")) return 2;
+  if (name.includes("rice")) return 1;
+  if (name.includes("dessert")) return 1;
+
+  return 2;
 };
 
 /* ✅ CLEAN CATEGORY NAME */
@@ -151,8 +158,9 @@ className="text-white/70 mb-6 flex items-center gap-1"
 ₹{pkg.price} <span className="text-sm text-white/70">per person</span>
 </p>
 
+{/* ✅ FIXED TEXT */}
 <p className="text-white/70 mt-3">
-2 Starters, 2 Main Course, 2 Breads, 1 Dessert 
+2 Starters, 2 Main Course, 1 Rice, 2 Breads, 1 Dessert
 </p>
 
 </div>
