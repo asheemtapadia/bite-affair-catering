@@ -37,7 +37,6 @@ const LiteMeal = () => {
   const [rice, setRice] = useState("Plain Rice");
   const [dessert, setDessert] = useState("Gulab Jamun");
 
-  /* ✅ FIXED BREAD (ALWAYS SELECTED) */
   const breads = ["Lachha Paratha", "Tandoori Roti"];
 
   const [pax, setPax] = useState(15);
@@ -55,31 +54,34 @@ const LiteMeal = () => {
 
   const [error, setError] = useState("");
 
-  /* ✅ TIME SLOTS */
   const timeSlots = [
     "9:00 AM","10:00 AM","11:00 AM","12:00 PM",
     "1:00 PM","2:00 PM","3:00 PM","4:00 PM",
     "5:00 PM","6:00 PM","7:00 PM","8:00 PM","9:00 PM"
   ];
 
-  /* ✅ 5 HOUR LEAD TIME */
-  const getMinHour = () => {
+  /* ✅ EARLIEST SLOT LOGIC */
+  const getEarliestSlot = () => {
     const now = new Date();
     now.setHours(now.getHours() + 5);
-    return now.getHours();
+
+    const currentHour = now.getHours();
+
+    for (let slot of timeSlots) {
+      const [timePart, period] = slot.split(" ");
+      let hour = parseInt(timePart.split(":")[0]);
+
+      if (period === "PM" && hour !== 12) hour += 12;
+      if (period === "AM" && hour === 12) hour = 0;
+
+      if (hour >= currentHour) {
+        return slot;
+      }
+    }
+
+    return "Tomorrow 9:00 AM";
   };
 
-  const availableSlots = timeSlots.filter((slot) => {
-    const [timePart, period] = slot.split(" ");
-    let hour = parseInt(timePart.split(":")[0]);
-
-    if (period === "PM" && hour !== 12) hour += 12;
-    if (period === "AM" && hour === 12) hour = 0;
-
-    return hour >= getMinHour();
-  });
-
-  /* PRICE */
   const total = pax * 275;
   const quantity = (pax * 0.1).toFixed(1);
 
@@ -143,7 +145,6 @@ Tandoori Roti (${rotiQty} pcs)
         </div>
       )}
 
-      {/* HERO */}
       <div className="relative w-full h-[260px] overflow-hidden">
         <img src="/images/lite-meal/litebox-hero.jpg" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/50" />
@@ -159,7 +160,6 @@ Tandoori Roti (${rotiQty} pcs)
           ← Back
         </button>
 
-        {/* GUEST */}
         <div className="px-5 mt-8 mb-10 text-center">
           <h2 className="text-gray-500 mb-4">Number of Guests</h2>
 
@@ -176,7 +176,6 @@ Tandoori Roti (${rotiQty} pcs)
           </select>
         </div>
 
-        {/* MENU */}
         {Object.entries(menu).map(([key, value]) => (
           <div key={key} className="px-5 mb-10">
             <img src={value.img} className="w-full h-32 rounded-xl object-cover mb-3 shadow-sm" />
@@ -221,7 +220,6 @@ Tandoori Roti (${rotiQty} pcs)
           </div>
         ))}
 
-        {/* BREAD */}
         <div className="px-5 mb-4">
           <h2 className="flex justify-between mb-3">
             <span>Select Bread</span>
@@ -241,7 +239,6 @@ Tandoori Roti (${rotiQty} pcs)
           </div>
         </div>
 
-        {/* FORM */}
         <div className="px-5 space-y-5 mb-12">
 
           <input placeholder="First Name" onChange={(e)=>setFirstName(e.target.value)} className="w-full border p-4 rounded-xl" />
@@ -284,20 +281,18 @@ Tandoori Roti (${rotiQty} pcs)
               className="w-full border p-4 rounded-xl"
             >
               <option value="">Select Delivery Time</option>
-              {(availableSlots.length ? availableSlots : timeSlots).map((slot) => (
+              {timeSlots.map((slot) => (
                 <option key={slot} value={slot}>{slot}</option>
               ))}
             </select>
 
             <p className="mt-3 text-center relative inline-block text-sm font-medium text-orange-600 group">
+              <span className="inline-block transition-all duration-300 group-hover:scale-105">
+                ⏳ Earliest delivery available at {getEarliestSlot()}
+              </span>
 
-  <span className="inline-block transition-all duration-300 group-hover:scale-105">
-    ⏳ Orders require a minimum 5-hour preparation time
-  </span>
-
-  <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 transition-all duration-500 group-hover:w-full shadow-[0_0_10px_rgba(255,120,0,0.6)]" />
-
-</p>
+              <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 transition-all duration-500 group-hover:w-full shadow-[0_0_10px_rgba(255,120,0,0.6)]" />
+            </p>
           </div>
 
         </div>
@@ -308,7 +303,6 @@ Tandoori Roti (${rotiQty} pcs)
 
         <div className="h-20"></div>
 
-        {/* CTA */}
         <div className="fixed bottom-[72px] left-0 right-0 px-4 z-50">
           <div className="max-w-md mx-auto bg-white/80 backdrop-blur-xl border border-gray-200 rounded-2xl shadow-lg px-3 py-3">
             <button
