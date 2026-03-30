@@ -287,12 +287,18 @@ Tandoori Roti (${rotiQty} pcs)
             </select>
 
             <p className="mt-3 text-center relative inline-block text-sm font-medium text-orange-600 group">
-              <span className="inline-block transition-all duration-300 group-hover:scale-105">
-                ⏳ Earliest delivery available at {getEarliestSlot()}
-              </span>
 
-              <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 transition-all duration-500 group-hover:w-full shadow-[0_0_10px_rgba(255,120,0,0.6)]" />
-            </p>
+  <span className="inline-block transition-all duration-300 group-hover:scale-105">
+    ⏳ Earliest delivery available at {getEarliestSlot()}
+  </span>
+
+  <span className="block text-xs text-gray-500 mt-1">
+    Minimum preparation time: 5 hours
+  </span>
+
+  <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 transition-all duration-500 group-hover:w-full shadow-[0_0_10px_rgba(255,120,0,0.6)]" />
+
+</p>
           </div>
 
         </div>
