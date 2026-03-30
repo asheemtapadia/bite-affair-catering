@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams, Link, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { menuPackages } from "@/data/menuData";
 
@@ -210,7 +210,7 @@ Available Packages
 </div>
 
 
-{/* VEG PACKAGES */}
+{/* VEG */}
 {filter === "veg" && vegGuests > 0 && (
 <>
 <h2 className="text-2xl font-semibold mb-6">
@@ -231,12 +231,6 @@ selectedVegPackage?.slug === pkg.slug
 Veg
 </span>
 
-{pkg.tier === "premium" && (
-<span className="absolute top-3 right-3 text-xs bg-black text-white px-2 py-1 rounded">
-Premium
-</span>
-)}
-
 <img src={`/images/packages/${pkg.slug}.jpg`} className="h-48 w-full object-cover rounded-xl mb-4" />
 
 <h3 className="text-lg font-semibold mb-1">{pkg.name}</h3>
@@ -248,11 +242,6 @@ Premium
 <p className="text-sm text-muted-foreground mb-4">
 {pkg.previewItems.slice(0,3).join(" • ")}
 </p>
-
-{/* ✅ FIXED */}
-<Link to={`/menu/${pkg.slug}?source=plan&${searchParams.toString()}`} className="text-sm text-primary underline mb-3">
-View Full Menu
-</Link>
 
 <Button
 className={`w-full ${
@@ -278,7 +267,7 @@ selectedVegPackage?.slug === pkg.slug
 )}
 
 
-{/* NON VEG PACKAGES */}
+{/* NON VEG */}
 {filter === "nonveg" && nonVegGuests > 0 && (
 <>
 <h2 className="text-2xl font-semibold mb-6">
@@ -299,12 +288,6 @@ selectedNonVegPackage?.slug === pkg.slug
 Non Veg
 </span>
 
-{pkg.tier === "premium" && (
-<span className="absolute top-3 right-3 text-xs bg-black text-white px-2 py-1 rounded">
-Premium
-</span>
-)}
-
 <img src={`/images/packages/${pkg.slug}.jpg`} className="h-48 w-full object-cover rounded-xl mb-4" />
 
 <h3 className="text-lg font-semibold mb-1">{pkg.name}</h3>
@@ -316,11 +299,6 @@ Premium
 <p className="text-sm text-muted-foreground mb-4">
 {pkg.previewItems.slice(0,3).join(" • ")}
 </p>
-
-{/* ✅ FIXED */}
-<Link to={`/menu/${pkg.slug}?source=plan&${searchParams.toString()}`} className="text-sm text-primary underline mb-3">
-View Full Menu
-</Link>
 
 <Button
 className={`w-full ${
@@ -344,6 +322,26 @@ selectedNonVegPackage?.slug === pkg.slug
 </div>
 </>
 )}
+
+
+{/* CTA */}
+
+<div className={`fixed bottom-0 left-0 right-0 px-4 pb-5 ${
+selectedVegPackage || selectedNonVegPackage
+? "opacity-100 translate-y-0"
+: "opacity-0 translate-y-10 pointer-events-none"
+} transition-all duration-300`}>
+
+  <div className="max-w-md mx-auto">
+    <Button
+      onClick={handleSubmit}
+      className="w-full h-14 text-lg rounded-2xl shadow-xl bg-primary hover:scale-[1.02] transition-all duration-200"
+    >
+      Get Quote on WhatsApp
+    </Button>
+  </div>
+
+</div>
 
 </div>
 );
