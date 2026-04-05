@@ -47,7 +47,7 @@ const HeroSection = () => {
         >
           For house parties, office lunches, and special events
           <br />
-          Serving 15–100+ guests
+          Serving 15–50 guests
           <br />
           Delivered across Delhi NCR
         </motion.p>
