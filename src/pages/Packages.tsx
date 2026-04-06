@@ -17,7 +17,7 @@ useEffect(() => {
   }, 0);
 }, []);
 
-/* ✅ AUTO FILTER FIX (ADDED) */
+/* ✅ AUTO FILTER FIX */
 useEffect(() => {
   if (vegGuests > 0 && nonVegGuests === 0) {
     setFilter("veg");
@@ -248,11 +248,11 @@ Veg
 ₹{pkg.price} <span className="text-sm text-gray-500">/ person</span>
 </p>
 
-{/* ✅ FULL DISHES FIX */}
+{/* ✅ SAFE FULL DISHES */}
 <div className="text-sm text-muted-foreground mb-4">
-  {pkg.previewItems?.map((item, i) => (
+  {(pkg.previewItems || []).map((item, i, arr) => (
     <span key={i}>
-      {item}{i !== pkg.previewItems.length - 1 ? " • " : ""}
+      {item}{i !== arr.length - 1 ? " • " : ""}
     </span>
   ))}
 </div>
@@ -310,11 +310,11 @@ Non Veg
 ₹{pkg.price} <span className="text-sm text-gray-500">/ person</span>
 </p>
 
-{/* ✅ FULL DISHES FIX */}
+{/* ✅ SAFE FULL DISHES */}
 <div className="text-sm text-muted-foreground mb-4">
-  {pkg.previewItems?.map((item, i) => (
+  {(pkg.previewItems || []).map((item, i, arr) => (
     <span key={i}>
-      {item}{i !== pkg.previewItems.length - 1 ? " • " : ""}
+      {item}{i !== arr.length - 1 ? " • " : ""}
     </span>
   ))}
 </div>
