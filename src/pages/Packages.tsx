@@ -8,11 +8,11 @@ const Packages = () => {
 const [searchParams] = useSearchParams();
 const navigate = useNavigate();
 
-/* ✅ FIXED PARSING (NO FAKE VALUES) */
+/* ✅ FIXED PARSING */
 const vegGuests = parseInt(searchParams.get("veg") || "0") || 0;
 const nonVegGuests = parseInt(searchParams.get("nonveg") || "0") || 0;
 
-/* ❌ FILTER STATE REMOVE NAHI KIYA (STRUCTURE SAME RAKHA) */
+/* ✅ KEEP FILTER STATE (UI ONLY) */
 const [filter, setFilter] = useState<"veg" | "nonveg">("veg");
 
 useEffect(() => {
@@ -39,29 +39,12 @@ const [selectedNonVegPackage, setSelectedNonVegPackage] = useState<any>(null);
 const vegPackages = menuPackages.filter(pkg => pkg.isVeg);
 const nonVegPackages = menuPackages.filter(pkg => !pkg.isVeg);
 
-/* ✅ HEADING LOGIC */
-let headingText = "";
-if (vegGuests > 0 && nonVegGuests > 0) {
-  headingText = "Showing Veg & Non-Veg Packages";
-} else if (vegGuests > 0) {
-  headingText = "Showing Veg Packages";
-} else if (nonVegGuests > 0) {
-  headingText = "Showing Non-Veg Packages";
-} else {
-  headingText = "No Packages Available";
-}
-
-const vegTotal =
-selectedVegPackage ? vegGuests * selectedVegPackage.price : 0;
-
-const nonVegTotal =
-selectedNonVegPackage ? nonVegGuests * selectedNonVegPackage.price : 0;
-
+/* TOTALS */
+const vegTotal = selectedVegPackage ? vegGuests * selectedVegPackage.price : 0;
+const nonVegTotal = selectedNonVegPackage ? nonVegGuests * selectedNonVegPackage.price : 0;
 const grandTotal = vegTotal + nonVegTotal;
 
-
-/* WHATSAPP MESSAGE */
-
+/* WHATSAPP */
 const handleSubmit = () => {
 
 const message = encodeURIComponent(
@@ -97,12 +80,9 @@ window.open(
 `https://wa.me/919211570030?text=${message}`,
 "_blank"
 );
-
 };
 
-
-/* NAVIGATION */
-
+/* NAV */
 const goToEventSection = () => {
 navigate("/");
 setTimeout(() => {
@@ -113,14 +93,8 @@ section.scrollIntoView({ behavior: "smooth", block: "start" });
 },300);
 };
 
-const handleBack = () => {
-goToEventSection();
-};
-
-const handleEditEvent = () => {
-goToEventSection();
-};
-
+const handleBack = () => goToEventSection();
+const handleEditEvent = () => goToEventSection();
 
 return (
 
@@ -129,108 +103,106 @@ return (
 {/* EVENT BAR */}
 <div className="max-w-6xl mx-auto mb-12 px-4">
 
-  <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-gray-200 shadow-sm p-5">
+<div className="bg-white/80 backdrop-blur-md rounded-2xl border border-gray-200 shadow-sm p-5">
 
-    <div className="flex flex-wrap gap-3 text-sm text-gray-600 mb-4">
+<div className="flex flex-wrap gap-3 text-sm text-gray-600 mb-4">
 
-      {vegGuests > 0 && (
-        <span className="bg-green-50 text-green-700 px-3 py-1 rounded-full">
-          🥦 {vegGuests} Veg
-        </span>
-      )}
+{vegGuests > 0 && (
+<span className="bg-green-50 text-green-700 px-3 py-1 rounded-full">
+🥦 {vegGuests} Veg
+</span>
+)}
 
-      {nonVegGuests > 0 && (
-        <span className="bg-red-50 text-red-600 px-3 py-1 rounded-full">
-          🍗 {nonVegGuests} Non-Veg
-        </span>
-      )}
+{nonVegGuests > 0 && (
+<span className="bg-red-50 text-red-600 px-3 py-1 rounded-full">
+🍗 {nonVegGuests} Non-Veg
+</span>
+)}
 
-      {city && (
-        <span className="bg-gray-100 px-3 py-1 rounded-full">
-          📍 {city}
-        </span>
-      )}
+{city && (
+<span className="bg-gray-100 px-3 py-1 rounded-full">
+📍 {city}
+</span>
+)}
 
-      {date && (
-        <span className="bg-gray-100 px-3 py-1 rounded-full">
-          📅 {date}
-        </span>
-      )}
+{date && (
+<span className="bg-gray-100 px-3 py-1 rounded-full">
+📅 {date}
+</span>
+)}
 
-      {time && (
-        <span className="bg-gray-100 px-3 py-1 rounded-full">
-          ⏰ {time}
-        </span>
-      )}
-
-    </div>
-
-    <div className="flex gap-3">
-
-      <button
-        onClick={handleBack}
-        className="bg-primary text-white px-4 py-2 rounded-xl text-sm shadow hover:opacity-90"
-      >
-        ← Back
-      </button>
-
-      <button
-        onClick={handleEditEvent}
-        className="border px-4 py-2 rounded-xl text-sm"
-      >
-        Edit Details
-      </button>
-
-    </div>
-
-  </div>
+{time && (
+<span className="bg-gray-100 px-3 py-1 rounded-full">
+⏰ {time}
+</span>
+)}
 
 </div>
 
+<div className="flex gap-3">
+
+<button
+onClick={handleBack}
+className="bg-primary text-white px-4 py-2 rounded-xl text-sm shadow hover:opacity-90"
+>
+← Back
+</button>
+
+<button
+onClick={handleEditEvent}
+className="border px-4 py-2 rounded-xl text-sm"
+>
+Edit Details
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 <h1 className="text-3xl font-bold text-center mb-6 tracking-tight">
 Available Packages
 </h1>
 
-<p className="text-center text-xs text-gray-500 mb-3">
-  {headingText}
+{/* ✅ FIXED TEXT (NO FILTER FEEL) */}
+<p className="text-center text-sm text-gray-500 mb-6">
+{vegGuests > 0 && nonVegGuests > 0 && "Curated menu for Veg & Non-Veg guests"}
+{vegGuests > 0 && nonVegGuests === 0 && "Curated vegetarian catering menu"}
+{nonVegGuests > 0 && vegGuests === 0 && "Curated non-vegetarian catering menu"}
 </p>
 
-
-{/* BUTTONS SAME RAKHE */}
+{/* TOGGLE (UI ONLY) */}
 <div className="flex items-center justify-center gap-3 mb-12">
 
-  <button
-    onClick={() => setFilter("veg")}
-    className={`px-5 py-2 rounded-full text-sm font-medium ${
-      filter === "veg"
-        ? "bg-green-600 text-white"
-        : "bg-white text-gray-600 border"
-    }`}
-  >
-    🥦 Veg
-  </button>
+<button
+onClick={() => setFilter("veg")}
+className={`px-5 py-2 rounded-full text-sm font-medium ${
+filter === "veg"
+? "bg-green-600 text-white"
+: "bg-white text-gray-600 border"
+}`}
+>
+🥦 Veg
+</button>
 
-  <button
-    onClick={() => setFilter("nonveg")}
-    className={`px-5 py-2 rounded-full text-sm font-medium ${
-      filter === "nonveg"
-        ? "bg-red-500 text-white"
-        : "bg-white text-gray-600 border"
-    }`}
-  >
-    🍗 Non Veg
-  </button>
+<button
+onClick={() => setFilter("nonveg")}
+className={`px-5 py-2 rounded-full text-sm font-medium ${
+filter === "nonveg"
+? "bg-red-500 text-white"
+: "bg-white text-gray-600 border"
+}`}
+>
+🍗 Non Veg
+</button>
 
 </div>
 
-
-{/* ✅ VEG ALWAYS SHOW IF SELECTED */}
+{/* VEG */}
 {vegGuests > 0 && (
 <>
-<h2 className="text-2xl font-semibold mb-6">
-Veg Packages
-</h2>
+<h2 className="text-2xl font-semibold mb-6">Veg Packages</h2>
 
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
 
@@ -254,14 +226,20 @@ Veg
 {pkg.previewItems.slice(0,3).join(" • ")}
 </p>
 
-<Button className="w-full"
+<button
 onClick={() =>
 selectedVegPackage?.slug === pkg.slug
 ? setSelectedVegPackage(null)
 : setSelectedVegPackage(pkg)
-}>
-{selectedVegPackage?.slug === pkg.slug ? "✓ Selected" : "Select Package"}
-</Button>
+}
+className={`w-full py-3 rounded-xl text-sm font-medium ${
+selectedVegPackage?.slug === pkg.slug
+? "bg-green-600 text-white"
+: "bg-primary text-white"
+}`}
+>
+{selectedVegPackage?.slug === pkg.slug ? "✓ Selected (Tap to remove)" : "Select Package"}
+</button>
 
 </div>
 
@@ -271,13 +249,10 @@ selectedVegPackage?.slug === pkg.slug
 </>
 )}
 
-
-/* ✅ NON VEG ALWAYS SHOW IF SELECTED */
+{/* NON VEG */}
 {nonVegGuests > 0 && (
 <>
-<h2 className="text-2xl font-semibold mb-6">
-Non Veg Packages
-</h2>
+<h2 className="text-2xl font-semibold mb-6">Non Veg Packages</h2>
 
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
 
@@ -301,14 +276,20 @@ Non Veg
 {pkg.previewItems.slice(0,3).join(" • ")}
 </p>
 
-<Button className="w-full"
+<button
 onClick={() =>
 selectedNonVegPackage?.slug === pkg.slug
 ? setSelectedNonVegPackage(null)
 : setSelectedNonVegPackage(pkg)
-}>
-{selectedNonVegPackage?.slug === pkg.slug ? "✓ Selected" : "Select Package"}
-</Button>
+}
+className={`w-full py-3 rounded-xl text-sm font-medium ${
+selectedNonVegPackage?.slug === pkg.slug
+? "bg-green-600 text-white"
+: "bg-primary text-white"
+}`}
+>
+{selectedNonVegPackage?.slug === pkg.slug ? "✓ Selected (Tap to remove)" : "Select Package"}
+</button>
 
 </div>
 
@@ -318,22 +299,21 @@ selectedNonVegPackage?.slug === pkg.slug
 </>
 )}
 
-
-/* CTA */
+{/* CTA */}
 <div className={`fixed bottom-0 left-0 right-0 px-4 pb-5 ${
 selectedVegPackage || selectedNonVegPackage
 ? "opacity-100"
 : "opacity-0 pointer-events-none"
 }`}>
 
-  <div className="max-w-md mx-auto">
-    <Button
-      onClick={handleSubmit}
-      className="w-full h-14 text-lg rounded-2xl shadow-xl bg-primary"
-    >
-      Get Quote on WhatsApp
-    </Button>
-  </div>
+<div className="max-w-md mx-auto">
+<Button
+onClick={handleSubmit}
+className="w-full h-14 text-lg rounded-2xl shadow-xl bg-primary"
+>
+Get Quote on WhatsApp
+</Button>
+</div>
 
 </div>
 
