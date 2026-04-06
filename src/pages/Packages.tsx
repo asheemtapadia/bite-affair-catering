@@ -165,7 +165,7 @@ Edit Details
 Available Packages
 </h1>
 
-{/* ✅ CREATIVE TEXT */}
+{/* TEXT */}
 <p className="text-center text-sm text-gray-500 mb-6">
 {vegGuests > 0 && nonVegGuests > 0 && "Crafted menus for a perfect mix of Veg & Non-Veg guests"}
 {vegGuests > 0 && nonVegGuests === 0 && "Freshly curated vegetarian selections for your event"}
@@ -206,9 +206,18 @@ filter === "nonveg"
 
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
 
-{vegPackages.map((pkg) => (
+{vegPackages.map((pkg) => {
 
-<div key={pkg.slug} className="relative rounded-2xl border p-5 bg-white shadow-sm flex flex-col">
+const isSelected = selectedVegPackage?.slug === pkg.slug;
+
+return (
+
+<div
+key={pkg.slug}
+className={`relative rounded-2xl border p-5 bg-white shadow-sm flex flex-col transition-all duration-300 ${
+isSelected ? "scale-[1.02] shadow-xl border-green-500" : ""
+}`}
+>
 
 <span className="absolute top-3 left-3 text-xs bg-primary text-white px-2 py-1 rounded">
 Veg
@@ -228,24 +237,24 @@ Veg
 
 <button
 onClick={() =>
-selectedVegPackage?.slug === pkg.slug
+isSelected
 ? setSelectedVegPackage(null)
 : setSelectedVegPackage(pkg)
 }
-className={`w-full py-3 rounded-xl text-sm font-semibold ${
-selectedVegPackage?.slug === pkg.slug
-? "bg-green-600 text-white"
-: "bg-primary text-white"
+className={`w-full py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
+isSelected
+? "bg-green-600 text-white scale-[1.03] shadow-lg"
+: "bg-primary text-white hover:scale-[1.02] active:scale-[0.97]"
 }`}
 >
-{selectedVegPackage?.slug === pkg.slug
+{isSelected
 ? "✓ Selected (Tap to remove)"
 : "Select Package"}
 </button>
 
 </div>
 
-))}
+)})}
 
 </div>
 </>
@@ -258,9 +267,18 @@ selectedVegPackage?.slug === pkg.slug
 
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
 
-{nonVegPackages.map((pkg) => (
+{nonVegPackages.map((pkg) => {
 
-<div key={pkg.slug} className="relative rounded-2xl border p-5 bg-white shadow-sm flex flex-col">
+const isSelected = selectedNonVegPackage?.slug === pkg.slug;
+
+return (
+
+<div
+key={pkg.slug}
+className={`relative rounded-2xl border p-5 bg-white shadow-sm flex flex-col transition-all duration-300 ${
+isSelected ? "scale-[1.02] shadow-xl border-green-500" : ""
+}`}
+>
 
 <span className="absolute top-3 left-3 text-xs bg-red-500 text-white px-2 py-1 rounded">
 Non Veg
@@ -280,24 +298,24 @@ Non Veg
 
 <button
 onClick={() =>
-selectedNonVegPackage?.slug === pkg.slug
+isSelected
 ? setSelectedNonVegPackage(null)
 : setSelectedNonVegPackage(pkg)
 }
-className={`w-full py-3 rounded-xl text-sm font-semibold ${
-selectedNonVegPackage?.slug === pkg.slug
-? "bg-green-600 text-white"
-: "bg-primary text-white"
+className={`w-full py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
+isSelected
+? "bg-green-600 text-white scale-[1.03] shadow-lg"
+: "bg-primary text-white hover:scale-[1.02] active:scale-[0.97]"
 }`}
 >
-{selectedNonVegPackage?.slug === pkg.slug
+{isSelected
 ? "✓ Selected (Tap to remove)"
 : "Select Package"}
 </button>
 
 </div>
 
-))}
+)})}
 
 </div>
 </>
@@ -313,7 +331,7 @@ selectedVegPackage || selectedNonVegPackage
 <div className="max-w-md mx-auto">
 <Button
 onClick={handleSubmit}
-className="w-full h-14 text-lg rounded-2xl shadow-xl bg-primary"
+className="w-full h-14 text-lg rounded-2xl shadow-xl bg-primary hover:scale-[1.02] transition"
 >
 Get Quote on WhatsApp
 </Button>
