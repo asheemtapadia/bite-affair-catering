@@ -8,7 +8,11 @@ const Packages = () => {
 const [searchParams] = useSearchParams();
 const navigate = useNavigate();
 
-/* ✅ FILTER STATE (NEW) */
+/* ✅ FIX: guests pehle define */
+const vegGuests = Number(searchParams.get("veg") || 10);
+const nonVegGuests = Number(searchParams.get("nonveg") || 0);
+
+/* ✅ FILTER STATE (same) */
 const [filter, setFilter] = useState<"veg" | "nonveg">("veg");
 
 useEffect(() => {
@@ -17,7 +21,7 @@ useEffect(() => {
   }, 0);
 }, []);
 
-/* ✅ AUTO FILTER FIX */
+/* ✅ AUTO FILTER (safe now) */
 useEffect(() => {
   if (vegGuests > 0 && nonVegGuests === 0) {
     setFilter("veg");
@@ -25,9 +29,6 @@ useEffect(() => {
     setFilter("nonveg");
   }
 }, [vegGuests, nonVegGuests]);
-
-const vegGuests = Number(searchParams.get("veg") || 10);
-const nonVegGuests = Number(searchParams.get("nonveg") || 0);
 
 /* DELIVERY FIELDS */
 const name = searchParams.get("name");
@@ -248,7 +249,7 @@ Veg
 ₹{pkg.price} <span className="text-sm text-gray-500">/ person</span>
 </p>
 
-{/* ✅ SAFE FULL DISHES */}
+{/* ✅ SAFE DISHES */}
 <div className="text-sm text-muted-foreground mb-4">
   {(pkg.previewItems || []).map((item, i, arr) => (
     <span key={i}>
@@ -310,7 +311,7 @@ Non Veg
 ₹{pkg.price} <span className="text-sm text-gray-500">/ person</span>
 </p>
 
-{/* ✅ SAFE FULL DISHES */}
+{/* ✅ SAFE DISHES */}
 <div className="text-sm text-muted-foreground mb-4">
   {(pkg.previewItems || []).map((item, i, arr) => (
     <span key={i}>
