@@ -43,7 +43,21 @@ const PackagesSection = () => {
     }
   }, []);
 
-  const todayDate = new Date().toISOString().split("T")[0];
+  /* ✅ NEW: 4:30 PM cutoff logic */
+  const getMinDateTime = () => {
+    const now = new Date();
+
+    const cutoff = new Date();
+    cutoff.setHours(16, 30, 0, 0);
+
+    if (now > cutoff) {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      return tomorrow.toISOString().split("T")[0];
+    }
+
+    return now.toISOString().split("T")[0];
+  };
 
   const handleFindPackages = () => {
 
@@ -197,7 +211,6 @@ const PackagesSection = () => {
                 />
               </div>
 
-              {/* Veg Guests */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Veg Guests</label>
                 <select
@@ -213,7 +226,6 @@ const PackagesSection = () => {
                 </select>
               </div>
 
-              {/* Non Veg Guests */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Non Veg Guests</label>
                 <select
@@ -229,35 +241,27 @@ const PackagesSection = () => {
                 </select>
               </div>
 
-              {/* DATE FIX */}
+              {/* ✅ DATE FIX */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Date</label>
                 <Input
                   type="date"
-                  min={todayDate}
+                  min={getMinDateTime()}
                   className="h-11 rounded-lg"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                 />
               </div>
 
-              {/* TIME FIX */}
+              {/* TIME (unchanged as requested) */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Delivery Time</label>
-                <select
-                  className="h-11 w-full rounded-lg border border-gray-300 px-3"
+                <Input
+                  type="time"
+                  className="h-11 rounded-lg"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
-                >
-                  <option value="">Select</option>
-                  {[
-                    "09:00 AM","10:00 AM","11:00 AM","12:00 PM",
-                    "01:00 PM","02:00 PM","03:00 PM","04:00 PM",
-                    "05:00 PM","06:00 PM","07:00 PM","08:00 PM","09:00 PM"
-                  ].map((t) => (
-                    <option key={t} value={t}>{t}</option>
-                  ))}
-                </select>
+                />
               </div>
 
             </div>
