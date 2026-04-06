@@ -12,12 +12,16 @@ const MenuDetailPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  /* ✅ MODE FIX */
   const mode = searchParams.get("source") === "plan" ? "plan" : "order";
 
-  /* ✅ STATE */
   const [selectedItems, setSelectedItems] = useState<any>({});
   const [showError, setShowError] = useState(false);
+
+  // ✅ NEW (guest state)
+  const [vegGuests, setVegGuests] = useState("");
+  const [nonVegGuests, setNonVegGuests] = useState("");
+
+  const totalGuests = Number(vegGuests || 0) + Number(nonVegGuests || 0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -34,6 +38,21 @@ const MenuDetailPage = () => {
     return name.split("(")[0].trim();
   };
 
+  // ✅ NEW (dynamic qty)
+  const getDynamicQty = (item: string) => {
+    if (!totalGuests) return item.split("–")[0]; // hide qty
+
+    const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
+    if (!match) return item;
+
+    const baseQty = Number(match[1]);
+    const unit = match[2];
+
+    const newQty = Math.round((baseQty * totalGuests) / 20);
+
+    return `${item.split("–")[0]} – ${newQty} ${unit}`;
+  };
+
   const toggleItem = (category: string, item: string) => {
     const LIMIT = getLimit(category);
 
@@ -47,7 +66,6 @@ const MenuDetailPage = () => {
         };
       }
 
-      /* ✅ FIX: PLAN MODE ME LIMIT REMOVE */
       if (mode === "order" && current.length >= LIMIT) return prev;
 
       return {
@@ -63,6 +81,11 @@ const MenuDetailPage = () => {
   });
 
   const handleAddToCart = () => {
+    if (!totalGuests) {
+      alert("Please select number of guests first");
+      return;
+    }
+
     if (!allSelected) {
       setShowError(true);
       setTimeout(() => setShowError(false), 2000);
@@ -76,6 +99,8 @@ const MenuDetailPage = () => {
       name: pkg?.name,
       price: pkg?.price,
       selectedItems,
+      vegGuests,
+      nonVegGuests
     };
 
     const updatedCart = [...existingCart, newItem];
@@ -152,6 +177,41 @@ const MenuDetailPage = () => {
         </div>
       </div>
 
+      {/* 🔥 GUEST SELECTION */}
+      <div className="py-10 container mx-auto px-4 max-w-5xl">
+        <div className="bg-white p-6 rounded-xl border shadow-sm grid grid-cols-2 gap-4">
+
+          <div>
+            <label className="text-sm text-gray-600">Veg Guests</label>
+            <select
+              className="w-full mt-1 border rounded-lg px-3 py-2"
+              value={vegGuests}
+              onChange={(e) => setVegGuests(e.target.value)}
+            >
+              <option value="">Select</option>
+              {Array.from({ length: 36 }, (_, i) => i + 15).map((n) => (
+                <option key={n} value={n}>{n}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="text-sm text-gray-600">Non Veg Guests</label>
+            <select
+              className="w-full mt-1 border rounded-lg px-3 py-2"
+              value={nonVegGuests}
+              onChange={(e) => setNonVegGuests(e.target.value)}
+            >
+              <option value="">Select</option>
+              {Array.from({ length: 36 }, (_, i) => i + 15).map((n) => (
+                <option key={n} value={n}>{n}</option>
+              ))}
+            </select>
+          </div>
+
+        </div>
+      </div>
+
       {/* MENU */}
       <div className="py-20">
         <div className="container mx-auto px-4 max-w-5xl grid md:grid-cols-2 gap-8">
@@ -199,7 +259,7 @@ const MenuDetailPage = () => {
                             }`}
                         >
                           {selected && <span className="w-2 h-2 bg-white rounded-full"></span>}
-                          {item}
+                          {getDynamicQty(item)}
                         </button>
                       );
 
@@ -227,31 +287,20 @@ const MenuDetailPage = () => {
 
       </div>
 
-      {/* ✅ CTA FIX */}
+      {/* CTA */}
       <div className="fixed bottom-20 left-0 right-0 px-4 z-50">
 
-        {mode === "plan" ? (
-          <button
-            onClick={() => {
-              const text = encodeURIComponent(`Selected Menu: ${pkg.name}`);
-              window.open(`https://wa.me/919211570030?text=${text}`, "_blank");
-            }}
-            className="w-full h-14 rounded-xl text-lg font-medium bg-black text-white"
-          >
-            Get Quote on WhatsApp
-          </button>
-        ) : (
-          <button
-            onClick={handleAddToCart}
-            className={`w-full h-14 rounded-xl text-lg font-medium
-            ${allSelected
-                ? "bg-orange-500 text-white"
-                : "bg-gray-200 text-gray-500"
-              }`}
-          >
-            {allSelected ? "Save & Add to Cart" : "Select dishes to continue"}
-          </button>
-        )}
+        <button
+          onClick={handleAddToCart}
+          disabled={!totalGuests || !allSelected}
+          className={`w-full h-14 rounded-xl text-lg font-medium
+          ${totalGuests && allSelected
+              ? "bg-orange-500 text-white"
+              : "bg-gray-200 text-gray-500"
+            }`}
+        >
+          {totalGuests ? "Save & Add to Cart" : "Select guests to continue"}
+        </button>
 
       </div>
 
