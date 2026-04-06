@@ -43,6 +43,11 @@ const PackagesSection = () => {
     }
   }, []);
 
+  const isAfterCutoff = () => {
+    const now = new Date();
+    return now.getHours() > 16 || (now.getHours() === 16 && now.getMinutes() >= 30);
+  };
+
   const getMinDateTime = () => {
     const now = new Date();
 
@@ -193,7 +198,6 @@ const PackagesSection = () => {
                 />
               </div>
 
-              {/* Veg Guests */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Veg Guests</label>
                 <select className="h-11 w-full rounded-lg border border-gray-300 px-3" value={vegGuests} onChange={(e) => setVegGuests(e.target.value)}>
@@ -205,7 +209,6 @@ const PackagesSection = () => {
                 </select>
               </div>
 
-              {/* Non Veg Guests */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Non Veg Guests</label>
                 <select className="h-11 w-full rounded-lg border border-gray-300 px-3" value={nonVegGuests} onChange={(e) => setNonVegGuests(e.target.value)}>
@@ -217,7 +220,6 @@ const PackagesSection = () => {
                 </select>
               </div>
 
-              {/* DATE */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Date</label>
                 <Input
@@ -225,17 +227,49 @@ const PackagesSection = () => {
                   min={getMinDateTime()}
                   className="h-11 rounded-lg"
                   value={date}
-                  onChange={(e) => setDate(e.target.value)}
+                  onChange={(e) => {
+                    if (isAfterCutoff()) {
+                      alert("Orders placed after 4:30 PM will be delivered next day only.");
+                    }
+                    setDate(e.target.value);
+                  }}
                 />
               </div>
 
-              {/* TIME (UPDATED ONLY) */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Delivery Time</label>
                 <select
                   className="h-11 w-full rounded-lg border border-gray-300 px-3"
                   value={time}
-                  onChange={(e) => setTime(e.target.value)}
+                  onChange={(e) => {
+
+                    const selectedTime = e.target.value;
+
+                    const now = new Date();
+                    const selectedDate = date ? new Date(date) : null;
+                    const today = new Date();
+
+                    if (selectedDate && selectedDate.toDateString() === today.toDateString()) {
+
+                      const [timeStr, period] = selectedTime.split(" ");
+                      let [hours, minutes] = timeStr.split(":").map(Number);
+
+                      if (period === "PM" && hours !== 12) hours += 12;
+                      if (period === "AM" && hours === 12) hours = 0;
+
+                      const slotTime = new Date();
+                      slotTime.setHours(hours, minutes, 0, 0);
+
+                      const diffHours = (slotTime.getTime() - now.getTime()) / (1000 * 60 * 60);
+
+                      if (diffHours < 5) {
+                        alert("Minimum 5 hours preparation time is required. Please select a later time slot.");
+                        return;
+                      }
+                    }
+
+                    setTime(selectedTime);
+                  }}
                 >
                   <option value="">Select (5 hrs lead time applies)</option>
 
@@ -246,12 +280,12 @@ const PackagesSection = () => {
                   ].map((t) => {
 
                     const now = new Date();
-                    const selectedDate = new Date(date);
+                    const selectedDate = date ? new Date(date) : null;
                     const today = new Date();
 
                     let isDisabled = false;
 
-                    if (selectedDate.toDateString() === today.toDateString()) {
+                    if (selectedDate && selectedDate.toDateString() === today.toDateString()) {
                       const [timeStr, period] = t.split(" ");
                       let [hours, minutes] = timeStr.split(":").map(Number);
 
