@@ -12,6 +12,7 @@ const navigate = useNavigate();
 const vegGuests = parseInt(searchParams.get("veg") || "0") || 0;
 const nonVegGuests = parseInt(searchParams.get("nonveg") || "0") || 0;
 
+/* SCROLL FIX */
 useEffect(() => {
   setTimeout(() => {
     window.scrollTo(0, 0);
@@ -162,11 +163,11 @@ Edit Details
 Available Packages
 </h1>
 
-{/* CLEAN TEXT */}
-<p className="text-center text-sm text-gray-400 mb-6">
-{vegGuests > 0 && nonVegGuests > 0 && "Select your preferred packages below"}
-{vegGuests > 0 && nonVegGuests === 0 && "Choose from our vegetarian packages"}
-{nonVegGuests > 0 && vegGuests === 0 && "Choose from our non-vegetarian packages"}
+{/* TEXT */}
+<p className="text-center text-sm text-gray-500 mb-6">
+{vegGuests > 0 && nonVegGuests > 0 && "Crafted menus for a perfect mix of Veg & Non-Veg guests"}
+{vegGuests > 0 && nonVegGuests === 0 && "Freshly curated vegetarian selections for your event"}
+{nonVegGuests > 0 && vegGuests === 0 && "Rich non-vegetarian spreads tailored for your gathering"}
 </p>
 
 {/* VEG */}
@@ -178,7 +179,14 @@ Available Packages
 
 {vegPackages.map((pkg) => (
 
-<div key={pkg.slug} className="relative rounded-2xl border p-5 bg-white shadow-sm flex flex-col">
+<div
+key={pkg.slug}
+className={`relative rounded-2xl border p-5 bg-white shadow-sm flex flex-col transition-all duration-300 ${
+selectedVegPackage?.slug === pkg.slug
+? "scale-[1.02] shadow-xl border-green-500"
+: ""
+}`}
+>
 
 <span className="absolute top-3 left-3 text-xs bg-primary text-white px-2 py-1 rounded">
 Veg
@@ -202,10 +210,10 @@ selectedVegPackage?.slug === pkg.slug
 ? setSelectedVegPackage(null)
 : setSelectedVegPackage(pkg)
 }
-className={`w-full py-3 rounded-xl text-sm font-semibold ${
+className={`w-full py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
 selectedVegPackage?.slug === pkg.slug
-? "bg-green-600 text-white"
-: "bg-primary text-white"
+? "bg-green-600 text-white scale-[1.05] shadow-lg"
+: "bg-primary text-white hover:scale-[1.03] active:scale-[0.96]"
 }`}
 >
 {selectedVegPackage?.slug === pkg.slug
@@ -230,7 +238,14 @@ selectedVegPackage?.slug === pkg.slug
 
 {nonVegPackages.map((pkg) => (
 
-<div key={pkg.slug} className="relative rounded-2xl border p-5 bg-white shadow-sm flex flex-col">
+<div
+key={pkg.slug}
+className={`relative rounded-2xl border p-5 bg-white shadow-sm flex flex-col transition-all duration-300 ${
+selectedNonVegPackage?.slug === pkg.slug
+? "scale-[1.02] shadow-xl border-green-500"
+: ""
+}`}
+>
 
 <span className="absolute top-3 left-3 text-xs bg-red-500 text-white px-2 py-1 rounded">
 Non Veg
@@ -254,10 +269,10 @@ selectedNonVegPackage?.slug === pkg.slug
 ? setSelectedNonVegPackage(null)
 : setSelectedNonVegPackage(pkg)
 }
-className={`w-full py-3 rounded-xl text-sm font-semibold ${
+className={`w-full py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
 selectedNonVegPackage?.slug === pkg.slug
-? "bg-green-600 text-white"
-: "bg-primary text-white"
+? "bg-green-600 text-white scale-[1.05] shadow-lg"
+: "bg-primary text-white hover:scale-[1.03] active:scale-[0.96]"
 }`}
 >
 {selectedNonVegPackage?.slug === pkg.slug
