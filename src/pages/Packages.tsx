@@ -165,14 +165,14 @@ Edit Details
 Available Packages
 </h1>
 
-{/* ✅ FIXED TEXT (NO FILTER FEEL) */}
+{/* ✅ CREATIVE TEXT */}
 <p className="text-center text-sm text-gray-500 mb-6">
-{vegGuests > 0 && nonVegGuests > 0 && "Curated menu for Veg & Non-Veg guests"}
-{vegGuests > 0 && nonVegGuests === 0 && "Curated vegetarian catering menu"}
-{nonVegGuests > 0 && vegGuests === 0 && "Curated non-vegetarian catering menu"}
+{vegGuests > 0 && nonVegGuests > 0 && "Crafted menus for a perfect mix of Veg & Non-Veg guests"}
+{vegGuests > 0 && nonVegGuests === 0 && "Freshly curated vegetarian selections for your event"}
+{nonVegGuests > 0 && vegGuests === 0 && "Rich non-vegetarian spreads tailored for your gathering"}
 </p>
 
-{/* TOGGLE (UI ONLY) */}
+{/* TOGGLE */}
 <div className="flex items-center justify-center gap-3 mb-12">
 
 <button
@@ -232,13 +232,15 @@ selectedVegPackage?.slug === pkg.slug
 ? setSelectedVegPackage(null)
 : setSelectedVegPackage(pkg)
 }
-className={`w-full py-3 rounded-xl text-sm font-medium ${
+className={`w-full py-3 rounded-xl text-sm font-semibold ${
 selectedVegPackage?.slug === pkg.slug
 ? "bg-green-600 text-white"
 : "bg-primary text-white"
 }`}
 >
-{selectedVegPackage?.slug === pkg.slug ? "✓ Selected (Tap to remove)" : "Select Package"}
+{selectedVegPackage?.slug === pkg.slug
+? "✓ Selected (Tap to remove)"
+: "Select Package"}
 </button>
 
 </div>
@@ -282,13 +284,15 @@ selectedNonVegPackage?.slug === pkg.slug
 ? setSelectedNonVegPackage(null)
 : setSelectedNonVegPackage(pkg)
 }
-className={`w-full py-3 rounded-xl text-sm font-medium ${
+className={`w-full py-3 rounded-xl text-sm font-semibold ${
 selectedNonVegPackage?.slug === pkg.slug
 ? "bg-green-600 text-white"
 : "bg-primary text-white"
 }`}
 >
-{selectedNonVegPackage?.slug === pkg.slug ? "✓ Selected (Tap to remove)" : "Select Package"}
+{selectedNonVegPackage?.slug === pkg.slug
+? "✓ Selected (Tap to remove)"
+: "Select Package"}
 </button>
 
 </div>
