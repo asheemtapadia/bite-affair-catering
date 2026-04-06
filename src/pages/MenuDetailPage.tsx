@@ -180,20 +180,17 @@ const MenuDetailPage = () => {
         </div>
       </div>
 
-      {/* ✅ FIXED GUEST SECTION (SUBTLE PREMIUM) */}
+      {/* ✅ SUBTLE GUEST SECTION (NO BOUNCE) */}
       <div className="py-10">
         <div className="container mx-auto px-4 max-w-5xl">
-          <div className="bg-white p-6 rounded-xl border-2 border-orange-300 shadow-sm relative overflow-hidden">
+          <div className="bg-white border-2 border-orange-300 p-6 rounded-xl shadow-sm">
 
-            {/* subtle glow */}
-            <div className="absolute inset-0 rounded-xl pointer-events-none animate-[pulse_2.5s_ease-in-out_infinite] bg-orange-100/30"></div>
-
-            <label className="text-sm mb-2 block text-gray-700 font-medium relative z-10">
+            <label className="text-sm mb-2 block text-gray-700 font-medium">
               Total Guests
             </label>
 
             <select
-              className="h-12 w-full rounded-lg border border-orange-400 px-3 relative z-10 focus:ring-2 focus:ring-orange-400"
+              className="h-12 w-full rounded-lg border border-orange-400 px-3 focus:ring-2 focus:ring-orange-400"
               value={guests}
               onChange={(e) => setGuests(e.target.value)}
             >
@@ -254,7 +251,7 @@ const MenuDetailPage = () => {
                                 : "bg-white hover:border-orange-400"
                             }`}
                         >
-                          {getDynamicQty(item)}
+                          {guests ? getDynamicQty(item) : item}
                         </button>
                       );
 
@@ -287,6 +284,7 @@ const MenuDetailPage = () => {
 
       <Footer />
       <FloatingWhatsApp />
+
     </div>
   );
 };
