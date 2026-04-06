@@ -145,6 +145,19 @@ const PackagesSection = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
+              {/* ✅ ONLY ADDITION */}
+              <div className="md:col-span-2">
+                {isAfterCutoff() ? (
+                  <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-medium">
+                    ⏰ Orders placed after 4:30 PM will be delivered next day
+                  </div>
+                ) : (
+                  <div className="p-3 rounded-xl bg-yellow-50 border border-yellow-200 text-yellow-700 text-sm font-medium">
+                    ⚠️ Minimum 5 hours preparation time required for same-day delivery
+                  </div>
+                )}
+              </div>
+
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Name</label>
                 <Input className="h-11 rounded-lg" value={name} onChange={(e) => setName(e.target.value)} />
