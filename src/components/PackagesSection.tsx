@@ -145,7 +145,7 @@ const PackagesSection = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-              {/* ✅ ONLY ADDITION */}
+              {/* NOTICE (ADDED, NO REPLACEMENT) */}
               <div className="md:col-span-2">
                 {isAfterCutoff() ? (
                   <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-medium">
@@ -158,11 +158,13 @@ const PackagesSection = () => {
                 )}
               </div>
 
+              {/* NAME */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Name</label>
                 <Input className="h-11 rounded-lg" value={name} onChange={(e) => setName(e.target.value)} />
               </div>
 
+              {/* PHONE */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Phone</label>
                 <Input
@@ -177,26 +179,31 @@ const PackagesSection = () => {
                 />
               </div>
 
+              {/* ADDRESS */}
               <div className="md:col-span-2">
                 <label className="text-sm mb-1 block text-gray-600">Address</label>
                 <Input className="h-11 rounded-lg" value={address} onChange={(e) => setAddress(e.target.value)} />
               </div>
 
+              {/* APARTMENT */}
               <div className="md:col-span-2">
                 <label className="text-sm mb-1 block text-gray-600">Apartment / Suite</label>
                 <Input className="h-11 rounded-lg" value={apartment} onChange={(e) => setApartment(e.target.value)} />
               </div>
 
+              {/* CITY */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">City</label>
                 <Input className="h-11 rounded-lg" value={city} onChange={(e) => setCity(e.target.value)} />
               </div>
 
+              {/* STATE */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">State</label>
                 <Input className="h-11 rounded-lg" value={state} onChange={(e) => setState(e.target.value)} />
               </div>
 
+              {/* PIN */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">PIN Code</label>
                 <Input
@@ -211,6 +218,7 @@ const PackagesSection = () => {
                 />
               </div>
 
+              {/* VEG */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Veg Guests</label>
                 <select className="h-11 w-full rounded-lg border border-gray-300 px-3" value={vegGuests} onChange={(e) => setVegGuests(e.target.value)}>
@@ -222,6 +230,7 @@ const PackagesSection = () => {
                 </select>
               </div>
 
+              {/* NON VEG */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Non Veg Guests</label>
                 <select className="h-11 w-full rounded-lg border border-gray-300 px-3" value={nonVegGuests} onChange={(e) => setNonVegGuests(e.target.value)}>
@@ -233,6 +242,7 @@ const PackagesSection = () => {
                 </select>
               </div>
 
+              {/* DATE */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Date</label>
                 <Input
@@ -241,14 +251,12 @@ const PackagesSection = () => {
                   className="h-11 rounded-lg"
                   value={date}
                   onChange={(e) => {
-                    if (isAfterCutoff()) {
-                      alert("Orders placed after 4:30 PM will be delivered next day only.");
-                    }
-                    setDate(e.target.value);
+                    setDate(e.target.value); // alert removed
                   }}
                 />
               </div>
 
+              {/* TIME */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Delivery Time</label>
                 <select
@@ -262,7 +270,7 @@ const PackagesSection = () => {
                     const selectedDate = date ? new Date(date) : null;
                     const today = new Date();
 
-                    if (selectedDate && selectedDate.toDateString() === today.toDateString()) {
+                    if (!isAfterCutoff() && selectedDate && selectedDate.toDateString() === today.toDateString()) {
 
                       const [timeStr, period] = selectedTime.split(" ");
                       let [hours, minutes] = timeStr.split(":").map(Number);
@@ -284,7 +292,11 @@ const PackagesSection = () => {
                     setTime(selectedTime);
                   }}
                 >
-                  <option value="">Select (5 hrs lead time applies)</option>
+                  <option value="">
+                    {isAfterCutoff()
+                      ? "Select delivery time (next day)"
+                      : "Select (5 hrs lead time applies)"}
+                  </option>
 
                   {[
                     "09:00 AM","10:00 AM","11:00 AM","12:00 PM",
@@ -298,7 +310,8 @@ const PackagesSection = () => {
 
                     let isDisabled = false;
 
-                    if (selectedDate && selectedDate.toDateString() === today.toDateString()) {
+                    if (!isAfterCutoff() && selectedDate && selectedDate.toDateString() === today.toDateString()) {
+
                       const [timeStr, period] = t.split(" ");
                       let [hours, minutes] = timeStr.split(":").map(Number);
 
