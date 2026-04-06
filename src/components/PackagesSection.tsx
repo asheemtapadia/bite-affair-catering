@@ -43,14 +43,14 @@ const PackagesSection = () => {
     }
   }, []);
 
-  /* ✅ 4:30 PM cutoff */
+  /* 4:30 PM cutoff */
   const getMinDateTime = () => {
     const now = new Date();
 
     const cutoff = new Date();
     cutoff.setHours(16, 30, 0, 0);
 
-    if (now >= cutoff) { // ✅ FIXED
+    if (now >= cutoff) {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       return tomorrow.toISOString().split("T")[0];
@@ -71,8 +71,8 @@ const PackagesSection = () => {
       return;
     }
 
-    const veg = Number(vegGuests);       // ✅ FIXED
-    const nonveg = Number(nonVegGuests); // ✅ FIXED
+    const veg = Number(vegGuests);
+    const nonveg = Number(nonVegGuests);
 
     if (
       (vegGuests && (veg < 15 || veg > 50)) ||
@@ -198,7 +198,7 @@ const PackagesSection = () => {
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Veg Guests</label>
                 <select className="h-11 w-full rounded-lg border border-gray-300 px-3" value={vegGuests} onChange={(e) => setVegGuests(e.target.value)}>
-                  <option value="">Select</option>
+                  <option value="">None</option>
                   {Array.from({ length: 36 }, (_, i) => {
                     const num = i + 15;
                     return <option key={num} value={num}>{num}</option>;
@@ -210,7 +210,7 @@ const PackagesSection = () => {
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Non Veg Guests</label>
                 <select className="h-11 w-full rounded-lg border border-gray-300 px-3" value={nonVegGuests} onChange={(e) => setNonVegGuests(e.target.value)}>
-                  <option value="">Select</option>
+                  <option value="">None</option>
                   {Array.from({ length: 36 }, (_, i) => {
                     const num = i + 15;
                     return <option key={num} value={num}>{num}</option>;
@@ -228,9 +228,11 @@ const PackagesSection = () => {
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                 />
-                <p className="text-xs text-gray-500 mt-1">
-                  Orders after 4:30 PM will be scheduled for next day delivery
-                </p>
+
+                {/* 🔥 NOTICE UPGRADED */}
+                <div className="mt-2 bg-yellow-50 border border-yellow-200 text-yellow-800 text-xs px-3 py-2 rounded-lg">
+                  ⚠️ Orders placed after <span className="font-semibold">4:30 PM</span> will be scheduled for next day delivery
+                </div>
               </div>
 
               {/* TIME */}
