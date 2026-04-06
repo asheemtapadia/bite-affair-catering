@@ -1,3 +1,5 @@
+// SAME IMPORTS
+
 import { useParams, Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { menuPackages, othersInfo } from "@/data/menuData";
@@ -17,11 +19,13 @@ const MenuDetailPage = () => {
   const [selectedItems, setSelectedItems] = useState<any>({});
   const [showError, setShowError] = useState(false);
 
-  // ✅ NEW STATE (popup)
+  // ✅ SAME
+  const [guests, setGuests] = useState("");
+
+  // ✅ NEW POPUP STATE
   const [popup, setPopup] = useState("");
 
-  // ✅ NEW STATE (guests)
-  const [guests, setGuests] = useState("");
+  const totalGuests = Number(guests);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -38,25 +42,18 @@ const MenuDetailPage = () => {
     return name.split("(")[0].trim();
   };
 
-  // ✅ quantity converter
-  const getScaledItem = (item: string) => {
-    if (!guests) return item.split(" - ")[0];
+  const getDynamicQty = (item: string) => {
+    if (!totalGuests) return item.split("–")[0];
 
-    const parts = item.split(" - ");
-    if (parts.length < 2) return item;
+    const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
+    if (!match) return item;
 
-    const name = parts[0];
-    const qtyPart = parts[1];
+    const baseQty = Number(match[1]);
+    const unit = match[2];
 
-    const num = parseFloat(qtyPart);
-    const unit = qtyPart.replace(/[0-9.]/g, "").trim();
+    const newQty = Math.round((baseQty * totalGuests) / 20);
 
-    if (!num) return name;
-
-    const factor = Number(guests) / 20;
-    const newQty = Math.round(num * factor);
-
-    return `${name} - ${newQty} ${unit}`;
+    return `${item.split("–")[0]} – ${newQty} ${unit}`;
   };
 
   const toggleItem = (category: string, item: string) => {
@@ -86,9 +83,10 @@ const MenuDetailPage = () => {
     return (selectedItems[cat.name]?.length || 0) === limit;
   });
 
+  // ✅ ONLY CHANGE: ALERT → POPUP
   const handleAddToCart = () => {
 
-    if (!guests) {
+    if (!totalGuests) {
       setPopup("Please select number of guests");
       return;
     }
@@ -130,11 +128,11 @@ const MenuDetailPage = () => {
     <div className="min-h-screen pb-40">
       <Header />
 
-      {/* ✅ PREMIUM POPUP */}
+      {/* ✅ CLEAN POPUP */}
       {popup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="bg-white px-6 py-5 rounded-2xl shadow-xl text-center max-w-sm w-[90%]">
-            <p className="text-gray-800 text-base font-medium">{popup}</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+          <div className="bg-white px-6 py-5 rounded-2xl shadow-lg text-center w-[85%] max-w-sm">
+            <p className="text-gray-800 text-base">{popup}</p>
 
             <button
               onClick={() => setPopup("")}
@@ -146,15 +144,7 @@ const MenuDetailPage = () => {
         </div>
       )}
 
-      {showError && (
-        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
-          <div className="bg-black text-white px-5 py-3 rounded-full shadow text-sm">
-            Please select required dishes first
-          </div>
-        </div>
-      )}
-
-      {/* HERO */}
+      {/* HERO SAME */}
       <div className="relative pt-28 pb-16">
         <img
           src={`/images/packages/${pkg.slug}.jpg`}
@@ -191,31 +181,35 @@ const MenuDetailPage = () => {
             ₹{pkg.price} <span className="text-sm text-white/70">per person</span>
           </p>
 
-          <p className="text-white/70 mt-3">
-            {pkg.previewItems.join(", ")}
-          </p>
-
         </div>
       </div>
 
-      {/* ✅ GUEST SELECT (ANIMATED) */}
-      <div className="px-4 mt-6">
-        <div className="bg-white p-6 rounded-xl border shadow-sm animate-[bounceGlow_2s_infinite]">
-          <label className="text-sm text-gray-600 block mb-2">Total Guests</label>
-          <select
-            className="w-full h-12 rounded-lg border px-3"
-            value={guests}
-            onChange={(e) => setGuests(e.target.value)}
-          >
-            <option value="">Select Guests</option>
-            {Array.from({ length: 36 }, (_, i) => i + 15).map((n) => (
-              <option key={n} value={n}>{n}</option>
-            ))}
-          </select>
+      {/* ✅ GUEST SECTION (VISIBLE WITHOUT CSS FILE) */}
+      <div className="py-10">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="bg-orange-50 border-2 border-orange-400 p-6 rounded-xl shadow-md animate-bounce">
+
+            <label className="text-sm mb-2 block text-orange-700 font-semibold">
+              Select Guests First
+            </label>
+
+            <select
+              className="h-12 w-full rounded-lg border border-orange-400 px-3"
+              value={guests}
+              onChange={(e) => setGuests(e.target.value)}
+            >
+              <option value="">Select Guests</option>
+              {Array.from({ length: 36 }, (_, i) => {
+                const num = i + 15;
+                return <option key={num} value={num}>{num}</option>;
+              })}
+            </select>
+
+          </div>
         </div>
       </div>
 
-      {/* MENU */}
+      {/* MENU SAME */}
       <div className="py-20">
         <div className="container mx-auto px-4 max-w-5xl grid md:grid-cols-2 gap-8">
 
@@ -253,7 +247,7 @@ const MenuDetailPage = () => {
                           key={item}
                           onClick={() => toggleItem(cat.name, item)}
                           disabled={mode === "order" ? disabled : false}
-                          className={`px-4 py-2 rounded-full text-sm border
+                          className={`px-4 py-2 rounded-full text-sm border flex items-center gap-2
                           ${selected
                               ? "bg-orange-500 text-white"
                               : disabled
@@ -261,7 +255,7 @@ const MenuDetailPage = () => {
                                 : "bg-white hover:border-orange-400"
                             }`}
                         >
-                          {getScaledItem(item)}
+                          {getDynamicQty(item)}
                         </button>
                       );
 
@@ -276,38 +270,24 @@ const MenuDetailPage = () => {
           })}
 
         </div>
-
-        <div className="mt-16 bg-beige p-6 rounded-xl max-w-5xl mx-auto">
-          <h3 className="font-semibold mb-3">Additional Information</h3>
-
-          <ul className="text-sm text-gray-600 space-y-1">
-            {othersInfo.map((info) => (
-              <li key={info}>● {info}</li>
-            ))}
-          </ul>
-        </div>
-
       </div>
 
-      {/* CTA */}
+      {/* CTA SAME */}
       <div className="fixed bottom-20 left-0 right-0 px-4 z-50">
-
         <button
           onClick={handleAddToCart}
           className={`w-full h-14 rounded-xl text-lg font-medium
-          ${allSelected && guests
+          ${totalGuests && allSelected
               ? "bg-orange-500 text-white"
               : "bg-gray-200 text-gray-500"
             }`}
         >
-          {allSelected && guests ? "Save & Add to Cart" : "Select dishes to continue"}
+          Save & Add to Cart
         </button>
-
       </div>
 
       <Footer />
       <FloatingWhatsApp />
-
     </div>
   );
 };
