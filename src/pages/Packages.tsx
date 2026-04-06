@@ -12,7 +12,7 @@ const navigate = useNavigate();
 const vegGuests = parseInt(searchParams.get("veg") || "0") || 0;
 const nonVegGuests = parseInt(searchParams.get("nonveg") || "0") || 0;
 
-/* ✅ SAME FILTER (NO AUTO OVERRIDE) */
+/* ❌ FILTER STATE REMOVE NAHI KIYA (STRUCTURE SAME RAKHA) */
 const [filter, setFilter] = useState<"veg" | "nonveg">("veg");
 
 useEffect(() => {
@@ -20,8 +20,6 @@ useEffect(() => {
     window.scrollTo(0, 0);
   }, 0);
 }, []);
-
-/* ❌ REMOVED AUTO FILTER (THIS WAS BUG) */
 
 /* DELIVERY FIELDS */
 const name = searchParams.get("name");
@@ -40,6 +38,18 @@ const [selectedNonVegPackage, setSelectedNonVegPackage] = useState<any>(null);
 
 const vegPackages = menuPackages.filter(pkg => pkg.isVeg);
 const nonVegPackages = menuPackages.filter(pkg => !pkg.isVeg);
+
+/* ✅ HEADING LOGIC */
+let headingText = "";
+if (vegGuests > 0 && nonVegGuests > 0) {
+  headingText = "Showing Veg & Non-Veg Packages";
+} else if (vegGuests > 0) {
+  headingText = "Showing Veg Packages";
+} else if (nonVegGuests > 0) {
+  headingText = "Showing Non-Veg Packages";
+} else {
+  headingText = "No Packages Available";
+}
 
 const vegTotal =
 selectedVegPackage ? vegGuests * selectedVegPackage.price : 0;
@@ -183,9 +193,11 @@ Available Packages
 </h1>
 
 <p className="text-center text-xs text-gray-500 mb-3">
-  Showing {filter === "veg" ? "Veg" : "Non-Veg"} Packages
+  {headingText}
 </p>
 
+
+{/* BUTTONS SAME RAKHE */}
 <div className="flex items-center justify-center gap-3 mb-12">
 
   <button
@@ -213,8 +225,8 @@ Available Packages
 </div>
 
 
-{/* VEG */}
-{filter === "veg" && vegGuests > 0 && (
+{/* ✅ VEG ALWAYS SHOW IF SELECTED */}
+{vegGuests > 0 && (
 <>
 <h2 className="text-2xl font-semibold mb-6">
 Veg Packages
@@ -242,14 +254,12 @@ Veg
 {pkg.previewItems.slice(0,3).join(" • ")}
 </p>
 
-<Button
-className="w-full"
+<Button className="w-full"
 onClick={() =>
 selectedVegPackage?.slug === pkg.slug
 ? setSelectedVegPackage(null)
 : setSelectedVegPackage(pkg)
-}
->
+}>
 {selectedVegPackage?.slug === pkg.slug ? "✓ Selected" : "Select Package"}
 </Button>
 
@@ -262,8 +272,8 @@ selectedVegPackage?.slug === pkg.slug
 )}
 
 
-/* NON VEG */
-{filter === "nonveg" && nonVegGuests > 0 && (
+/* ✅ NON VEG ALWAYS SHOW IF SELECTED */
+{nonVegGuests > 0 && (
 <>
 <h2 className="text-2xl font-semibold mb-6">
 Non Veg Packages
@@ -291,14 +301,12 @@ Non Veg
 {pkg.previewItems.slice(0,3).join(" • ")}
 </p>
 
-<Button
-className="w-full"
+<Button className="w-full"
 onClick={() =>
 selectedNonVegPackage?.slug === pkg.slug
 ? setSelectedNonVegPackage(null)
 : setSelectedNonVegPackage(pkg)
-}
->
+}>
 {selectedNonVegPackage?.slug === pkg.slug ? "✓ Selected" : "Select Package"}
 </Button>
 
