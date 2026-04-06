@@ -50,7 +50,7 @@ const PackagesSection = () => {
     const cutoff = new Date();
     cutoff.setHours(16, 30, 0, 0);
 
-    if (now > cutoff) {
+    if (now >= cutoff) { // ✅ FIXED
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       return tomorrow.toISOString().split("T")[0];
@@ -71,9 +71,12 @@ const PackagesSection = () => {
       return;
     }
 
+    const veg = Number(vegGuests);       // ✅ FIXED
+    const nonveg = Number(nonVegGuests); // ✅ FIXED
+
     if (
-      (vegGuests && (vegGuests < 15 || vegGuests > 50)) ||
-      (nonVegGuests && (nonVegGuests < 15 || nonVegGuests > 50))
+      (vegGuests && (veg < 15 || veg > 50)) ||
+      (nonVegGuests && (nonveg < 15 || nonveg > 50))
     ) {
       alert("Guests must be between 15 and 50");
       return;
