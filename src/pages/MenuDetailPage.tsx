@@ -17,10 +17,11 @@ const MenuDetailPage = () => {
   const [selectedItems, setSelectedItems] = useState<any>({});
   const [showError, setShowError] = useState(false);
 
-  // ✅ NEW: TOTAL GUEST
-  const [guests, setGuests] = useState("");
+  // ✅ NEW STATE (popup)
+  const [popup, setPopup] = useState("");
 
-  const totalGuests = Number(guests);
+  // ✅ NEW STATE (guests)
+  const [guests, setGuests] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -37,19 +38,25 @@ const MenuDetailPage = () => {
     return name.split("(")[0].trim();
   };
 
-  // ✅ NEW: DYNAMIC QTY
-  const getDynamicQty = (item: string) => {
-    if (!totalGuests) return item.split("–")[0];
+  // ✅ quantity converter
+  const getScaledItem = (item: string) => {
+    if (!guests) return item.split(" - ")[0];
 
-    const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
-    if (!match) return item;
+    const parts = item.split(" - ");
+    if (parts.length < 2) return item;
 
-    const baseQty = Number(match[1]);
-    const unit = match[2];
+    const name = parts[0];
+    const qtyPart = parts[1];
 
-    const newQty = Math.round((baseQty * totalGuests) / 20);
+    const num = parseFloat(qtyPart);
+    const unit = qtyPart.replace(/[0-9.]/g, "").trim();
 
-    return `${item.split("–")[0]} – ${newQty} ${unit}`;
+    if (!num) return name;
+
+    const factor = Number(guests) / 20;
+    const newQty = Math.round(num * factor);
+
+    return `${name} - ${newQty} ${unit}`;
   };
 
   const toggleItem = (category: string, item: string) => {
@@ -79,16 +86,15 @@ const MenuDetailPage = () => {
     return (selectedItems[cat.name]?.length || 0) === limit;
   });
 
-  // ✅ UPDATED CTA LOGIC
   const handleAddToCart = () => {
 
-    if (!totalGuests) {
-      alert("Please select number of guests");
+    if (!guests) {
+      setPopup("Please select number of guests");
       return;
     }
 
     if (!allSelected) {
-      alert("Please select all required dishes");
+      setPopup("Please select all required dishes");
       return;
     }
 
@@ -123,6 +129,22 @@ const MenuDetailPage = () => {
   return (
     <div className="min-h-screen pb-40">
       <Header />
+
+      {/* ✅ PREMIUM POPUP */}
+      {popup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="bg-white px-6 py-5 rounded-2xl shadow-xl text-center max-w-sm w-[90%]">
+            <p className="text-gray-800 text-base font-medium">{popup}</p>
+
+            <button
+              onClick={() => setPopup("")}
+              className="mt-4 px-6 py-2 rounded-lg bg-black text-white"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
 
       {showError && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
@@ -176,28 +198,20 @@ const MenuDetailPage = () => {
         </div>
       </div>
 
-      {/* 🔥 NEW: GUEST SECTION (ANIMATED) */}
-      <div className="py-10">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <div className="bg-white p-6 rounded-xl border shadow-sm animate-pulse">
-
-            <label className="text-sm mb-2 block text-gray-600">
-              Total Guests
-            </label>
-
-            <select
-              className="h-12 w-full rounded-lg border border-gray-300 px-3"
-              value={guests}
-              onChange={(e) => setGuests(e.target.value)}
-            >
-              <option value="">Select Guests</option>
-              {Array.from({ length: 36 }, (_, i) => {
-                const num = i + 15;
-                return <option key={num} value={num}>{num}</option>;
-              })}
-            </select>
-
-          </div>
+      {/* ✅ GUEST SELECT (ANIMATED) */}
+      <div className="px-4 mt-6">
+        <div className="bg-white p-6 rounded-xl border shadow-sm animate-[bounceGlow_2s_infinite]">
+          <label className="text-sm text-gray-600 block mb-2">Total Guests</label>
+          <select
+            className="w-full h-12 rounded-lg border px-3"
+            value={guests}
+            onChange={(e) => setGuests(e.target.value)}
+          >
+            <option value="">Select Guests</option>
+            {Array.from({ length: 36 }, (_, i) => i + 15).map((n) => (
+              <option key={n} value={n}>{n}</option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -239,16 +253,15 @@ const MenuDetailPage = () => {
                           key={item}
                           onClick={() => toggleItem(cat.name, item)}
                           disabled={mode === "order" ? disabled : false}
-                          className={`px-4 py-2 rounded-full text-sm border flex items-center gap-2 transition-all duration-200
+                          className={`px-4 py-2 rounded-full text-sm border
                           ${selected
-                              ? "bg-orange-500 text-white border-orange-500 shadow-md scale-[1.05]"
+                              ? "bg-orange-500 text-white"
                               : disabled
-                                ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
-                                : "bg-white hover:border-orange-400 hover:bg-orange-50"
+                                ? "bg-gray-100 text-gray-400"
+                                : "bg-white hover:border-orange-400"
                             }`}
                         >
-                          {selected && <span className="w-2 h-2 bg-white rounded-full"></span>}
-                          {getDynamicQty(item)}
+                          {getScaledItem(item)}
                         </button>
                       );
 
@@ -278,16 +291,18 @@ const MenuDetailPage = () => {
 
       {/* CTA */}
       <div className="fixed bottom-20 left-0 right-0 px-4 z-50">
+
         <button
           onClick={handleAddToCart}
           className={`w-full h-14 rounded-xl text-lg font-medium
-          ${totalGuests && allSelected
+          ${allSelected && guests
               ? "bg-orange-500 text-white"
               : "bg-gray-200 text-gray-500"
             }`}
         >
-          Save & Add to Cart
+          {allSelected && guests ? "Save & Add to Cart" : "Select dishes to continue"}
         </button>
+
       </div>
 
       <Footer />
