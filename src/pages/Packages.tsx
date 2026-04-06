@@ -12,9 +12,6 @@ const navigate = useNavigate();
 const vegGuests = parseInt(searchParams.get("veg") || "0") || 0;
 const nonVegGuests = parseInt(searchParams.get("nonveg") || "0") || 0;
 
-/* ✅ KEEP FILTER STATE (UI ONLY) */
-const [filter, setFilter] = useState<"veg" | "nonveg">("veg");
-
 useEffect(() => {
   setTimeout(() => {
     window.scrollTo(0, 0);
@@ -165,39 +162,12 @@ Edit Details
 Available Packages
 </h1>
 
-{/* ✅ CLEAN TEXT (NO FILTER FEEL) */}
+{/* CLEAN TEXT */}
 <p className="text-center text-sm text-gray-400 mb-6">
 {vegGuests > 0 && nonVegGuests > 0 && "Select your preferred packages below"}
 {vegGuests > 0 && nonVegGuests === 0 && "Choose from our vegetarian packages"}
 {nonVegGuests > 0 && vegGuests === 0 && "Choose from our non-vegetarian packages"}
 </p>
-
-{/* TOGGLE */}
-<div className="flex items-center justify-center gap-3 mb-12">
-
-<button
-onClick={() => setFilter("veg")}
-className={`px-5 py-2 rounded-full text-sm font-medium ${
-filter === "veg"
-? "bg-green-600 text-white"
-: "bg-white text-gray-600 border"
-}`}
->
-🥦 Veg
-</button>
-
-<button
-onClick={() => setFilter("nonveg")}
-className={`px-5 py-2 rounded-full text-sm font-medium ${
-filter === "nonveg"
-? "bg-red-500 text-white"
-: "bg-white text-gray-600 border"
-}`}
->
-🍗 Non Veg
-</button>
-
-</div>
 
 {/* VEG */}
 {vegGuests > 0 && (
