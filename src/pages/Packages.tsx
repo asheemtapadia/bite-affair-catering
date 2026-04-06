@@ -17,6 +17,15 @@ useEffect(() => {
   }, 0);
 }, []);
 
+/* ✅ AUTO FILTER FIX (ADDED) */
+useEffect(() => {
+  if (vegGuests > 0 && nonVegGuests === 0) {
+    setFilter("veg");
+  } else if (nonVegGuests > 0 && vegGuests === 0) {
+    setFilter("nonveg");
+  }
+}, [vegGuests, nonVegGuests]);
+
 const vegGuests = Number(searchParams.get("veg") || 10);
 const nonVegGuests = Number(searchParams.get("nonveg") || 0);
 
@@ -221,7 +230,11 @@ Veg Packages
 
 {vegPackages.map((pkg) => (
 
-<div key={pkg.slug} className="relative rounded-2xl border p-5 bg-white shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
+<div key={pkg.slug} className={`relative rounded-2xl border p-5 bg-white shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col ${
+selectedVegPackage?.slug === pkg.slug
+? "ring-2 ring-primary border-primary bg-primary/5"
+: ""
+}`}>
 
 <span className="absolute top-3 left-3 text-xs bg-primary text-white px-2 py-1 rounded">
 Veg
@@ -235,12 +248,29 @@ Veg
 ₹{pkg.price} <span className="text-sm text-gray-500">/ person</span>
 </p>
 
-{/* FULL DISHES */}
-<div className="text-sm text-gray-600 mb-4 max-h-40 overflow-y-auto">
-  {pkg.items?.map((item, i) => (
-    <div key={i}>• {item}</div>
+{/* ✅ FULL DISHES FIX */}
+<div className="text-sm text-muted-foreground mb-4">
+  {pkg.previewItems?.map((item, i) => (
+    <span key={i}>
+      {item}{i !== pkg.previewItems.length - 1 ? " • " : ""}
+    </span>
   ))}
 </div>
+
+<Button
+className={`w-full ${
+selectedVegPackage?.slug === pkg.slug
+? "bg-green-600 hover:bg-green-700"
+: ""
+}`}
+onClick={() =>
+selectedVegPackage?.slug === pkg.slug
+? setSelectedVegPackage(null)
+: setSelectedVegPackage(pkg)
+}
+>
+{selectedVegPackage?.slug === pkg.slug ? "✓ Selected" : "Select Package"}
+</Button>
 
 </div>
 
@@ -251,7 +281,7 @@ Veg
 )}
 
 
-{/* NON VEG */}
+/* NON VEG */
 {filter === "nonveg" && nonVegGuests > 0 && (
 <>
 <h2 className="text-2xl font-semibold mb-6">
@@ -262,7 +292,11 @@ Non Veg Packages
 
 {nonVegPackages.map((pkg) => (
 
-<div key={pkg.slug} className="relative rounded-2xl border p-5 bg-white shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
+<div key={pkg.slug} className={`relative rounded-2xl border p-5 bg-white shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col ${
+selectedNonVegPackage?.slug === pkg.slug
+? "ring-2 ring-primary border-primary bg-primary/5"
+: ""
+}`}>
 
 <span className="absolute top-3 left-3 text-xs bg-red-500 text-white px-2 py-1 rounded">
 Non Veg
@@ -276,12 +310,29 @@ Non Veg
 ₹{pkg.price} <span className="text-sm text-gray-500">/ person</span>
 </p>
 
-{/* FULL DISHES */}
-<div className="text-sm text-gray-600 mb-4 max-h-40 overflow-y-auto">
-  {pkg.items?.map((item, i) => (
-    <div key={i}>• {item}</div>
+{/* ✅ FULL DISHES FIX */}
+<div className="text-sm text-muted-foreground mb-4">
+  {pkg.previewItems?.map((item, i) => (
+    <span key={i}>
+      {item}{i !== pkg.previewItems.length - 1 ? " • " : ""}
+    </span>
   ))}
 </div>
+
+<Button
+className={`w-full ${
+selectedNonVegPackage?.slug === pkg.slug
+? "bg-green-600 hover:bg-green-700"
+: ""
+}`}
+onClick={() =>
+selectedNonVegPackage?.slug === pkg.slug
+? setSelectedNonVegPackage(null)
+: setSelectedNonVegPackage(pkg)
+}
+>
+{selectedNonVegPackage?.slug === pkg.slug ? "✓ Selected" : "Select Package"}
+</Button>
 
 </div>
 
@@ -292,16 +343,22 @@ Non Veg
 )}
 
 
-{/* CTA HIDDEN */}
-<div className="hidden">
+/* CTA */
+<div className={`fixed bottom-0 left-0 right-0 px-4 pb-5 ${
+selectedVegPackage || selectedNonVegPackage
+? "opacity-100 translate-y-0"
+: "opacity-0 translate-y-10 pointer-events-none"
+} transition-all duration-300`}>
+
   <div className="max-w-md mx-auto">
     <Button
       onClick={handleSubmit}
-      className="w-full h-14 text-lg rounded-2xl shadow-xl bg-primary"
+      className="w-full h-14 text-lg rounded-2xl shadow-xl bg-primary hover:scale-[1.02] transition-all duration-200"
     >
       Get Quote on WhatsApp
     </Button>
   </div>
+
 </div>
 
 </div>
