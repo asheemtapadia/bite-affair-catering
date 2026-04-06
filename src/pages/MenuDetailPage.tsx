@@ -17,11 +17,10 @@ const MenuDetailPage = () => {
   const [selectedItems, setSelectedItems] = useState<any>({});
   const [showError, setShowError] = useState(false);
 
-  // ✅ NEW (guest state)
-  const [vegGuests, setVegGuests] = useState("");
-  const [nonVegGuests, setNonVegGuests] = useState("");
+  // ✅ NEW: TOTAL GUEST
+  const [guests, setGuests] = useState("");
 
-  const totalGuests = Number(vegGuests || 0) + Number(nonVegGuests || 0);
+  const totalGuests = Number(guests);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -38,9 +37,9 @@ const MenuDetailPage = () => {
     return name.split("(")[0].trim();
   };
 
-  // ✅ NEW (dynamic qty)
+  // ✅ NEW: DYNAMIC QTY
   const getDynamicQty = (item: string) => {
-    if (!totalGuests) return item.split("–")[0]; // hide qty
+    if (!totalGuests) return item.split("–")[0];
 
     const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
     if (!match) return item;
@@ -80,15 +79,16 @@ const MenuDetailPage = () => {
     return (selectedItems[cat.name]?.length || 0) === limit;
   });
 
+  // ✅ UPDATED CTA LOGIC
   const handleAddToCart = () => {
+
     if (!totalGuests) {
-      alert("Please select number of guests first");
+      alert("Please select number of guests");
       return;
     }
 
     if (!allSelected) {
-      setShowError(true);
-      setTimeout(() => setShowError(false), 2000);
+      alert("Please select all required dishes");
       return;
     }
 
@@ -99,8 +99,7 @@ const MenuDetailPage = () => {
       name: pkg?.name,
       price: pkg?.price,
       selectedItems,
-      vegGuests,
-      nonVegGuests
+      guests
     };
 
     const updatedCart = [...existingCart, newItem];
@@ -177,38 +176,28 @@ const MenuDetailPage = () => {
         </div>
       </div>
 
-      {/* 🔥 GUEST SELECTION */}
-      <div className="py-10 container mx-auto px-4 max-w-5xl">
-        <div className="bg-white p-6 rounded-xl border shadow-sm grid grid-cols-2 gap-4">
+      {/* 🔥 NEW: GUEST SECTION (ANIMATED) */}
+      <div className="py-10">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="bg-white p-6 rounded-xl border shadow-sm animate-pulse">
 
-          <div>
-            <label className="text-sm text-gray-600">Veg Guests</label>
+            <label className="text-sm mb-2 block text-gray-600">
+              Total Guests
+            </label>
+
             <select
-              className="w-full mt-1 border rounded-lg px-3 py-2"
-              value={vegGuests}
-              onChange={(e) => setVegGuests(e.target.value)}
+              className="h-12 w-full rounded-lg border border-gray-300 px-3"
+              value={guests}
+              onChange={(e) => setGuests(e.target.value)}
             >
-              <option value="">Select</option>
-              {Array.from({ length: 36 }, (_, i) => i + 15).map((n) => (
-                <option key={n} value={n}>{n}</option>
-              ))}
+              <option value="">Select Guests</option>
+              {Array.from({ length: 36 }, (_, i) => {
+                const num = i + 15;
+                return <option key={num} value={num}>{num}</option>;
+              })}
             </select>
-          </div>
 
-          <div>
-            <label className="text-sm text-gray-600">Non Veg Guests</label>
-            <select
-              className="w-full mt-1 border rounded-lg px-3 py-2"
-              value={nonVegGuests}
-              onChange={(e) => setNonVegGuests(e.target.value)}
-            >
-              <option value="">Select</option>
-              {Array.from({ length: 36 }, (_, i) => i + 15).map((n) => (
-                <option key={n} value={n}>{n}</option>
-              ))}
-            </select>
           </div>
-
         </div>
       </div>
 
@@ -289,19 +278,16 @@ const MenuDetailPage = () => {
 
       {/* CTA */}
       <div className="fixed bottom-20 left-0 right-0 px-4 z-50">
-
         <button
           onClick={handleAddToCart}
-          disabled={!totalGuests || !allSelected}
           className={`w-full h-14 rounded-xl text-lg font-medium
           ${totalGuests && allSelected
               ? "bg-orange-500 text-white"
               : "bg-gray-200 text-gray-500"
             }`}
         >
-          {totalGuests ? "Save & Add to Cart" : "Select guests to continue"}
+          Save & Add to Cart
         </button>
-
       </div>
 
       <Footer />
