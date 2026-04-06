@@ -43,7 +43,6 @@ const PackagesSection = () => {
     }
   }, []);
 
-  /* 4:30 PM cutoff */
   const getMinDateTime = () => {
     const now = new Date();
 
@@ -228,14 +227,9 @@ const PackagesSection = () => {
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                 />
-
-                {/* 🔥 NOTICE UPGRADED */}
-                <div className="mt-2 bg-yellow-50 border border-yellow-200 text-yellow-800 text-xs px-3 py-2 rounded-lg">
-                  ⚠️ Orders placed after <span className="font-semibold">4:30 PM</span> will be scheduled for next day delivery
-                </div>
               </div>
 
-              {/* TIME */}
+              {/* TIME (UPDATED ONLY) */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Delivery Time</label>
                 <select
@@ -243,14 +237,43 @@ const PackagesSection = () => {
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
                 >
-                  <option value="">Select</option>
+                  <option value="">Select (5 hrs lead time applies)</option>
+
                   {[
                     "09:00 AM","10:00 AM","11:00 AM","12:00 PM",
                     "01:00 PM","02:00 PM","03:00 PM","04:00 PM",
                     "05:00 PM","06:00 PM","07:00 PM","08:00 PM","09:00 PM"
-                  ].map((t) => (
-                    <option key={t} value={t}>{t}</option>
-                  ))}
+                  ].map((t) => {
+
+                    const now = new Date();
+                    const selectedDate = new Date(date);
+                    const today = new Date();
+
+                    let isDisabled = false;
+
+                    if (selectedDate.toDateString() === today.toDateString()) {
+                      const [timeStr, period] = t.split(" ");
+                      let [hours, minutes] = timeStr.split(":").map(Number);
+
+                      if (period === "PM" && hours !== 12) hours += 12;
+                      if (period === "AM" && hours === 12) hours = 0;
+
+                      const slotTime = new Date();
+                      slotTime.setHours(hours, minutes, 0, 0);
+
+                      const diffHours = (slotTime.getTime() - now.getTime()) / (1000 * 60 * 60);
+
+                      if (diffHours < 5) {
+                        isDisabled = true;
+                      }
+                    }
+
+                    return (
+                      <option key={t} value={t} disabled={isDisabled}>
+                        {t} {isDisabled ? "(Not available)" : ""}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
 
