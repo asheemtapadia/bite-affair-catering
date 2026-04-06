@@ -43,6 +43,8 @@ const PackagesSection = () => {
     }
   }, []);
 
+  const todayDate = new Date().toISOString().split("T")[0];
+
   const handleFindPackages = () => {
 
     if (!name || !phone || !address || !city || !state || !date || !time) {
@@ -195,7 +197,7 @@ const PackagesSection = () => {
                 />
               </div>
 
-              {/* ✅ DROPDOWN */}
+              {/* Veg Guests */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Veg Guests</label>
                 <select
@@ -211,7 +213,7 @@ const PackagesSection = () => {
                 </select>
               </div>
 
-              {/* ✅ DROPDOWN */}
+              {/* Non Veg Guests */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Non Veg Guests</label>
                 <select
@@ -227,24 +229,35 @@ const PackagesSection = () => {
                 </select>
               </div>
 
+              {/* DATE FIX */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Date</label>
                 <Input
                   type="date"
+                  min={todayDate}
                   className="h-11 rounded-lg"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                 />
               </div>
 
+              {/* TIME FIX */}
               <div>
                 <label className="text-sm mb-1 block text-gray-600">Delivery Time</label>
-                <Input
-                  type="time"
-                  className="h-11 rounded-lg"
+                <select
+                  className="h-11 w-full rounded-lg border border-gray-300 px-3"
                   value={time}
                   onChange={(e) => setTime(e.target.value)}
-                />
+                >
+                  <option value="">Select</option>
+                  {[
+                    "09:00 AM","10:00 AM","11:00 AM","12:00 PM",
+                    "01:00 PM","02:00 PM","03:00 PM","04:00 PM",
+                    "05:00 PM","06:00 PM","07:00 PM","08:00 PM","09:00 PM"
+                  ].map((t) => (
+                    <option key={t} value={t}>{t}</option>
+                  ))}
+                </select>
               </div>
 
             </div>
