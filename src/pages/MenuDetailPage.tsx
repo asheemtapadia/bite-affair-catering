@@ -19,10 +19,7 @@ const MenuDetailPage = () => {
   const [selectedItems, setSelectedItems] = useState<any>({});
   const [showError, setShowError] = useState(false);
 
-  // ✅ SAME
   const [guests, setGuests] = useState("");
-
-  // ✅ NEW POPUP STATE
   const [popup, setPopup] = useState("");
 
   const totalGuests = Number(guests);
@@ -83,7 +80,6 @@ const MenuDetailPage = () => {
     return (selectedItems[cat.name]?.length || 0) === limit;
   });
 
-  // ✅ ONLY CHANGE: ALERT → POPUP
   const handleAddToCart = () => {
 
     if (!totalGuests) {
@@ -128,7 +124,7 @@ const MenuDetailPage = () => {
     <div className="min-h-screen pb-40">
       <Header />
 
-      {/* ✅ CLEAN POPUP */}
+      {/* POPUP */}
       {popup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
           <div className="bg-white px-6 py-5 rounded-2xl shadow-lg text-center w-[85%] max-w-sm">
@@ -144,7 +140,7 @@ const MenuDetailPage = () => {
         </div>
       )}
 
-      {/* HERO SAME */}
+      {/* HERO */}
       <div className="relative pt-28 pb-16">
         <img
           src={`/images/packages/${pkg.slug}.jpg`}
@@ -184,17 +180,20 @@ const MenuDetailPage = () => {
         </div>
       </div>
 
-      {/* ✅ GUEST SECTION (VISIBLE WITHOUT CSS FILE) */}
+      {/* ✅ FIXED GUEST SECTION (SUBTLE PREMIUM) */}
       <div className="py-10">
         <div className="container mx-auto px-4 max-w-5xl">
-          <div className="bg-orange-50 border-2 border-orange-400 p-6 rounded-xl shadow-md animate-bounce">
+          <div className="bg-white p-6 rounded-xl border-2 border-orange-300 shadow-sm relative overflow-hidden">
 
-            <label className="text-sm mb-2 block text-orange-700 font-semibold">
-              Select Guests First
+            {/* subtle glow */}
+            <div className="absolute inset-0 rounded-xl pointer-events-none animate-[pulse_2.5s_ease-in-out_infinite] bg-orange-100/30"></div>
+
+            <label className="text-sm mb-2 block text-gray-700 font-medium relative z-10">
+              Total Guests
             </label>
 
             <select
-              className="h-12 w-full rounded-lg border border-orange-400 px-3"
+              className="h-12 w-full rounded-lg border border-orange-400 px-3 relative z-10 focus:ring-2 focus:ring-orange-400"
               value={guests}
               onChange={(e) => setGuests(e.target.value)}
             >
@@ -209,7 +208,7 @@ const MenuDetailPage = () => {
         </div>
       </div>
 
-      {/* MENU SAME */}
+      {/* MENU */}
       <div className="py-20">
         <div className="container mx-auto px-4 max-w-5xl grid md:grid-cols-2 gap-8">
 
@@ -272,7 +271,7 @@ const MenuDetailPage = () => {
         </div>
       </div>
 
-      {/* CTA SAME */}
+      {/* CTA */}
       <div className="fixed bottom-20 left-0 right-0 px-4 z-50">
         <button
           onClick={handleAddToCart}
