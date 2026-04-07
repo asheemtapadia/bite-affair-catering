@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 const Cart = () => {
@@ -19,9 +18,6 @@ const [phone,setPhone] = useState("");
 
 const [date,setDate] = useState("");
 const [time,setTime] = useState("");
-
-/* ✅ GUESTS */
-const [guests,setGuests] = useState(15);
 
 useEffect(() => {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -51,9 +47,9 @@ setCart(updated);
 localStorage.setItem("cart", JSON.stringify(updated));
 };
 
-/* ✅ SAME LOGIC */
+/* ✅ FIXED TOTAL (item-wise guests) */
 const total = cart.reduce((sum,item)=> {
-  return sum + (Number(item.price) * guests);
+  return sum + (Number(item.price) * Number(item.guests || 15));
 },0);
 
 const whatsappOrder = () => {
@@ -80,9 +76,9 @@ const message = cart.map((item) => {
 
 ${dishes}
 
-👥 Guests: ${guests}
+👥 Guests: ${item.guests || 15}
 
-💰 Subtotal: ₹${Number(item.price) * guests}
+💰 Subtotal: ₹${Number(item.price) * Number(item.guests || 15)}
 
 📝 Request: ${item.request || "None"}`;
 }).join("\n\n");
@@ -149,23 +145,14 @@ return (
                 ₹{item.price} / person
               </p>
 
-              {/* ✅ GUEST DROPDOWN (MOVED HERE) */}
-              <div className="mt-3">
-                <select
-                  value={guests}
-                  onChange={(e)=>setGuests(Number(e.target.value))}
-                  className="border border-gray-200 px-4 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400"
-                >
-                  {Array.from({ length: 36 }, (_, i) => {
-                    const num = i + 15;
-                    return <option key={num} value={num}>{num} guests</option>;
-                  })}
-                </select>
-              </div>
+              {/* ✅ SHOW CORRECT GUEST */}
+              <p className="text-sm text-gray-500 mt-2">
+                👥 {item.guests || 15} guests
+              </p>
 
-              {/* SUBTOTAL */}
+              {/* ✅ SUBTOTAL FIX */}
               <p className="text-sm text-orange-500 mt-2 font-medium">
-                ₹{Number(item.price) * guests} total
+                ₹{Number(item.price) * Number(item.guests || 15)} total
               </p>
 
               <div className="mt-3 h-[1px] bg-gray-100"></div>
@@ -232,7 +219,7 @@ return (
           </span>
         </div>
 
-        {/* FORM */}
+        {/* FORM (UNCHANGED) */}
         <div className="space-y-5">
 
           <input placeholder="First Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} className="w-full border p-4 rounded-xl"/>
