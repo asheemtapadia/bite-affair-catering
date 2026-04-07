@@ -1,5 +1,3 @@
-// SAME IMPORTS
-
 import { useParams, Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { menuPackages } from "@/data/menuData";
@@ -37,9 +35,9 @@ const MenuDetailPage = () => {
     return name.split("(")[0].trim();
   };
 
-  // ✅ QTY LOGIC
+  // ✅ DYNAMIC QTY
   const getDynamicQty = (item: string) => {
-    if (!totalGuests) return item.split("–")[0]; // ❌ no default qty
+    if (!totalGuests) return item.split("–")[0];
 
     const name = item.split("–")[0].trim();
 
@@ -54,19 +52,17 @@ const MenuDetailPage = () => {
     return `${name} – ${newQty} ${unit}`;
   };
 
-  // ✅ CLEAN SAVE
+  // ✅ STORE FULL ITEM (IMPORTANT FIX)
   const toggleItem = (category: string, item: string) => {
     const LIMIT = getLimit(category);
-
-    const cleanItem = item.split("–")[0].trim();
 
     setSelectedItems((prev: any) => {
       const current = prev[category] || [];
 
-      if (current.includes(cleanItem)) {
+      if (current.includes(item)) {
         return {
           ...prev,
-          [category]: current.filter((i: string) => i !== cleanItem),
+          [category]: current.filter((i: string) => i !== item),
         };
       }
 
@@ -74,7 +70,7 @@ const MenuDetailPage = () => {
 
       return {
         ...prev,
-        [category]: [...current, cleanItem],
+        [category]: [...current, item],
       };
     });
   };
@@ -115,13 +111,16 @@ const MenuDetailPage = () => {
   if (!pkg) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <h1>Menu Not Found</h1>
+        <div className="text-center">
+          <h1 className="text-3xl font-bold mb-4">Menu Not Found</h1>
+          <Link to="/">← Back</Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen pb-40">
+    <div className="min-h-screen pb-52">
       <Header />
 
       {/* POPUP */}
@@ -138,48 +137,71 @@ const MenuDetailPage = () => {
 
       {/* HERO */}
       <div className="relative pt-28 pb-16">
-        <img src={`/images/packages/${pkg.slug}.jpg`} className="absolute inset-0 w-full h-full object-cover" />
+        <img
+          src={`/images/packages/${pkg.slug}.jpg`}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
         <div className="absolute inset-0 bg-black/70" />
 
         <div className="relative container mx-auto px-4 max-w-5xl">
-          <button onClick={() => navigate(-1)} className="text-white mb-4 flex items-center gap-1">
+          <button onClick={() => navigate(-1)} className="text-white mb-6 flex items-center gap-1">
             <ArrowLeft size={16} /> Back
           </button>
 
-          <h1 className="text-4xl text-white">{pkg.name}</h1>
-          <p className="text-3xl text-orange-400 mt-2">
-            ₹{pkg.price} <span className="text-sm text-white/70">per person</span>
-          </p>
-
-          {/* ✅ HEADER COUNT */}
-          <div className="mt-4 text-white/80 text-sm">
-            {pkg.categories.map((cat) => {
-              const count = selectedItems[cat.name]?.length || 0;
-              return count > 0 ? (
-                <span key={cat.name} className="mr-3">
-                  {count} {cleanCategoryName(cat.name)}
-                </span>
-              ) : null;
-            })}
+          <div className="flex gap-3 mb-3">
+            {pkg.isVeg ? (
+              <span className="text-green-300 text-xs border px-2 py-1 rounded flex items-center gap-1">
+                <Leaf size={12} /> Veg
+              </span>
+            ) : (
+              <span className="text-red-300 text-xs border px-2 py-1 rounded flex items-center gap-1">
+                <Drumstick size={12} /> Non Veg
+              </span>
+            )}
           </div>
 
+          <h1 className="text-4xl text-white">{pkg.name}</h1>
+          <p className="text-3xl text-orange-400 mt-3">
+            ₹{pkg.price} <span className="text-sm text-white/70">per person</span>
+          </p>
+        </div>
+      </div>
+
+      {/* 🔥 HEADER PREVIEW FIX */}
+      <div className="py-6 bg-white border-b">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <p className="text-sm text-gray-500 mb-3">
+            Includes popular dishes:
+          </p>
+
+          <div className="flex flex-wrap gap-2">
+            {pkg.categories[0]?.items.slice(0,4).map((item:any) => (
+              <span key={item} className="px-3 py-1 text-xs bg-orange-50 text-orange-600 rounded-full border">
+                {item.split("–")[0]}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* GUEST */}
       <div className="py-10">
         <div className="container mx-auto px-4 max-w-5xl">
-          <select
-            value={guests}
-            onChange={(e) => setGuests(e.target.value)}
-            className="w-full border p-3 rounded"
-          >
-            <option value="">Select Guests</option>
-            {Array.from({ length: 36 }, (_, i) => {
-              const num = i + 15;
-              return <option key={num} value={num}>{num}</option>;
-            })}
-          </select>
+          <div className="bg-white p-6 rounded-xl border-2 border-orange-300">
+            <label className="text-sm mb-2 block">Total Guests</label>
+
+            <select
+              className="h-12 w-full rounded-lg border px-3"
+              value={guests}
+              onChange={(e) => setGuests(e.target.value)}
+            >
+              <option value="">Select Guests</option>
+              {Array.from({ length: 36 }, (_, i) => {
+                const num = i + 15;
+                return <option key={num} value={num}>{num}</option>;
+              })}
+            </select>
+          </div>
         </div>
       </div>
 
@@ -196,23 +218,22 @@ const MenuDetailPage = () => {
               <ScrollReveal key={cat.name}>
                 <div className="bg-white p-6 rounded-xl border">
 
-                  <h3 className="flex justify-between mb-3 font-semibold">
-                    <span>{cleanCategoryName(cat.name)}</span>
-                    <span>{count}/{limit}</span>
-                  </h3>
+                  <h3 className="flex justify-between mb-4 font-semibold">
+                    <span>
+                      {cleanCategoryName(cat.name)}
+                      <span className="text-sm text-gray-400 ml-2">(Choose {limit})</span>
+                    </span>
 
-                  {count === limit && (
-                    <p className="text-xs text-green-600 mb-2">
-                      ✓ Selection complete
-                    </p>
-                  )}
+                    <span className="text-orange-500 text-sm">
+                      {count}/{limit}
+                    </span>
+                  </h3>
 
                   <div className="flex flex-wrap gap-2">
 
                     {cat.items.map((item) => {
 
-                      const cleanItem = item.split("–")[0].trim();
-                      const selected = selectedItems[cat.name]?.includes(cleanItem);
+                      const selected = selectedItems[cat.name]?.includes(item);
                       const disabled = !selected && count >= limit;
 
                       return (
@@ -220,15 +241,15 @@ const MenuDetailPage = () => {
                           key={item}
                           onClick={() => toggleItem(cat.name, item)}
                           disabled={mode === "order" ? disabled : false}
-                          className={`px-4 py-2 rounded-full text-sm border transition
+                          className={`px-4 py-2 rounded-full text-sm border transition-all duration-200
                           ${selected
-                              ? "bg-orange-500 text-white scale-105"
+                              ? "bg-orange-500 text-white scale-105 shadow"
                               : disabled
                                 ? "bg-gray-100 text-gray-400 opacity-50 cursor-not-allowed"
-                                : "bg-white hover:border-orange-400 hover:scale-105"
+                                : "bg-white hover:border-orange-400"
                             }`}
                         >
-                          {getDynamicQty(item)}
+                          {guests ? getDynamicQty(item) : item.split("–")[0]}
                         </button>
                       );
 
@@ -246,10 +267,10 @@ const MenuDetailPage = () => {
       </div>
 
       {/* CTA */}
-      <div className="fixed bottom-[80px] left-0 right-0 px-4 z-[999]">
+      <div className="fixed bottom-[70px] left-0 right-0 px-4 z-50">
         <button
           onClick={handleAddToCart}
-          className={`w-full h-14 rounded-xl text-lg
+          className={`w-full h-14 rounded-xl
           ${totalGuests && allSelected
               ? "bg-orange-500 text-white"
               : "bg-gray-200 text-gray-500"
@@ -258,9 +279,6 @@ const MenuDetailPage = () => {
           Save & Add to Cart
         </button>
       </div>
-
-      {/* SPACE FOR BUTTON */}
-      <div className="h-32"></div>
 
       <Footer />
       <FloatingWhatsApp />
