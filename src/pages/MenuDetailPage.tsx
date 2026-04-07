@@ -2,7 +2,7 @@
 
 import { useParams, Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { menuPackages, othersInfo } from "@/data/menuData";
+import { menuPackages } from "@/data/menuData";
 import { ArrowLeft, Leaf, Drumstick } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import Header from "@/components/Header";
@@ -37,7 +37,7 @@ const MenuDetailPage = () => {
     return name.split("(")[0].trim();
   };
 
-  // ✅ KEEP (future use)
+  // ✅ DYNAMIC QTY (VISIBLE IN UI)
   const getDynamicQty = (item: string) => {
     if (!totalGuests) return item;
 
@@ -54,7 +54,7 @@ const MenuDetailPage = () => {
     return `${name} – ${newQty} ${unit}`;
   };
 
-  // ✅ FIXED
+  // ✅ FIXED (STORE CLEAN NAME ONLY)
   const toggleItem = (category: string, item: string) => {
     const LIMIT = getLimit(category);
 
@@ -114,10 +114,10 @@ const MenuDetailPage = () => {
 
   if (!pkg) {
     return (
-      <div className="min-h-screen flex items-center justify-center section-white">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">Menu Not Found</h1>
-          <Link to="/">← Back to Home</Link>
+          <Link to="/">← Back</Link>
         </div>
       </div>
     );
@@ -130,12 +130,9 @@ const MenuDetailPage = () => {
       {/* POPUP */}
       {popup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-          <div className="bg-white px-6 py-5 rounded-2xl shadow-lg text-center w-[85%] max-w-sm">
-            <p className="text-gray-800 text-base">{popup}</p>
-            <button
-              onClick={() => setPopup("")}
-              className="mt-4 px-6 py-2 rounded-lg bg-black text-white"
-            >
+          <div className="bg-white px-6 py-5 rounded-2xl text-center">
+            <p>{popup}</p>
+            <button onClick={() => setPopup("")} className="mt-4 px-6 py-2 bg-black text-white rounded">
               OK
             </button>
           </div>
@@ -146,16 +143,12 @@ const MenuDetailPage = () => {
       <div className="relative pt-28 pb-16">
         <img
           src={`/images/packages/${pkg.slug}.jpg`}
-          alt={pkg.name}
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/70" />
 
         <div className="relative container mx-auto px-4 max-w-5xl">
-          <button
-            onClick={() => navigate(-1)}
-            className="text-white/70 mb-6 flex items-center gap-1"
-          >
+          <button onClick={() => navigate(-1)} className="text-white mb-6 flex items-center gap-1">
             <ArrowLeft size={16} /> Back
           </button>
 
@@ -171,8 +164,7 @@ const MenuDetailPage = () => {
             )}
           </div>
 
-          <h1 className="text-4xl font-bold text-white">{pkg.name}</h1>
-
+          <h1 className="text-4xl text-white">{pkg.name}</h1>
           <p className="text-3xl text-orange-400 mt-3">
             ₹{pkg.price} <span className="text-sm text-white/70">per person</span>
           </p>
@@ -182,13 +174,11 @@ const MenuDetailPage = () => {
       {/* GUEST */}
       <div className="py-10">
         <div className="container mx-auto px-4 max-w-5xl">
-          <div className="bg-white p-6 rounded-xl border-2 border-orange-300 shadow-sm">
-            <label className="text-sm mb-2 block text-gray-700 font-medium">
-              Total Guests
-            </label>
+          <div className="bg-white p-6 rounded-xl border-2 border-orange-300">
+            <label className="text-sm mb-2 block">Total Guests</label>
 
             <select
-              className="h-12 w-full rounded-lg border border-orange-400 px-3"
+              className="h-12 w-full rounded-lg border px-3"
               value={guests}
               onChange={(e) => setGuests(e.target.value)}
             >
@@ -213,14 +203,12 @@ const MenuDetailPage = () => {
 
             return (
               <ScrollReveal key={cat.name}>
-                <div className="bg-white p-6 rounded-xl border shadow-sm">
+                <div className="bg-white p-6 rounded-xl border">
 
                   <h3 className="flex justify-between mb-4 font-semibold">
                     <span>
                       {cleanCategoryName(cat.name)}
-                      <span className="text-sm text-gray-400 ml-2">
-                        ({`Choose ${limit}`})
-                      </span>
+                      <span className="text-sm text-gray-400 ml-2">(Choose {limit})</span>
                     </span>
 
                     <span className="text-orange-500 text-sm">
@@ -232,7 +220,8 @@ const MenuDetailPage = () => {
 
                     {cat.items.map((item) => {
 
-                      const selected = selectedItems[cat.name]?.includes(item.split("–")[0].trim());
+                      const cleanItem = item.split("–")[0].trim();
+                      const selected = selectedItems[cat.name]?.includes(cleanItem);
                       const disabled = !selected && count >= limit;
 
                       return (
@@ -248,7 +237,7 @@ const MenuDetailPage = () => {
                                 : "bg-white hover:border-orange-400"
                             }`}
                         >
-                          {item.split("–")[0]}
+                          {getDynamicQty(item)}
                         </button>
                       );
 
@@ -266,10 +255,10 @@ const MenuDetailPage = () => {
       </div>
 
       {/* CTA */}
-      <div className="fixed bottom-20 left-0 right-0 px-4 z-50">
+      <div className="fixed bottom-20 left-0 right-0 px-4">
         <button
           onClick={handleAddToCart}
-          className={`w-full h-14 rounded-xl text-lg font-medium
+          className={`w-full h-14 rounded-xl
           ${totalGuests && allSelected
               ? "bg-orange-500 text-white"
               : "bg-gray-200 text-gray-500"
