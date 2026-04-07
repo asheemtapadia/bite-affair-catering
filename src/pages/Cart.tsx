@@ -7,7 +7,7 @@ const Cart = () => {
 
 const [cart,setCart] = useState<any[]>([]);
 
-// ✅ FIELDS
+// FORM
 const [firstName,setFirstName] = useState("");
 const [address,setAddress] = useState("");
 const [apartment,setApartment] = useState("");
@@ -20,8 +20,6 @@ const [date,setDate] = useState("");
 const [time,setTime] = useState("");
 
 useEffect(() => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-
   const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
 
   if (Array.isArray(savedCart)) {
@@ -29,9 +27,9 @@ useEffect(() => {
   } else if (savedCart) {
     setCart([savedCart]);
   }
-
 }, []);
 
+// REMOVE
 const removeItem = (id:number) => {
 const updated = cart.filter((item) => item.id !== id);
 setCart(updated);
@@ -39,6 +37,7 @@ localStorage.setItem("cart", JSON.stringify(updated));
 window.dispatchEvent(new Event("cartUpdated"));
 };
 
+// REQUEST
 const updateRequest = (id:number,value:string) => {
 const updated = cart.map((item)=>
 item.id === id ? {...item, request:value} : item
@@ -47,28 +46,25 @@ setCart(updated);
 localStorage.setItem("cart", JSON.stringify(updated));
 };
 
-/* ✅ TOTAL FIX (PER ITEM GUESTS) */
+// TOTAL FIX
 const total = cart.reduce((sum,item)=> {
   return sum + (Number(item.price) * Number(item.guests || 0));
 },0);
 
-/* ✅ VALIDATIONS */
+// VALIDATION
 const isValidPhone = /^[0-9]{10}$/.test(phone);
 const isValidPin = /^[0-9]{6}$/.test(pin);
 
-/* ✅ DATE + TIME LOGIC */
+// TIME LOGIC
 const isValidDateTime = () => {
   if(!date || !time) return false;
 
   const selected = new Date(`${date}T${time}`);
   const now = new Date();
 
-  // 5 hr lead time
   const minTime = new Date(now.getTime() + (5 * 60 * 60 * 1000));
-
   if(selected < minTime) return false;
 
-  // after 4:30 → next day only
   const today430 = new Date();
   today430.setHours(16,30,0,0);
 
@@ -102,17 +98,19 @@ if(!isValidPin){
 }
 
 if(!isValidDateTime()){
-  toast.error("Invalid delivery time (min 5 hrs / after 4:30 next day)");
+  toast.error("Minimum 5 hrs lead time / after 4:30 next day");
   return;
 }
 
+// MESSAGE
 const message = cart.map((item) => {
 
   const dishes = item.selectedItems
     ? Object.entries(item.selectedItems)
         .map(([cat, items]: any) => {
           const cleanCat = cat.replace(/\(.*?\)/g, "").trim();
-          return `• ${cleanCat}: ${items.join(", ")}`;
+
+          return `• ${cleanCat}:\n${items.map((i:string)=>"   - "+i).join("\n")}`;
         })
         .join("\n")
     : "";
@@ -131,24 +129,19 @@ ${dishes}
 const text = encodeURIComponent(
 `Hi Bite Affair,
 
-I'd like to order:
-
 ${message}
 
-👤 Name: ${firstName}
-📞 Phone: ${phone}
+👤 ${firstName}
+📞 ${phone}
 
-📍 Address:
-${address}
-${apartment ? apartment : ""}
+📍 ${address}
+${apartment}
 ${city}, ${userState} - ${pin}
 
-📅 Date: ${date}
-⏰ Time: ${time}
+📅 ${date}
+⏰ ${time}
 
-💰 Total: ₹${total}
-
-Please confirm.`
+💰 Total: ₹${total}`
 );
 
 window.open(`https://wa.me/919211570030?text=${text}`,"_blank");
@@ -157,117 +150,136 @@ window.open(`https://wa.me/919211570030?text=${text}`,"_blank");
 return (
 <div className="min-h-screen bg-[#faf9f7]">
 
-  <Header />
+<Header />
 
-  <div className="container mx-auto px-4 pt-28 pb-40 max-w-3xl">
+<div className="container mx-auto px-4 pt-28 pb-40 max-w-3xl">
 
-    <h1 className="text-4xl font-serif font-semibold mb-10 tracking-tight">
-      Your Cart
-    </h1>
+<h1 className="text-4xl font-serif mb-10">Your Cart</h1>
 
-    {cart.length === 0 && (
-      <p className="text-muted-foreground">
-        Your cart is empty.
-      </p>
-    )}
+{cart.length === 0 && <p>Your cart is empty.</p>}
 
-    <div className="space-y-6">
+<div className="space-y-6">
 
-      {cart.map((item)=>(
-        <div key={item.id} className="bg-white p-6 rounded-3xl border shadow">
+{cart.map((item)=>(
+<div key={item.id} className="bg-white p-6 rounded-3xl border">
 
-          <div className="flex justify-between">
+<div className="flex justify-between">
 
-            <div>
-              <h3 className="font-semibold text-xl">{item.name}</h3>
-              <p className="text-sm text-gray-500">₹{item.price} / person</p>
+<div>
+<h3 className="text-xl font-semibold">{item.name}</h3>
+<p className="text-sm text-gray-500">₹{item.price} / person</p>
 
-              {/* ✅ FIXED */}
-              <p className="text-sm text-blue-500 mt-1">
-                👥 {item.guests} guests
-              </p>
+<p className="text-blue-500 mt-1">👥 {item.guests} guests</p>
 
-              <p className="text-orange-500 font-medium mt-1">
-                ₹{Number(item.price) * Number(item.guests)} total
-              </p>
-            </div>
+<p className="text-orange-500 mt-1 font-medium">
+₹{Number(item.price) * Number(item.guests)} total
+</p>
+</div>
 
-            <button onClick={()=>removeItem(item.id)}>Remove</button>
+<button onClick={()=>removeItem(item.id)}>Remove</button>
 
-          </div>
+</div>
 
-          {item.selectedItems && (
-            <div className="mt-4">
-              {Object.entries(item.selectedItems).map(([cat, items]: any) => (
-                <div key={cat}>
-                  <p className="text-xs text-gray-400">{cat}</p>
-                  {items.map((dish:string)=>(
-                    <span key={dish}>{dish}</span>
-                  ))}
-                </div>
-              ))}
-            </div>
-          )}
+{/* DISH FIX */}
+{item.selectedItems && (
+<div className="mt-4 space-y-3">
 
-        </div>
-      ))}
+{Object.entries(item.selectedItems).map(([cat, items]: any) => {
+const cleanCat = cat.replace(/\(.*?\)/g, "").trim();
 
-    </div>
+return (
+<div key={cat}>
+<p className="text-xs text-gray-400 uppercase">{cleanCat}</p>
 
-    {cart.length > 0 && (
+<div className="flex flex-wrap gap-2 mt-1">
+{items.map((dish:string)=>(
+<span
+key={dish}
+className="px-3 py-1 text-xs bg-orange-50 text-orange-600 rounded-full border"
+>
+{dish}
+</span>
+))}
+</div>
+</div>
+);
+})}
 
-      <div className="mt-12 bg-white p-8 rounded-3xl border">
+</div>
+)}
 
-        <div className="flex justify-between mb-8">
-          <span>Total</span>
-          <span>₹{total}</span>
-        </div>
+<textarea
+placeholder="Special request"
+className="w-full border p-4 rounded-xl mt-4"
+value={item.request || ""}
+onChange={(e)=>updateRequest(item.id,e.target.value)}
+/>
 
-        <div className="space-y-5">
+</div>
+))}
 
-          <input placeholder="First Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} />
+</div>
 
-          <input placeholder="Address" value={address} onChange={(e)=>setAddress(e.target.value)} />
+{cart.length > 0 && (
 
-          <input placeholder="Apartment" value={apartment} onChange={(e)=>setApartment(e.target.value)} />
+<div className="mt-12 bg-white p-8 rounded-3xl border">
 
-          <input placeholder="City" value={city} onChange={(e)=>setCity(e.target.value)} />
+<div className="flex justify-between mb-6">
+<span>Total</span>
+<span className="text-orange-500 font-bold">₹{total}</span>
+</div>
 
-          <input placeholder="State" value={userState} onChange={(e)=>setUserState(e.target.value)} />
+<div className="space-y-4">
 
-          <input placeholder="PIN Code" value={pin} onChange={(e)=>setPin(e.target.value.replace(/\D/g,''))} />
+<input className="w-full border p-4 rounded-xl" placeholder="First Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} />
+<input className="w-full border p-4 rounded-xl" placeholder="Address" value={address} onChange={(e)=>setAddress(e.target.value)} />
+<input className="w-full border p-4 rounded-xl" placeholder="Apartment" value={apartment} onChange={(e)=>setApartment(e.target.value)} />
+<input className="w-full border p-4 rounded-xl" placeholder="City" value={city} onChange={(e)=>setCity(e.target.value)} />
+<input className="w-full border p-4 rounded-xl" placeholder="State" value={userState} onChange={(e)=>setUserState(e.target.value)} />
 
-          <input placeholder="Phone" value={phone} onChange={(e)=>setPhone(e.target.value.replace(/\D/g,''))} />
+<input
+className="w-full border p-4 rounded-xl"
+placeholder="PIN Code"
+value={pin}
+maxLength={6}
+onChange={(e)=>setPin(e.target.value.replace(/\D/g,''))}
+/>
 
-          <div>
-            <p>Delivery Date</p>
-            <input type="date" value={date} onChange={(e)=>setDate(e.target.value)} />
-            <p className="text-orange-500 text-sm">
-              Orders after 4:30 PM → next day delivery
-            </p>
-          </div>
+<input
+className="w-full border p-4 rounded-xl"
+placeholder="Phone"
+value={phone}
+maxLength={10}
+onChange={(e)=>setPhone(e.target.value.replace(/\D/g,''))}
+/>
 
-          <div>
-            <p>Delivery Time</p>
-            <input type="time" value={time} onChange={(e)=>setTime(e.target.value)} />
-            <p className="text-gray-500 text-sm">
-              Minimum 5 hrs lead time
-            </p>
-          </div>
+<div>
+<p>Delivery Date</p>
+<input type="date" className="w-full border p-4 rounded-xl" value={date} onChange={(e)=>setDate(e.target.value)} />
+<p className="text-orange-500 text-sm mt-1">After 4:30 PM → next day delivery</p>
+</div>
 
-        </div>
+<div>
+<p>Delivery Time</p>
+<input type="time" className="w-full border p-4 rounded-xl" value={time} onChange={(e)=>setTime(e.target.value)} />
+<p className="text-gray-500 text-sm mt-1">Minimum 5 hrs lead time</p>
+</div>
 
-        <button onClick={whatsappOrder}>
-          Order on WhatsApp
-        </button>
+</div>
 
-      </div>
+<button
+onClick={whatsappOrder}
+className="w-full mt-6 py-4 bg-orange-500 text-white rounded-xl"
+>
+Order on WhatsApp
+</button>
 
-    )}
+</div>
+)}
 
-  </div>
+</div>
 
-  <Footer />
+<Footer />
 
 </div>
 );
