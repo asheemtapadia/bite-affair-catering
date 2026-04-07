@@ -37,9 +37,9 @@ const MenuDetailPage = () => {
     return name.split("(")[0].trim();
   };
 
-  // ✅ FIXED ONLY HERE
+  // ✅ QTY LOGIC
   const getDynamicQty = (item: string) => {
-    if (!totalGuests) return item.split("–")[0];
+    if (!totalGuests) return item.split("–")[0]; // ❌ no default qty
 
     const name = item.split("–")[0].trim();
 
@@ -54,6 +54,7 @@ const MenuDetailPage = () => {
     return `${name} – ${newQty} ${unit}`;
   };
 
+  // ✅ CLEAN SAVE
   const toggleItem = (category: string, item: string) => {
     const LIMIT = getLimit(category);
 
@@ -114,10 +115,7 @@ const MenuDetailPage = () => {
   if (!pkg) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold mb-4">Menu Not Found</h1>
-          <Link to="/">← Back</Link>
-        </div>
+        <h1>Menu Not Found</h1>
       </div>
     );
   }
@@ -126,6 +124,7 @@ const MenuDetailPage = () => {
     <div className="min-h-screen pb-40">
       <Header />
 
+      {/* POPUP */}
       {popup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
           <div className="bg-white px-6 py-5 rounded-2xl text-center">
@@ -143,14 +142,27 @@ const MenuDetailPage = () => {
         <div className="absolute inset-0 bg-black/70" />
 
         <div className="relative container mx-auto px-4 max-w-5xl">
-          <button onClick={() => navigate(-1)} className="text-white mb-6 flex items-center gap-1">
+          <button onClick={() => navigate(-1)} className="text-white mb-4 flex items-center gap-1">
             <ArrowLeft size={16} /> Back
           </button>
 
           <h1 className="text-4xl text-white">{pkg.name}</h1>
-          <p className="text-3xl text-orange-400 mt-3">
+          <p className="text-3xl text-orange-400 mt-2">
             ₹{pkg.price} <span className="text-sm text-white/70">per person</span>
           </p>
+
+          {/* ✅ HEADER COUNT */}
+          <div className="mt-4 text-white/80 text-sm">
+            {pkg.categories.map((cat) => {
+              const count = selectedItems[cat.name]?.length || 0;
+              return count > 0 ? (
+                <span key={cat.name} className="mr-3">
+                  {count} {cleanCategoryName(cat.name)}
+                </span>
+              ) : null;
+            })}
+          </div>
+
         </div>
       </div>
 
@@ -184,10 +196,16 @@ const MenuDetailPage = () => {
               <ScrollReveal key={cat.name}>
                 <div className="bg-white p-6 rounded-xl border">
 
-                  <h3 className="flex justify-between mb-4 font-semibold">
+                  <h3 className="flex justify-between mb-3 font-semibold">
                     <span>{cleanCategoryName(cat.name)}</span>
                     <span>{count}/{limit}</span>
                   </h3>
+
+                  {count === limit && (
+                    <p className="text-xs text-green-600 mb-2">
+                      ✓ Selection complete
+                    </p>
+                  )}
 
                   <div className="flex flex-wrap gap-2">
 
@@ -195,13 +213,20 @@ const MenuDetailPage = () => {
 
                       const cleanItem = item.split("–")[0].trim();
                       const selected = selectedItems[cat.name]?.includes(cleanItem);
+                      const disabled = !selected && count >= limit;
 
                       return (
                         <button
                           key={item}
                           onClick={() => toggleItem(cat.name, item)}
-                          className={`px-4 py-2 rounded-full border text-sm
-                          ${selected ? "bg-orange-500 text-white" : ""}`}
+                          disabled={mode === "order" ? disabled : false}
+                          className={`px-4 py-2 rounded-full text-sm border transition
+                          ${selected
+                              ? "bg-orange-500 text-white scale-105"
+                              : disabled
+                                ? "bg-gray-100 text-gray-400 opacity-50 cursor-not-allowed"
+                                : "bg-white hover:border-orange-400 hover:scale-105"
+                            }`}
                         >
                           {getDynamicQty(item)}
                         </button>
@@ -219,6 +244,23 @@ const MenuDetailPage = () => {
 
         </div>
       </div>
+
+      {/* CTA */}
+      <div className="fixed bottom-[80px] left-0 right-0 px-4 z-[999]">
+        <button
+          onClick={handleAddToCart}
+          className={`w-full h-14 rounded-xl text-lg
+          ${totalGuests && allSelected
+              ? "bg-orange-500 text-white"
+              : "bg-gray-200 text-gray-500"
+            }`}
+        >
+          Save & Add to Cart
+        </button>
+      </div>
+
+      {/* SPACE FOR BUTTON */}
+      <div className="h-32"></div>
 
       <Footer />
       <FloatingWhatsApp />
