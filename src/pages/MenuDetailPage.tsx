@@ -17,11 +17,9 @@ const MenuDetailPage = () => {
   const mode = searchParams.get("source") === "plan" ? "plan" : "order";
 
   const [selectedItems, setSelectedItems] = useState<any>({});
-  const [showError, setShowError] = useState(false);
-
-  const [guests, setGuests] = useState("");
   const [popup, setPopup] = useState("");
 
+  const [guests, setGuests] = useState("");
   const totalGuests = Number(guests);
 
   useEffect(() => {
@@ -39,32 +37,36 @@ const MenuDetailPage = () => {
     return name.split("(")[0].trim();
   };
 
+  // ✅ KEEP (future use)
   const getDynamicQty = (item: string) => {
-  if (!totalGuests) return item;
+    if (!totalGuests) return item;
 
-  const name = item.split("–")[0].trim();
+    const name = item.split("–")[0].trim();
 
-  const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
-  if (!match) return name;
+    const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
+    if (!match) return name;
 
-  const baseQty = Number(match[1]);
-  const unit = match[2];
+    const baseQty = Number(match[1]);
+    const unit = match[2];
 
-  const newQty = Math.round((baseQty * totalGuests) / 20);
+    const newQty = Math.round((baseQty * totalGuests) / 20);
 
-  return `${name} – ${newQty} ${unit}`;
-};
+    return `${name} – ${newQty} ${unit}`;
+  };
 
+  // ✅ FIXED
   const toggleItem = (category: string, item: string) => {
     const LIMIT = getLimit(category);
+
+    const cleanItem = item.split("–")[0].trim();
 
     setSelectedItems((prev: any) => {
       const current = prev[category] || [];
 
-      if (current.includes(item)) {
+      if (current.includes(cleanItem)) {
         return {
           ...prev,
-          [category]: current.filter((i: string) => i !== item),
+          [category]: current.filter((i: string) => i !== cleanItem),
         };
       }
 
@@ -72,7 +74,7 @@ const MenuDetailPage = () => {
 
       return {
         ...prev,
-        [category]: [...current, item],
+        [category]: [...current, cleanItem],
       };
     });
   };
@@ -83,7 +85,6 @@ const MenuDetailPage = () => {
   });
 
   const handleAddToCart = () => {
-
     if (!totalGuests) {
       setPopup("Please select number of guests");
       return;
@@ -131,7 +132,6 @@ const MenuDetailPage = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
           <div className="bg-white px-6 py-5 rounded-2xl shadow-lg text-center w-[85%] max-w-sm">
             <p className="text-gray-800 text-base">{popup}</p>
-
             <button
               onClick={() => setPopup("")}
               className="mt-4 px-6 py-2 rounded-lg bg-black text-white"
@@ -149,11 +149,9 @@ const MenuDetailPage = () => {
           alt={pkg.name}
           className="absolute inset-0 w-full h-full object-cover"
         />
-
         <div className="absolute inset-0 bg-black/70" />
 
         <div className="relative container mx-auto px-4 max-w-5xl">
-
           <button
             onClick={() => navigate(-1)}
             className="text-white/70 mb-6 flex items-center gap-1"
@@ -178,24 +176,19 @@ const MenuDetailPage = () => {
           <p className="text-3xl text-orange-400 mt-3">
             ₹{pkg.price} <span className="text-sm text-white/70">per person</span>
           </p>
-
         </div>
       </div>
 
-      {/* ✅ FIXED GUEST SECTION (SUBTLE PREMIUM) */}
+      {/* GUEST */}
       <div className="py-10">
         <div className="container mx-auto px-4 max-w-5xl">
-          <div className="bg-white p-6 rounded-xl border-2 border-orange-300 shadow-sm relative overflow-hidden">
-
-            {/* subtle glow */}
-            <div className="absolute inset-0 rounded-xl pointer-events-none animate-[pulse_2.5s_ease-in-out_infinite] bg-orange-100/30"></div>
-
-            <label className="text-sm mb-2 block text-gray-700 font-medium relative z-10">
+          <div className="bg-white p-6 rounded-xl border-2 border-orange-300 shadow-sm">
+            <label className="text-sm mb-2 block text-gray-700 font-medium">
               Total Guests
             </label>
 
             <select
-              className="h-12 w-full rounded-lg border border-orange-400 px-3 relative z-10 focus:ring-2 focus:ring-orange-400"
+              className="h-12 w-full rounded-lg border border-orange-400 px-3"
               value={guests}
               onChange={(e) => setGuests(e.target.value)}
             >
@@ -205,7 +198,6 @@ const MenuDetailPage = () => {
                 return <option key={num} value={num}>{num}</option>;
               })}
             </select>
-
           </div>
         </div>
       </div>
@@ -240,7 +232,7 @@ const MenuDetailPage = () => {
 
                     {cat.items.map((item) => {
 
-                      const selected = selectedItems[cat.name]?.includes(item);
+                      const selected = selectedItems[cat.name]?.includes(item.split("–")[0].trim());
                       const disabled = !selected && count >= limit;
 
                       return (
@@ -248,7 +240,7 @@ const MenuDetailPage = () => {
                           key={item}
                           onClick={() => toggleItem(cat.name, item)}
                           disabled={mode === "order" ? disabled : false}
-                          className={`px-4 py-2 rounded-full text-sm border flex items-center gap-2
+                          className={`px-4 py-2 rounded-full text-sm border
                           ${selected
                               ? "bg-orange-500 text-white"
                               : disabled
@@ -256,7 +248,7 @@ const MenuDetailPage = () => {
                                 : "bg-white hover:border-orange-400"
                             }`}
                         >
-                          {getDynamicQty(item)}
+                          {item.split("–")[0]}
                         </button>
                       );
 
