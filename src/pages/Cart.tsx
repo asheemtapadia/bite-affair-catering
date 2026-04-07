@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 const Cart = () => {
 
-const navigate = useNavigate();
-
 const [cart,setCart] = useState<any[]>([]);
 
-// FORM
+// ✅ FIELDS
 const [firstName,setFirstName] = useState("");
 const [address,setAddress] = useState("");
 const [apartment,setApartment] = useState("");
@@ -22,17 +20,22 @@ const [phone,setPhone] = useState("");
 const [date,setDate] = useState("");
 const [time,setTime] = useState("");
 
+/* ✅ GUESTS */
+const [guests,setGuests] = useState(15);
+
 useEffect(() => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 
   const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-  if (Array.isArray(savedCart)) setCart(savedCart);
-  else if (savedCart) setCart([savedCart]);
+  if (Array.isArray(savedCart)) {
+    setCart(savedCart);
+  } else if (savedCart) {
+    setCart([savedCart]);
+  }
 
 }, []);
 
-// REMOVE
 const removeItem = (id:number) => {
 const updated = cart.filter((item) => item.id !== id);
 setCart(updated);
@@ -40,7 +43,6 @@ localStorage.setItem("cart", JSON.stringify(updated));
 window.dispatchEvent(new Event("cartUpdated"));
 };
 
-// REQUEST
 const updateRequest = (id:number,value:string) => {
 const updated = cart.map((item)=>
 item.id === id ? {...item, request:value} : item
@@ -49,87 +51,18 @@ setCart(updated);
 localStorage.setItem("cart", JSON.stringify(updated));
 };
 
-// TOTAL
+/* ✅ SAME LOGIC */
 const total = cart.reduce((sum,item)=> {
-  return sum + (Number(item.price) * Number(item.guests));
+  return sum + (Number(item.price) * guests);
 },0);
-
-// 🔥 FIXED QTY (no cart[0] bug)
-const getItemQty = (dish: string, guests: number) => {
-
-  const pkg = cart.find((i)=> i.guests === guests);
-  if (!pkg) return dish;
-
-  const allItems = Object.values(pkg.selectedItems || {}).flat();
-
-  const original = allItems.find((i:any)=> i.includes(dish));
-
-  if (!original) return dish;
-
-  const match = original.match(/(\d+)\s*(pc|kg|ltr)/i);
-  if (!match) return dish;
-
-  const baseQty = Number(match[1]);
-  const unit = match[2];
-
-  const newQty = Math.round((baseQty * guests) / 20);
-
-  return `${dish} – ${newQty} ${unit}`;
-};
-
-// ✅ CLEAN TIME SLOTS (NO MINUTES)
-const getTimeSlots = () => {
-  const slots:any[] = [];
-  const now = new Date();
-
-  for(let h=9; h<=21; h++){
-
-    const slot = new Date();
-    slot.setHours(h,0,0,0);
-
-    if(date === new Date().toISOString().split("T")[0]){
-      if(slot <= now) continue;
-    }
-
-    const diff = (slot.getTime() - now.getTime())/(1000*60*60);
-    if(diff < 5) continue;
-
-    const formatted = slot.toLocaleTimeString([], {hour:"2-digit"});
-    slots.push(formatted);
-  }
-
-  return slots;
-};
 
 const whatsappOrder = () => {
 
 if(!firstName || !address || !city || !userState || !pin || !phone || !date || !time){
-  toast.error("Please fill all details");
+  toast.error("Please fill all details", {
+    description: "All fields are required before placing order",
+  });
   return;
-}
-
-if(!/^[0-9]{6}$/.test(pin)){
-  toast.error("Enter valid PIN");
-  return;
-}
-
-if(!/^[6-9][0-9]{9}$/.test(phone)){
-  toast.error("Enter valid phone");
-  return;
-}
-
-// 4:30 rule
-const now = new Date();
-const today = new Date().toISOString().split("T")[0];
-
-if(date === today){
-  const hr = now.getHours();
-  const min = now.getMinutes();
-
-  if(hr > 16 || (hr === 16 && min >= 30)){
-    toast.error("Orders after 4:30 PM → next day");
-    return;
-  }
 }
 
 const message = cart.map((item) => {
@@ -138,10 +71,7 @@ const message = cart.map((item) => {
     ? Object.entries(item.selectedItems)
         .map(([cat, items]: any) => {
           const cleanCat = cat.replace(/\(.*?\)/g, "").trim();
-
-          const list = items.map((d:any)=>getItemQty(d,item.guests)).join(", ");
-
-          return `• ${cleanCat}: ${list}`;
+          return `• ${cleanCat}: ${items.join(", ")}`;
         })
         .join("\n")
     : "";
@@ -150,9 +80,9 @@ const message = cart.map((item) => {
 
 ${dishes}
 
-👥 Guests: ${item.guests}
+👥 Guests: ${guests}
 
-💰 Subtotal: ₹${Number(item.price) * Number(item.guests)}
+💰 Subtotal: ₹${Number(item.price) * guests}
 
 📝 Request: ${item.request || "None"}`;
 }).join("\n\n");
@@ -160,19 +90,24 @@ ${dishes}
 const text = encodeURIComponent(
 `Hi Bite Affair,
 
+I'd like to order:
+
 ${message}
 
-👤 ${firstName}
-📞 ${phone}
+👤 Name: ${firstName}
+📞 Phone: ${phone}
 
-📍 ${address}
-${apartment || ""}
+📍 Address:
+${address}
+${apartment ? apartment : ""}
 ${city}, ${userState} - ${pin}
 
-📅 ${date}
-⏰ ${time}
+📅 Date: ${date}
+⏰ Time: ${time}
 
-💰 Total: ₹${total}`
+💰 Total: ₹${total}
+
+Please confirm.`
 );
 
 window.open(`https://wa.me/919211570030?text=${text}`,"_blank");
@@ -181,129 +116,167 @@ window.open(`https://wa.me/919211570030?text=${text}`,"_blank");
 return (
 <div className="min-h-screen bg-[#faf9f7]">
 
-<Header />
+  <Header />
 
-<div className="container mx-auto px-4 pt-28 pb-40 max-w-3xl">
+  <div className="container mx-auto px-4 pt-28 pb-40 max-w-3xl">
 
-{/* 🔥 BACK BUTTON */}
-<button
-onClick={()=>navigate(-1)}
-className="mb-6 text-sm text-gray-600 underline"
->
-← Back
-</button>
+    <h1 className="text-4xl font-serif font-semibold mb-10 tracking-tight">
+      Your Cart
+    </h1>
 
-<h1 className="text-4xl font-serif mb-10">Your Cart</h1>
+    {cart.length === 0 && (
+      <p className="text-muted-foreground">
+        Your cart is empty.
+      </p>
+    )}
 
-{cart.length === 0 && (
-<p className="text-gray-500">Cart is empty</p>
-)}
+    <div className="space-y-6">
 
-{cart.map((item)=>(
-<div key={item.id} className="bg-white p-6 rounded-2xl border mb-6">
+      {cart.map((item)=>(
+        <div
+          key={item.id}
+          className="bg-white p-6 rounded-3xl border border-gray-100 shadow-[0_25px_70px_rgba(0,0,0,0.08)] backdrop-blur"
+        >
 
-<h3 className="text-xl font-semibold">{item.name}</h3>
+          <div className="flex justify-between items-start">
 
-<p>₹{item.price} / person</p>
+            <div className="w-full">
+              <h3 className="font-semibold text-xl text-gray-900">
+                {item.name}
+              </h3>
 
-<p className="text-blue-500">👥 {item.guests} guests</p>
+              <p className="text-sm text-gray-500 mt-1">
+                ₹{item.price} / person
+              </p>
 
-<p className="text-orange-500 font-medium">
-₹{Number(item.price) * Number(item.guests)}
-</p>
+              {/* ✅ GUEST DROPDOWN (MOVED HERE) */}
+              <div className="mt-3">
+                <select
+                  value={guests}
+                  onChange={(e)=>setGuests(Number(e.target.value))}
+                  className="border border-gray-200 px-4 py-2 rounded-lg text-sm focus:ring-2 focus:ring-orange-400"
+                >
+                  {Array.from({ length: 36 }, (_, i) => {
+                    const num = i + 15;
+                    return <option key={num} value={num}>{num} guests</option>;
+                  })}
+                </select>
+              </div>
 
-{/* MENU */}
-{item.selectedItems && (
-<div className="mt-4">
-{Object.entries(item.selectedItems).map(([cat, items]: any) => {
-const cleanCat = cat.replace(/\(.*?\)/g, "").trim();
+              {/* SUBTOTAL */}
+              <p className="text-sm text-orange-500 mt-2 font-medium">
+                ₹{Number(item.price) * guests} total
+              </p>
 
-return (
-<div key={cat} className="mb-2">
-<p className="text-xs text-gray-400">{cleanCat}</p>
+              <div className="mt-3 h-[1px] bg-gray-100"></div>
 
-<div className="flex flex-wrap gap-2 mt-1">
-{items.map((dish:string)=>(
-<span key={dish} className="px-3 py-1 text-xs bg-orange-50 text-orange-600 rounded-full">
-{getItemQty(dish,item.guests)}
-</span>
-))}
-</div>
-</div>
-);
-})}
-</div>
-)}
+              {item.selectedItems && (
+                <div className="mt-4 space-y-4">
+                  {Object.entries(item.selectedItems).map(([cat, items]: any) => {
+                    const cleanCat = cat.replace(/\(.*?\)/g, "").trim();
 
-{/* 🔥 REMOVE BUTTON FIXED */}
-<button
-onClick={()=>removeItem(item.id)}
-className="mt-4 text-sm text-red-500 border border-red-200 px-3 py-1 rounded"
->
-Remove Item
-</button>
+                    return (
+                      <div key={cat}>
+                        <p className="text-xs text-gray-400 uppercase mb-2">
+                          {cleanCat}
+                        </p>
 
-<textarea
-placeholder="Special request"
-className="w-full border rounded p-3 mt-3"
-value={item.request || ""}
-onChange={(e)=>updateRequest(item.id,e.target.value)}
-/>
+                        <div className="flex flex-wrap gap-2">
+                          {items.map((dish:string)=>(
+                            <span
+                              key={dish}
+                              className="px-3 py-1.5 text-xs bg-orange-50 text-orange-600 rounded-full border border-orange-100"
+                            >
+                              {dish}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
 
-</div>
-))}
+            </div>
 
-{/* FORM */}
-{cart.length > 0 && (
-<div className="bg-white p-6 rounded-2xl border">
+            <button
+              onClick={()=>removeItem(item.id)}
+              className="text-xs px-3 py-1.5 rounded-full border border-gray-200 hover:border-red-400 hover:text-red-500 transition"
+            >
+              Remove
+            </button>
 
-<div className="flex justify-between mb-4">
-<span>Total</span>
-<span className="font-bold">₹{total}</span>
-</div>
+          </div>
 
-<input placeholder="Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} className="w-full border p-3 mb-2"/>
+          <textarea
+            placeholder="Special request (spice level, timing, extras...)"
+            className="w-full border border-gray-200 rounded-xl p-4 text-sm mt-5 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            value={item.request || ""}
+            onChange={(e)=>updateRequest(item.id,e.target.value)}
+          />
 
-<input placeholder="Address" value={address} onChange={(e)=>setAddress(e.target.value)} className="w-full border p-3 mb-2"/>
+        </div>
+      ))}
 
-<input placeholder="City" value={city} onChange={(e)=>setCity(e.target.value)} className="w-full border p-3 mb-2"/>
+    </div>
 
-<input placeholder="State" value={userState} onChange={(e)=>setUserState(e.target.value)} className="w-full border p-3 mb-2"/>
+    {cart.length > 0 && (
 
-<input type="tel" inputMode="numeric" value={pin} maxLength={6}
-onChange={(e)=>setPin(e.target.value.replace(/\D/g,""))}
-placeholder="PIN" className="w-full border p-3 mb-2"/>
+      <div className="mt-12 bg-white p-8 rounded-3xl border border-gray-100 shadow-[0_25px_80px_rgba(0,0,0,0.08)]">
 
-<input type="tel" inputMode="numeric" value={phone} maxLength={10}
-onChange={(e)=>setPhone(e.target.value.replace(/\D/g,""))}
-placeholder="Phone" className="w-full border p-3 mb-2"/>
+        {/* TOTAL */}
+        <div className="flex justify-between items-center mb-8">
+          <span className="text-lg font-medium">Total</span>
+          <span className="text-2xl font-bold text-orange-500">
+            ₹{total}
+          </span>
+        </div>
 
-<input type="date" value={date}
-min={new Date().toISOString().split("T")[0]}
-onChange={(e)=>setDate(e.target.value)}
-className="w-full border p-3 mb-2"/>
+        {/* FORM */}
+        <div className="space-y-5">
 
-<select value={time} onChange={(e)=>setTime(e.target.value)} className="w-full border p-3 mb-2">
-<option value="">Select time</option>
-{getTimeSlots().map((t)=>(
-<option key={t}>{t}</option>
-))}
-</select>
+          <input placeholder="First Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} className="w-full border p-4 rounded-xl"/>
 
-<p className="text-xs text-gray-500">
-5hr lead time • after 4:30 → next day
-</p>
+          <input placeholder="Address" value={address} onChange={(e)=>setAddress(e.target.value)} className="w-full border p-4 rounded-xl"/>
 
-<button onClick={whatsappOrder} className="w-full mt-4 py-3 bg-orange-500 text-white rounded">
-Order on WhatsApp
-</button>
+          <input placeholder="Apartment" value={apartment} onChange={(e)=>setApartment(e.target.value)} className="w-full border p-4 rounded-xl"/>
 
-</div>
-)}
+          <input placeholder="City" value={city} onChange={(e)=>setCity(e.target.value)} className="w-full border p-4 rounded-xl"/>
 
-</div>
+          <input placeholder="State" value={userState} onChange={(e)=>setUserState(e.target.value)} className="w-full border p-4 rounded-xl"/>
 
-<Footer />
+          <input type="tel" inputMode="numeric" placeholder="PIN Code" value={pin} maxLength={6} onChange={(e)=>setPin(e.target.value)} className="w-full border p-4 rounded-xl"/>
+
+          <input type="tel" inputMode="numeric" placeholder="Phone" value={phone} maxLength={10} onChange={(e)=>setPhone(e.target.value)} className="w-full border p-4 rounded-xl"/>
+
+          <div>
+            <p className="text-sm mb-1">Delivery Date</p>
+            <input type="date" value={date} min={new Date().toISOString().split("T")[0]} onChange={(e)=>setDate(e.target.value)} className="w-full border p-4 rounded-xl"/>
+          </div>
+
+          <div>
+            <p className="text-sm mb-1">Delivery Time</p>
+            <input type="time" value={time} onChange={(e)=>setTime(e.target.value)} className="w-full border p-4 rounded-xl"/>
+          </div>
+
+        </div>
+
+        <div className="mt-6">
+          <button
+            onClick={whatsappOrder}
+            className="w-full py-4 rounded-xl text-white text-base font-medium bg-gradient-to-r from-orange-500 to-orange-600 shadow-lg active:scale-[0.98] transition-all"
+          >
+            Order on WhatsApp
+          </button>
+        </div>
+
+      </div>
+
+    )}
+
+  </div>
+
+  <Footer />
 
 </div>
 );
