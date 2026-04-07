@@ -7,7 +7,7 @@ const Cart = () => {
 
 const [cart,setCart] = useState<any[]>([]);
 
-// FIELDS
+// ✅ FIELDS
 const [firstName,setFirstName] = useState("");
 const [address,setAddress] = useState("");
 const [apartment,setApartment] = useState("");
@@ -24,8 +24,11 @@ useEffect(() => {
 
   const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-  if (Array.isArray(savedCart)) setCart(savedCart);
-  else if (savedCart) setCart([savedCart]);
+  if (Array.isArray(savedCart)) {
+    setCart(savedCart);
+  } else if (savedCart) {
+    setCart([savedCart]);
+  }
 
 }, []);
 
@@ -44,66 +47,62 @@ setCart(updated);
 localStorage.setItem("cart", JSON.stringify(updated));
 };
 
-// ✅ TOTAL (guests from menu)
+/* ✅ TOTAL FIX (PER ITEM GUESTS) */
 const total = cart.reduce((sum,item)=> {
-  return sum + (Number(item.price) * (item.guests || 0));
+  return sum + (Number(item.price) * Number(item.guests || 0));
 },0);
 
-// ✅ TIME SLOTS
-const timeSlots = [
-"09:00","10:00","11:00","12:00",
-"13:00","14:00","15:00","16:00",
-"17:00","18:00","19:00","20:00","21:00"
-];
+/* ✅ VALIDATIONS */
+const isValidPhone = /^[0-9]{10}$/.test(phone);
+const isValidPin = /^[0-9]{6}$/.test(pin);
 
-const isToday = (selected:string) => {
-  const today = new Date().toISOString().split("T")[0];
-  return selected === today;
-};
+/* ✅ DATE + TIME LOGIC */
+const isValidDateTime = () => {
+  if(!date || !time) return false;
 
-const getDisabledSlots = () => {
-  if(!date) return [];
-
+  const selected = new Date(`${date}T${time}`);
   const now = new Date();
 
-  // 4:30 rule
-  if(isToday(date)){
-    const cutoff = new Date();
-    cutoff.setHours(16,30,0);
+  // 5 hr lead time
+  const minTime = new Date(now.getTime() + (5 * 60 * 60 * 1000));
 
-    if(now > cutoff){
-      return timeSlots; // all disabled
-    }
+  if(selected < minTime) return false;
 
-    // 5 hr lead
-    const lead = new Date(now.getTime() + 5*60*60*1000);
+  // after 4:30 → next day only
+  const today430 = new Date();
+  today430.setHours(16,30,0,0);
 
-    return timeSlots.filter((slot)=>{
-      const [h,m] = slot.split(":");
-      const slotDate = new Date();
-      slotDate.setHours(Number(h),Number(m),0);
-      return slotDate < lead;
-    });
+  if(now > today430){
+    const selectedDate = new Date(date);
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0,0,0,0);
+
+    if(selectedDate < tomorrow) return false;
   }
 
-  return [];
+  return true;
 };
 
-// ✅ ORDER
 const whatsappOrder = () => {
 
 if(!firstName || !address || !city || !userState || !pin || !phone || !date || !time){
-  toast.error("Fill all fields");
+  toast.error("Please fill all details");
   return;
 }
 
-if(pin.length !== 6){
-  toast.error("Invalid PIN");
+if(!isValidPhone){
+  toast.error("Invalid phone number");
   return;
 }
 
-if(phone.length !== 10){
-  toast.error("Invalid Phone");
+if(!isValidPin){
+  toast.error("Invalid PIN code");
+  return;
+}
+
+if(!isValidDateTime()){
+  toast.error("Invalid delivery time (min 5 hrs / after 4:30 next day)");
   return;
 }
 
@@ -124,7 +123,7 @@ ${dishes}
 
 👥 Guests: ${item.guests}
 
-💰 Subtotal: ₹${Number(item.price) * (item.guests || 0)}
+💰 Subtotal: ₹${Number(item.price) * Number(item.guests)}
 
 📝 Request: ${item.request || "None"}`;
 }).join("\n\n");
@@ -132,18 +131,24 @@ ${dishes}
 const text = encodeURIComponent(
 `Hi Bite Affair,
 
+I'd like to order:
+
 ${message}
 
-👤 ${firstName}
-📞 ${phone}
+👤 Name: ${firstName}
+📞 Phone: ${phone}
 
-📍 ${address}
+📍 Address:
+${address}
+${apartment ? apartment : ""}
 ${city}, ${userState} - ${pin}
 
-📅 ${date}
-⏰ ${time}
+📅 Date: ${date}
+⏰ Time: ${time}
 
-💰 Total: ₹${total}`
+💰 Total: ₹${total}
+
+Please confirm.`
 );
 
 window.open(`https://wa.me/919211570030?text=${text}`,"_blank");
@@ -152,101 +157,117 @@ window.open(`https://wa.me/919211570030?text=${text}`,"_blank");
 return (
 <div className="min-h-screen bg-[#faf9f7]">
 
-<Header />
+  <Header />
 
-<div className="container mx-auto px-4 pt-28 pb-40 max-w-3xl">
+  <div className="container mx-auto px-4 pt-28 pb-40 max-w-3xl">
 
-<h1 className="text-4xl font-serif mb-10">Your Cart</h1>
+    <h1 className="text-4xl font-serif font-semibold mb-10 tracking-tight">
+      Your Cart
+    </h1>
 
-{cart.map((item)=>(
-<div key={item.id} className="bg-white p-6 rounded-3xl border">
+    {cart.length === 0 && (
+      <p className="text-muted-foreground">
+        Your cart is empty.
+      </p>
+    )}
 
-<h3>{item.name}</h3>
-<p>₹{item.price} / person</p>
+    <div className="space-y-6">
 
-<p>👥 {item.guests} guests</p>
-<p>₹{Number(item.price) * (item.guests || 0)} total</p>
+      {cart.map((item)=>(
+        <div key={item.id} className="bg-white p-6 rounded-3xl border shadow">
 
-{/* dishes */}
-{item.selectedItems && (
-<div>
-{Object.entries(item.selectedItems).map(([cat, items]: any)=>(
-<div key={cat}>
-<p>{cat}</p>
-{items.map((dish:string)=>(
-<span key={dish}>{dish}</span>
-))}
-</div>
-))}
-</div>
-)}
+          <div className="flex justify-between">
 
-<button onClick={()=>removeItem(item.id)}>Remove</button>
+            <div>
+              <h3 className="font-semibold text-xl">{item.name}</h3>
+              <p className="text-sm text-gray-500">₹{item.price} / person</p>
 
-</div>
-))}
+              {/* ✅ FIXED */}
+              <p className="text-sm text-blue-500 mt-1">
+                👥 {item.guests} guests
+              </p>
 
-{/* FORM */}
-<div className="mt-10 space-y-4">
+              <p className="text-orange-500 font-medium mt-1">
+                ₹{Number(item.price) * Number(item.guests)} total
+              </p>
+            </div>
 
-<input placeholder="Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} />
+            <button onClick={()=>removeItem(item.id)}>Remove</button>
 
-<input placeholder="Address" value={address} onChange={(e)=>setAddress(e.target.value)} />
+          </div>
 
-<input placeholder="City" value={city} onChange={(e)=>setCity(e.target.value)} />
+          {item.selectedItems && (
+            <div className="mt-4">
+              {Object.entries(item.selectedItems).map(([cat, items]: any) => (
+                <div key={cat}>
+                  <p className="text-xs text-gray-400">{cat}</p>
+                  {items.map((dish:string)=>(
+                    <span key={dish}>{dish}</span>
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
 
-<input placeholder="State" value={userState} onChange={(e)=>setUserState(e.target.value)} />
+        </div>
+      ))}
 
-{/* PIN */}
-<input
-placeholder="PIN"
-value={pin}
-maxLength={6}
-onChange={(e)=>setPin(e.target.value.replace(/\D/g,""))}
-/>
+    </div>
 
-{/* PHONE */}
-<input
-placeholder="Phone"
-value={phone}
-maxLength={10}
-onChange={(e)=>setPhone(e.target.value.replace(/\D/g,""))}
-/>
+    {cart.length > 0 && (
 
-{/* DATE */}
-<div>
-<input
-type="date"
-value={date}
-min={new Date().toISOString().split("T")[0]}
-onChange={(e)=>setDate(e.target.value)}
-/>
-<p style={{color:"orange"}}>After 4:30 PM → next day delivery</p>
-</div>
+      <div className="mt-12 bg-white p-8 rounded-3xl border">
 
-{/* TIME */}
-<select value={time} onChange={(e)=>setTime(e.target.value)}>
-<option value="">Select time (5 hr lead)</option>
+        <div className="flex justify-between mb-8">
+          <span>Total</span>
+          <span>₹{total}</span>
+        </div>
 
-{timeSlots.map((slot)=>{
-const disabled = getDisabledSlots().includes(slot);
+        <div className="space-y-5">
 
-return (
-<option key={slot} value={slot} disabled={disabled}>
-{slot}
-</option>
-);
-})}
+          <input placeholder="First Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} />
 
-</select>
+          <input placeholder="Address" value={address} onChange={(e)=>setAddress(e.target.value)} />
 
-<button onClick={whatsappOrder}>Order</button>
+          <input placeholder="Apartment" value={apartment} onChange={(e)=>setApartment(e.target.value)} />
 
-</div>
+          <input placeholder="City" value={city} onChange={(e)=>setCity(e.target.value)} />
 
-</div>
+          <input placeholder="State" value={userState} onChange={(e)=>setUserState(e.target.value)} />
 
-<Footer />
+          <input placeholder="PIN Code" value={pin} onChange={(e)=>setPin(e.target.value.replace(/\D/g,''))} />
+
+          <input placeholder="Phone" value={phone} onChange={(e)=>setPhone(e.target.value.replace(/\D/g,''))} />
+
+          <div>
+            <p>Delivery Date</p>
+            <input type="date" value={date} onChange={(e)=>setDate(e.target.value)} />
+            <p className="text-orange-500 text-sm">
+              Orders after 4:30 PM → next day delivery
+            </p>
+          </div>
+
+          <div>
+            <p>Delivery Time</p>
+            <input type="time" value={time} onChange={(e)=>setTime(e.target.value)} />
+            <p className="text-gray-500 text-sm">
+              Minimum 5 hrs lead time
+            </p>
+          </div>
+
+        </div>
+
+        <button onClick={whatsappOrder}>
+          Order on WhatsApp
+        </button>
+
+      </div>
+
+    )}
+
+  </div>
+
+  <Footer />
 
 </div>
 );
