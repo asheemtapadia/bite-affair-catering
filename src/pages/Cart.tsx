@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
 
 const Cart = () => {
+
+const navigate = useNavigate();
 
 const [cart,setCart] = useState<any[]>([]);
 
@@ -51,16 +54,19 @@ const total = cart.reduce((sum,item)=> {
   return sum + (Number(item.price) * Number(item.guests));
 },0);
 
-// 🔥 QTY CALCULATION
+// 🔥 FIXED QTY (no cart[0] bug)
 const getItemQty = (dish: string, guests: number) => {
 
-  const baseItem = Object.values(cart[0]?.selectedItems || {})
-    .flat()
-    .find((i: any) => i.includes(dish));
+  const pkg = cart.find((i)=> i.guests === guests);
+  if (!pkg) return dish;
 
-  if (!baseItem) return dish;
+  const allItems = Object.values(pkg.selectedItems || {}).flat();
 
-  const match = baseItem.match(/(\d+)\s*(pc|kg|ltr)/i);
+  const original = allItems.find((i:any)=> i.includes(dish));
+
+  if (!original) return dish;
+
+  const match = original.match(/(\d+)\s*(pc|kg|ltr)/i);
   if (!match) return dish;
 
   const baseQty = Number(match[1]);
@@ -71,27 +77,25 @@ const getItemQty = (dish: string, guests: number) => {
   return `${dish} – ${newQty} ${unit}`;
 };
 
-// TIME SLOTS
+// ✅ CLEAN TIME SLOTS (NO MINUTES)
 const getTimeSlots = () => {
   const slots:any[] = [];
   const now = new Date();
 
   for(let h=9; h<=21; h++){
-    for(let m=0; m<60; m+=30){
 
-      const slot = new Date();
-      slot.setHours(h,m,0,0);
+    const slot = new Date();
+    slot.setHours(h,0,0,0);
 
-      if(date === new Date().toISOString().split("T")[0]){
-        if(slot <= now) continue;
-      }
-
-      const diff = (slot.getTime() - now.getTime())/(1000*60*60);
-      if(diff < 5) continue;
-
-      const formatted = slot.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
-      slots.push(formatted);
+    if(date === new Date().toISOString().split("T")[0]){
+      if(slot <= now) continue;
     }
+
+    const diff = (slot.getTime() - now.getTime())/(1000*60*60);
+    if(diff < 5) continue;
+
+    const formatted = slot.toLocaleTimeString([], {hour:"2-digit"});
+    slots.push(formatted);
   }
 
   return slots;
@@ -181,7 +185,19 @@ return (
 
 <div className="container mx-auto px-4 pt-28 pb-40 max-w-3xl">
 
+{/* 🔥 BACK BUTTON */}
+<button
+onClick={()=>navigate(-1)}
+className="mb-6 text-sm text-gray-600 underline"
+>
+← Back
+</button>
+
 <h1 className="text-4xl font-serif mb-10">Your Cart</h1>
+
+{cart.length === 0 && (
+<p className="text-gray-500">Cart is empty</p>
+)}
 
 {cart.map((item)=>(
 <div key={item.id} className="bg-white p-6 rounded-2xl border mb-6">
@@ -219,8 +235,12 @@ return (
 </div>
 )}
 
-<button onClick={()=>removeItem(item.id)} className="mt-3 text-red-500">
-Remove
+{/* 🔥 REMOVE BUTTON FIXED */}
+<button
+onClick={()=>removeItem(item.id)}
+className="mt-4 text-sm text-red-500 border border-red-200 px-3 py-1 rounded"
+>
+Remove Item
 </button>
 
 <textarea
@@ -234,6 +254,7 @@ onChange={(e)=>updateRequest(item.id,e.target.value)}
 ))}
 
 {/* FORM */}
+{cart.length > 0 && (
 <div className="bg-white p-6 rounded-2xl border">
 
 <div className="flex justify-between mb-4">
@@ -257,13 +278,11 @@ placeholder="PIN" className="w-full border p-3 mb-2"/>
 onChange={(e)=>setPhone(e.target.value.replace(/\D/g,""))}
 placeholder="Phone" className="w-full border p-3 mb-2"/>
 
-{/* DATE */}
 <input type="date" value={date}
 min={new Date().toISOString().split("T")[0]}
 onChange={(e)=>setDate(e.target.value)}
 className="w-full border p-3 mb-2"/>
 
-{/* TIME */}
 <select value={time} onChange={(e)=>setTime(e.target.value)} className="w-full border p-3 mb-2">
 <option value="">Select time</option>
 {getTimeSlots().map((t)=>(
@@ -280,6 +299,7 @@ Order on WhatsApp
 </button>
 
 </div>
+)}
 
 </div>
 
