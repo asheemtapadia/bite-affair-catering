@@ -17,7 +17,7 @@ const MenuDetailPage = () => {
   const [selectedItems, setSelectedItems] = useState<any>({});
   const [showError, setShowError] = useState(false);
 
-  // ✅ GUEST STATE (ADDED)
+  // ✅ NEW (GUEST STATE)
   const [guests, setGuests] = useState("");
   const totalGuests = Number(guests);
 
@@ -36,42 +36,35 @@ const MenuDetailPage = () => {
     return name.split("(")[0].trim();
   };
 
-  // ✅ BASE QTY (FUTURE CART USE)
-  const getBaseQty = (item: string) => {
-    const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
-    if (!match) return null;
-
-    return {
-      qty: Number(match[1]),
-      unit: match[2],
-    };
-  };
-
-  // ✅ DYNAMIC QTY (UI ONLY)
+  // ✅ FIX (NO QTY UNTIL GUEST SELECTED)
   const getDynamicQty = (item: string) => {
     const name = item.split("–")[0].trim();
 
-    // 🔥 FIX: default me qty hide
     if (!totalGuests) return name;
 
-    const base = getBaseQty(item);
-    if (!base) return name;
+    const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
+    if (!match) return name;
 
-    const newQty = Math.round((base.qty * totalGuests) / 20);
+    const baseQty = Number(match[1]);
+    const unit = match[2];
 
-    return `${name} – ${newQty} ${base.unit}`;
+    const newQty = Math.round((baseQty * totalGuests) / 20);
+
+    return `${name} – ${newQty} ${unit}`;
   };
 
+  // ✅ FIX (STORE CLEAN NAME)
   const toggleItem = (category: string, item: string) => {
     const LIMIT = getLimit(category);
+    const cleanItem = item.split("–")[0].trim();
 
     setSelectedItems((prev: any) => {
       const current = prev[category] || [];
 
-      if (current.includes(item)) {
+      if (current.includes(cleanItem)) {
         return {
           ...prev,
-          [category]: current.filter((i: string) => i !== item),
+          [category]: current.filter((i: string) => i !== cleanItem),
         };
       }
 
@@ -79,7 +72,7 @@ const MenuDetailPage = () => {
 
       return {
         ...prev,
-        [category]: [...current, item],
+        [category]: [...current, cleanItem],
       };
     });
   };
@@ -109,7 +102,7 @@ const MenuDetailPage = () => {
       name: pkg?.name,
       price: pkg?.price,
       selectedItems,
-      guests // ✅ IMPORTANT (cart ke liye)
+      guests
     };
 
     const updatedCart = [...existingCart, newItem];
@@ -137,7 +130,7 @@ const MenuDetailPage = () => {
       {showError && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
           <div className="bg-black text-white px-5 py-3 rounded-full shadow text-sm">
-            Please complete selection
+            Complete selection + guests
           </div>
         </div>
       )}
@@ -179,6 +172,7 @@ const MenuDetailPage = () => {
             ₹{pkg.price} <span className="text-sm text-white/70">per person</span>
           </p>
 
+          {/* ✅ HEADER FIX (BACK SAME FEEL) */}
           <p className="text-white/70 mt-3">
             {pkg.previewItems.join(", ")}
           </p>
@@ -186,41 +180,28 @@ const MenuDetailPage = () => {
         </div>
       </div>
 
-      {/* ✅ GUEST SELECT (ADDED CLEANLY) */}
+      {/* ✅ GUEST SECTION */}
       <div className="py-10">
         <div className="container mx-auto px-4 max-w-5xl">
-
-          <div className="bg-white border-2 border-orange-300 p-6 rounded-xl shadow-sm">
+          <div className="bg-white p-6 rounded-xl border-2 border-orange-300 shadow-sm">
 
             <label className="text-sm mb-2 block text-gray-700 font-medium">
               Total Guests
             </label>
 
             <select
-              className="h-12 w-full rounded-lg border border-orange-400 px-3 focus:ring-2 focus:ring-orange-400"
+              className="h-12 w-full rounded-lg border border-orange-400 px-3"
               value={guests}
               onChange={(e) => setGuests(e.target.value)}
             >
               <option value="">Select Guests</option>
-
               {Array.from({ length: 36 }, (_, i) => {
                 const num = i + 15;
-                return (
-                  <option key={num} value={num}>
-                    {num} guests
-                  </option>
-                );
+                return <option key={num} value={num}>{num}</option>;
               })}
             </select>
 
-            {!guests && (
-              <p className="text-xs text-gray-400 mt-2">
-                Select guests to see quantity
-              </p>
-            )}
-
           </div>
-
         </div>
       </div>
 
@@ -254,7 +235,8 @@ const MenuDetailPage = () => {
 
                     {cat.items.map((item) => {
 
-                      const selected = selectedItems[cat.name]?.includes(item);
+                      const cleanItem = item.split("–")[0].trim();
+                      const selected = selectedItems[cat.name]?.includes(cleanItem);
                       const disabled = !selected && count >= limit;
 
                       return (
@@ -315,14 +297,14 @@ const MenuDetailPage = () => {
           <button
             onClick={handleAddToCart}
             className={`w-full h-14 rounded-xl text-lg font-medium
-            ${allSelected && totalGuests
+            ${totalGuests && allSelected
                 ? "bg-orange-500 text-white"
                 : "bg-gray-200 text-gray-500"
               }`}
           >
-            {allSelected && totalGuests
+            {totalGuests && allSelected
               ? "Save & Add to Cart"
-              : "Complete selection"}
+              : "Select guests + dishes"}
           </button>
         )}
 
