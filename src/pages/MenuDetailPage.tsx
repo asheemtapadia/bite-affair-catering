@@ -53,19 +53,16 @@ const MenuDetailPage = () => {
     return `${item.split("–")[0]} – ${newQty} ${unit}`;
   };
 
-  // ✅ FIXED toggleItem
   const toggleItem = (category: string, item: string) => {
     const LIMIT = getLimit(category);
 
     setSelectedItems((prev: any) => {
-      const current = Array.isArray(prev[category]) ? prev[category] : [];
+      const current = prev[category] || [];
 
-      const finalItem = guests ? getDynamicQty(item) : item;
-
-      if (current.includes(finalItem)) {
+      if (current.includes(item)) {
         return {
           ...prev,
-          [category]: current.filter((i: string) => i !== finalItem),
+          [category]: current.filter((i: string) => i !== item),
         };
       }
 
@@ -73,7 +70,7 @@ const MenuDetailPage = () => {
 
       return {
         ...prev,
-        [category]: [...current, finalItem],
+        [category]: [...current, item],
       };
     });
   };
@@ -183,17 +180,20 @@ const MenuDetailPage = () => {
         </div>
       </div>
 
-      {/* GUEST */}
+      {/* ✅ FIXED GUEST SECTION (SUBTLE PREMIUM) */}
       <div className="py-10">
         <div className="container mx-auto px-4 max-w-5xl">
-          <div className="bg-white border-2 border-orange-300 p-6 rounded-xl shadow-sm">
+          <div className="bg-white p-6 rounded-xl border-2 border-orange-300 shadow-sm relative overflow-hidden">
 
-            <label className="text-sm mb-2 block text-gray-700 font-medium">
+            {/* subtle glow */}
+            <div className="absolute inset-0 rounded-xl pointer-events-none animate-[pulse_2.5s_ease-in-out_infinite] bg-orange-100/30"></div>
+
+            <label className="text-sm mb-2 block text-gray-700 font-medium relative z-10">
               Total Guests
             </label>
 
             <select
-              className="h-12 w-full rounded-lg border border-orange-400 px-3"
+              className="h-12 w-full rounded-lg border border-orange-400 px-3 relative z-10 focus:ring-2 focus:ring-orange-400"
               value={guests}
               onChange={(e) => setGuests(e.target.value)}
             >
@@ -238,8 +238,7 @@ const MenuDetailPage = () => {
 
                     {cat.items.map((item) => {
 
-                      const finalItem = guests ? getDynamicQty(item) : item;
-                      const selected = selectedItems[cat.name]?.includes(finalItem);
+                      const selected = selectedItems[cat.name]?.includes(item);
                       const disabled = !selected && count >= limit;
 
                       return (
@@ -247,7 +246,7 @@ const MenuDetailPage = () => {
                           key={item}
                           onClick={() => toggleItem(cat.name, item)}
                           disabled={mode === "order" ? disabled : false}
-                          className={`px-4 py-2 rounded-full text-sm border
+                          className={`px-4 py-2 rounded-full text-sm border flex items-center gap-2
                           ${selected
                               ? "bg-orange-500 text-white"
                               : disabled
@@ -255,7 +254,7 @@ const MenuDetailPage = () => {
                                 : "bg-white hover:border-orange-400"
                             }`}
                         >
-                          {finalItem}
+                          {getDynamicQty(item)}
                         </button>
                       );
 
@@ -288,7 +287,6 @@ const MenuDetailPage = () => {
 
       <Footer />
       <FloatingWhatsApp />
-
     </div>
   );
 };
