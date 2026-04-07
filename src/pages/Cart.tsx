@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 const Cart = () => {
@@ -47,25 +48,29 @@ setCart(updated);
 localStorage.setItem("cart", JSON.stringify(updated));
 };
 
-/* ✅ NEW: DYNAMIC QTY (SAME LOGIC AS MENU) */
-const getDynamicQty = (item: string, guests: number) => {
-  if (!guests) return item.split("–")[0];
-
-  const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
-  if (!match) return item;
-
-  const baseQty = Number(match[1]);
-  const unit = match[2];
-
-  const newQty = Math.round((baseQty * guests) / 20);
-
-  return `${item.split("–")[0]} – ${newQty} ${unit}`;
-};
-
-/* ✅ TOTAL */
+/* ✅ TOTAL (PER ITEM GUESTS) */
 const total = cart.reduce((sum,item)=> {
-  return sum + (Number(item.price) * Number(item.guests || 15));
+  return sum + (Number(item.price) * Number(item.guests || 0));
 },0);
+
+/* ✅ NEW: TIME RULE (5 HOURS) */
+const getMinTime = () => {
+  if (!date) return "";
+
+  const now = new Date();
+  const selectedDate = new Date(date);
+
+  if (selectedDate.toDateString() === now.toDateString()) {
+    const min = new Date(now.getTime() + 5 * 60 * 60 * 1000);
+
+    const hh = String(min.getHours()).padStart(2, "0");
+    const mm = String(min.getMinutes()).padStart(2, "0");
+
+    return `${hh}:${mm}`;
+  }
+
+  return "";
+};
 
 const whatsappOrder = () => {
 
@@ -82,9 +87,7 @@ const message = cart.map((item) => {
     ? Object.entries(item.selectedItems)
         .map(([cat, items]: any) => {
           const cleanCat = cat.replace(/\(.*?\)/g, "").trim();
-          return `• ${cleanCat}: ${items
-            .map((dish:string)=> getDynamicQty(dish, Number(item.guests || 15)))
-            .join(", ")}`;
+          return `• ${cleanCat}: ${items.join(", ")}`;
         })
         .join("\n")
     : "";
@@ -93,9 +96,9 @@ const message = cart.map((item) => {
 
 ${dishes}
 
-👥 Guests: ${item.guests || 15}
+👥 Guests: ${item.guests}
 
-💰 Subtotal: ₹${Number(item.price) * Number(item.guests || 15)}
+💰 Subtotal: ₹${Number(item.price) * Number(item.guests || 0)}
 
 📝 Request: ${item.request || "None"}`;
 }).join("\n\n");
@@ -162,12 +165,14 @@ return (
                 ₹{item.price} / person
               </p>
 
-              <p className="text-sm text-gray-500 mt-2">
-                👥 {item.guests || 15} guests
+              {/* ✅ GUESTS SHOW */}
+              <p className="text-sm text-blue-500 mt-2">
+                👥 {item.guests} guests
               </p>
 
+              {/* SUBTOTAL */}
               <p className="text-sm text-orange-500 mt-2 font-medium">
-                ₹{Number(item.price) * Number(item.guests || 15)} total
+                ₹{Number(item.price) * Number(item.guests || 0)} total
               </p>
 
               <div className="mt-3 h-[1px] bg-gray-100"></div>
@@ -189,8 +194,7 @@ return (
                               key={dish}
                               className="px-3 py-1.5 text-xs bg-orange-50 text-orange-600 rounded-full border border-orange-100"
                             >
-                              {/* ✅ ONLY CHANGE HERE */}
-                              {getDynamicQty(dish, Number(item.guests || 15))}
+                              {dish}
                             </span>
                           ))}
                         </div>
@@ -227,6 +231,7 @@ return (
 
       <div className="mt-12 bg-white p-8 rounded-3xl border border-gray-100 shadow-[0_25px_80px_rgba(0,0,0,0.08)]">
 
+        {/* TOTAL */}
         <div className="flex justify-between items-center mb-8">
           <span className="text-lg font-medium">Total</span>
           <span className="text-2xl font-bold text-orange-500">
@@ -234,24 +239,49 @@ return (
           </span>
         </div>
 
+        {/* FORM */}
         <div className="space-y-5">
 
           <input placeholder="First Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} className="w-full border p-4 rounded-xl"/>
+
           <input placeholder="Address" value={address} onChange={(e)=>setAddress(e.target.value)} className="w-full border p-4 rounded-xl"/>
+
           <input placeholder="Apartment" value={apartment} onChange={(e)=>setApartment(e.target.value)} className="w-full border p-4 rounded-xl"/>
+
           <input placeholder="City" value={city} onChange={(e)=>setCity(e.target.value)} className="w-full border p-4 rounded-xl"/>
+
           <input placeholder="State" value={userState} onChange={(e)=>setUserState(e.target.value)} className="w-full border p-4 rounded-xl"/>
-          <input type="tel" placeholder="PIN Code" value={pin} maxLength={6} onChange={(e)=>setPin(e.target.value)} className="w-full border p-4 rounded-xl"/>
-          <input type="tel" placeholder="Phone" value={phone} maxLength={10} onChange={(e)=>setPhone(e.target.value)} className="w-full border p-4 rounded-xl"/>
+
+          <input type="tel" inputMode="numeric" placeholder="PIN Code" value={pin} maxLength={6} onChange={(e)=>setPin(e.target.value)} className="w-full border p-4 rounded-xl"/>
+
+          <input type="tel" inputMode="numeric" placeholder="Phone" value={phone} maxLength={10} onChange={(e)=>setPhone(e.target.value)} className="w-full border p-4 rounded-xl"/>
 
           <div>
             <p className="text-sm mb-1">Delivery Date</p>
-            <input type="date" value={date} min={new Date().toISOString().split("T")[0]} onChange={(e)=>setDate(e.target.value)} className="w-full border p-4 rounded-xl"/>
+            <input 
+              type="date" 
+              value={date} 
+              min={new Date().toISOString().split("T")[0]} 
+              onChange={(e)=>{
+                setDate(e.target.value);
+                setTime(""); // reset time
+              }} 
+              className="w-full border p-4 rounded-xl"
+            />
           </div>
 
           <div>
             <p className="text-sm mb-1">Delivery Time</p>
-            <input type="time" value={time} onChange={(e)=>setTime(e.target.value)} className="w-full border p-4 rounded-xl"/>
+            <input 
+              type="time" 
+              value={time} 
+              min={getMinTime()} 
+              onChange={(e)=>setTime(e.target.value)} 
+              className="w-full border p-4 rounded-xl"
+            />
+            <p className="text-xs text-gray-400 mt-1">
+              Minimum 5 hours advance booking required
+            </p>
           </div>
 
         </div>
