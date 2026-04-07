@@ -262,6 +262,11 @@ Tandoori Roti (${rotiQty} pcs)
             onChange={(e)=>setPhone(e.target.value.replace(/[^0-9]/g, ""))}
             className="w-full border p-4 rounded-xl"
           />
+          <input
+  placeholder="Any special instructions (optional)"
+  onChange={(e)=>setRemark(e.target.value)}
+  className="w-full border p-4 rounded-xl"
+/>
 
           <div>
             <p className="text-sm mb-1">Delivery Date</p>
