@@ -127,6 +127,7 @@ Lachha Paratha (${rotiQty} pcs)
 Tandoori Roti (${rotiQty} pcs)
 
 🥗 Raita & Salad: Complimentary
+${remark ? `📝 Special Instructions: ${remark}` : ""}
 
 💰 Total: ₹${total}`
     );
