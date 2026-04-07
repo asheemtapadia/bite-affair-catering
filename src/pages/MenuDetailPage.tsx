@@ -40,18 +40,20 @@ const MenuDetailPage = () => {
   };
 
   const getDynamicQty = (item: string) => {
-    if (!totalGuests) return item.split("–")[0];
+  if (!totalGuests) return item;
 
-    const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
-    if (!match) return item;
+  const name = item.split("–")[0].trim();
 
-    const baseQty = Number(match[1]);
-    const unit = match[2];
+  const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
+  if (!match) return name;
 
-    const newQty = Math.round((baseQty * totalGuests) / 20);
+  const baseQty = Number(match[1]);
+  const unit = match[2];
 
-    return `${item.split("–")[0]} – ${newQty} ${unit}`;
-  };
+  const newQty = Math.round((baseQty * totalGuests) / 20);
+
+  return `${name} – ${newQty} ${unit}`;
+};
 
   const toggleItem = (category: string, item: string) => {
     const LIMIT = getLimit(category);
