@@ -37,9 +37,9 @@ const MenuDetailPage = () => {
     return name.split("(")[0].trim();
   };
 
-  // ✅ DYNAMIC QTY (VISIBLE IN UI)
+  // ✅ FIXED ONLY HERE
   const getDynamicQty = (item: string) => {
-    if (!totalGuests) return item;
+    if (!totalGuests) return item.split("–")[0];
 
     const name = item.split("–")[0].trim();
 
@@ -54,7 +54,6 @@ const MenuDetailPage = () => {
     return `${name} – ${newQty} ${unit}`;
   };
 
-  // ✅ FIXED (STORE CLEAN NAME ONLY)
   const toggleItem = (category: string, item: string) => {
     const LIMIT = getLimit(category);
 
@@ -127,7 +126,6 @@ const MenuDetailPage = () => {
     <div className="min-h-screen pb-40">
       <Header />
 
-      {/* POPUP */}
       {popup && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
           <div className="bg-white px-6 py-5 rounded-2xl text-center">
@@ -141,28 +139,13 @@ const MenuDetailPage = () => {
 
       {/* HERO */}
       <div className="relative pt-28 pb-16">
-        <img
-          src={`/images/packages/${pkg.slug}.jpg`}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <img src={`/images/packages/${pkg.slug}.jpg`} className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/70" />
 
         <div className="relative container mx-auto px-4 max-w-5xl">
           <button onClick={() => navigate(-1)} className="text-white mb-6 flex items-center gap-1">
             <ArrowLeft size={16} /> Back
           </button>
-
-          <div className="flex gap-3 mb-3">
-            {pkg.isVeg ? (
-              <span className="text-green-300 text-xs border px-2 py-1 rounded flex items-center gap-1">
-                <Leaf size={12} /> Veg
-              </span>
-            ) : (
-              <span className="text-red-300 text-xs border px-2 py-1 rounded flex items-center gap-1">
-                <Drumstick size={12} /> Non Veg
-              </span>
-            )}
-          </div>
 
           <h1 className="text-4xl text-white">{pkg.name}</h1>
           <p className="text-3xl text-orange-400 mt-3">
@@ -174,21 +157,17 @@ const MenuDetailPage = () => {
       {/* GUEST */}
       <div className="py-10">
         <div className="container mx-auto px-4 max-w-5xl">
-          <div className="bg-white p-6 rounded-xl border-2 border-orange-300">
-            <label className="text-sm mb-2 block">Total Guests</label>
-
-            <select
-              className="h-12 w-full rounded-lg border px-3"
-              value={guests}
-              onChange={(e) => setGuests(e.target.value)}
-            >
-              <option value="">Select Guests</option>
-              {Array.from({ length: 36 }, (_, i) => {
-                const num = i + 15;
-                return <option key={num} value={num}>{num}</option>;
-              })}
-            </select>
-          </div>
+          <select
+            value={guests}
+            onChange={(e) => setGuests(e.target.value)}
+            className="w-full border p-3 rounded"
+          >
+            <option value="">Select Guests</option>
+            {Array.from({ length: 36 }, (_, i) => {
+              const num = i + 15;
+              return <option key={num} value={num}>{num}</option>;
+            })}
+          </select>
         </div>
       </div>
 
@@ -206,14 +185,8 @@ const MenuDetailPage = () => {
                 <div className="bg-white p-6 rounded-xl border">
 
                   <h3 className="flex justify-between mb-4 font-semibold">
-                    <span>
-                      {cleanCategoryName(cat.name)}
-                      <span className="text-sm text-gray-400 ml-2">(Choose {limit})</span>
-                    </span>
-
-                    <span className="text-orange-500 text-sm">
-                      {count}/{limit}
-                    </span>
+                    <span>{cleanCategoryName(cat.name)}</span>
+                    <span>{count}/{limit}</span>
                   </h3>
 
                   <div className="flex flex-wrap gap-2">
@@ -222,20 +195,13 @@ const MenuDetailPage = () => {
 
                       const cleanItem = item.split("–")[0].trim();
                       const selected = selectedItems[cat.name]?.includes(cleanItem);
-                      const disabled = !selected && count >= limit;
 
                       return (
                         <button
                           key={item}
                           onClick={() => toggleItem(cat.name, item)}
-                          disabled={mode === "order" ? disabled : false}
-                          className={`px-4 py-2 rounded-full text-sm border
-                          ${selected
-                              ? "bg-orange-500 text-white"
-                              : disabled
-                                ? "bg-gray-100 text-gray-400"
-                                : "bg-white hover:border-orange-400"
-                            }`}
+                          className={`px-4 py-2 rounded-full border text-sm
+                          ${selected ? "bg-orange-500 text-white" : ""}`}
                         >
                           {getDynamicQty(item)}
                         </button>
@@ -252,20 +218,6 @@ const MenuDetailPage = () => {
           })}
 
         </div>
-      </div>
-
-      {/* CTA */}
-      <div className="fixed bottom-20 left-0 right-0 px-4">
-        <button
-          onClick={handleAddToCart}
-          className={`w-full h-14 rounded-xl
-          ${totalGuests && allSelected
-              ? "bg-orange-500 text-white"
-              : "bg-gray-200 text-gray-500"
-            }`}
-        >
-          Save & Add to Cart
-        </button>
       </div>
 
       <Footer />
