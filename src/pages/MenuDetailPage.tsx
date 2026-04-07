@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { menuPackages } from "@/data/menuData";
+import { menuPackages, othersInfo } from "@/data/menuData";
 import { ArrowLeft, Leaf, Drumstick } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import Header from "@/components/Header";
@@ -12,13 +12,12 @@ const MenuDetailPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
+  /* ✅ MODE FIX */
   const mode = searchParams.get("source") === "plan" ? "plan" : "order";
 
+  /* ✅ STATE */
   const [selectedItems, setSelectedItems] = useState<any>({});
-  const [popup, setPopup] = useState("");
-
-  const [guests, setGuests] = useState("");
-  const totalGuests = Number(guests);
+  const [showError, setShowError] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -35,24 +34,6 @@ const MenuDetailPage = () => {
     return name.split("(")[0].trim();
   };
 
-  // ✅ DYNAMIC QTY
-  const getDynamicQty = (item: string) => {
-    if (!totalGuests) return item.split("–")[0];
-
-    const name = item.split("–")[0].trim();
-
-    const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
-    if (!match) return name;
-
-    const baseQty = Number(match[1]);
-    const unit = match[2];
-
-    const newQty = Math.round((baseQty * totalGuests) / 20);
-
-    return `${name} – ${newQty} ${unit}`;
-  };
-
-  // ✅ STORE FULL ITEM (IMPORTANT FIX)
   const toggleItem = (category: string, item: string) => {
     const LIMIT = getLimit(category);
 
@@ -66,6 +47,7 @@ const MenuDetailPage = () => {
         };
       }
 
+      /* ✅ FIX: PLAN MODE ME LIMIT REMOVE */
       if (mode === "order" && current.length >= LIMIT) return prev;
 
       return {
@@ -81,13 +63,9 @@ const MenuDetailPage = () => {
   });
 
   const handleAddToCart = () => {
-    if (!totalGuests) {
-      setPopup("Please select number of guests");
-      return;
-    }
-
     if (!allSelected) {
-      setPopup("Please select all required dishes");
+      setShowError(true);
+      setTimeout(() => setShowError(false), 2000);
       return;
     }
 
@@ -98,7 +76,6 @@ const MenuDetailPage = () => {
       name: pkg?.name,
       price: pkg?.price,
       selectedItems,
-      guests
     };
 
     const updatedCart = [...existingCart, newItem];
@@ -110,27 +87,23 @@ const MenuDetailPage = () => {
 
   if (!pkg) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center section-white">
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">Menu Not Found</h1>
-          <Link to="/">← Back</Link>
+          <Link to="/">← Back to Home</Link>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen pb-52">
+    <div className="min-h-screen pb-40">
       <Header />
 
-      {/* POPUP */}
-      {popup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-          <div className="bg-white px-6 py-5 rounded-2xl text-center">
-            <p>{popup}</p>
-            <button onClick={() => setPopup("")} className="mt-4 px-6 py-2 bg-black text-white rounded">
-              OK
-            </button>
+      {showError && (
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
+          <div className="bg-black text-white px-5 py-3 rounded-full shadow text-sm">
+            Please select required dishes first
           </div>
         </div>
       )}
@@ -139,12 +112,18 @@ const MenuDetailPage = () => {
       <div className="relative pt-28 pb-16">
         <img
           src={`/images/packages/${pkg.slug}.jpg`}
+          alt={pkg.name}
           className="absolute inset-0 w-full h-full object-cover"
         />
+
         <div className="absolute inset-0 bg-black/70" />
 
         <div className="relative container mx-auto px-4 max-w-5xl">
-          <button onClick={() => navigate(-1)} className="text-white mb-6 flex items-center gap-1">
+
+          <button
+            onClick={() => navigate(-1)}
+            className="text-white/70 mb-6 flex items-center gap-1"
+          >
             <ArrowLeft size={16} /> Back
           </button>
 
@@ -160,48 +139,16 @@ const MenuDetailPage = () => {
             )}
           </div>
 
-          <h1 className="text-4xl text-white">{pkg.name}</h1>
+          <h1 className="text-4xl font-bold text-white">{pkg.name}</h1>
+
           <p className="text-3xl text-orange-400 mt-3">
             ₹{pkg.price} <span className="text-sm text-white/70">per person</span>
           </p>
-        </div>
-      </div>
 
-      {/* 🔥 HEADER PREVIEW FIX */}
-      <div className="py-6 bg-white border-b">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <p className="text-sm text-gray-500 mb-3">
-            Includes popular dishes:
+          <p className="text-white/70 mt-3">
+            {pkg.previewItems.join(", ")}
           </p>
 
-          <div className="flex flex-wrap gap-2">
-            {pkg.categories[0]?.items.slice(0,4).map((item:any) => (
-              <span key={item} className="px-3 py-1 text-xs bg-orange-50 text-orange-600 rounded-full border">
-                {item.split("–")[0]}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* GUEST */}
-      <div className="py-10">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <div className="bg-white p-6 rounded-xl border-2 border-orange-300">
-            <label className="text-sm mb-2 block">Total Guests</label>
-
-            <select
-              className="h-12 w-full rounded-lg border px-3"
-              value={guests}
-              onChange={(e) => setGuests(e.target.value)}
-            >
-              <option value="">Select Guests</option>
-              {Array.from({ length: 36 }, (_, i) => {
-                const num = i + 15;
-                return <option key={num} value={num}>{num}</option>;
-              })}
-            </select>
-          </div>
         </div>
       </div>
 
@@ -216,12 +163,14 @@ const MenuDetailPage = () => {
 
             return (
               <ScrollReveal key={cat.name}>
-                <div className="bg-white p-6 rounded-xl border">
+                <div className="bg-white p-6 rounded-xl border shadow-sm">
 
                   <h3 className="flex justify-between mb-4 font-semibold">
                     <span>
                       {cleanCategoryName(cat.name)}
-                      <span className="text-sm text-gray-400 ml-2">(Choose {limit})</span>
+                      <span className="text-sm text-gray-400 ml-2">
+                        ({`Choose ${limit}`})
+                      </span>
                     </span>
 
                     <span className="text-orange-500 text-sm">
@@ -241,15 +190,16 @@ const MenuDetailPage = () => {
                           key={item}
                           onClick={() => toggleItem(cat.name, item)}
                           disabled={mode === "order" ? disabled : false}
-                          className={`px-4 py-2 rounded-full text-sm border transition-all duration-200
+                          className={`px-4 py-2 rounded-full text-sm border flex items-center gap-2 transition-all duration-200
                           ${selected
-                              ? "bg-orange-500 text-white scale-105 shadow"
+                              ? "bg-orange-500 text-white border-orange-500 shadow-md scale-[1.05]"
                               : disabled
-                                ? "bg-gray-100 text-gray-400 opacity-50 cursor-not-allowed"
-                                : "bg-white hover:border-orange-400"
+                                ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
+                                : "bg-white hover:border-orange-400 hover:bg-orange-50"
                             }`}
                         >
-                          {guests ? getDynamicQty(item) : item.split("–")[0]}
+                          {selected && <span className="w-2 h-2 bg-white rounded-full"></span>}
+                          {item}
                         </button>
                       );
 
@@ -264,24 +214,50 @@ const MenuDetailPage = () => {
           })}
 
         </div>
+
+        <div className="mt-16 bg-beige p-6 rounded-xl max-w-5xl mx-auto">
+          <h3 className="font-semibold mb-3">Additional Information</h3>
+
+          <ul className="text-sm text-gray-600 space-y-1">
+            {othersInfo.map((info) => (
+              <li key={info}>● {info}</li>
+            ))}
+          </ul>
+        </div>
+
       </div>
 
-      {/* CTA */}
-      <div className="fixed bottom-[70px] left-0 right-0 px-4 z-50">
-        <button
-          onClick={handleAddToCart}
-          className={`w-full h-14 rounded-xl
-          ${totalGuests && allSelected
-              ? "bg-orange-500 text-white"
-              : "bg-gray-200 text-gray-500"
-            }`}
-        >
-          Save & Add to Cart
-        </button>
+      {/* ✅ CTA FIX */}
+      <div className="fixed bottom-20 left-0 right-0 px-4 z-50">
+
+        {mode === "plan" ? (
+          <button
+            onClick={() => {
+              const text = encodeURIComponent(`Selected Menu: ${pkg.name}`);
+              window.open(`https://wa.me/919211570030?text=${text}`, "_blank");
+            }}
+            className="w-full h-14 rounded-xl text-lg font-medium bg-black text-white"
+          >
+            Get Quote on WhatsApp
+          </button>
+        ) : (
+          <button
+            onClick={handleAddToCart}
+            className={`w-full h-14 rounded-xl text-lg font-medium
+            ${allSelected
+                ? "bg-orange-500 text-white"
+                : "bg-gray-200 text-gray-500"
+              }`}
+          >
+            {allSelected ? "Save & Add to Cart" : "Select dishes to continue"}
+          </button>
+        )}
+
       </div>
 
       <Footer />
       <FloatingWhatsApp />
+
     </div>
   );
 };
