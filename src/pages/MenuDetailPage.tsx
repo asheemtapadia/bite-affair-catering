@@ -12,12 +12,14 @@ const MenuDetailPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  /* ✅ MODE FIX */
   const mode = searchParams.get("source") === "plan" ? "plan" : "order";
 
-  /* ✅ STATE */
   const [selectedItems, setSelectedItems] = useState<any>({});
   const [showError, setShowError] = useState(false);
+
+  // ✅ GUEST STATE (ADDED)
+  const [guests, setGuests] = useState("");
+  const totalGuests = Number(guests);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -34,6 +36,32 @@ const MenuDetailPage = () => {
     return name.split("(")[0].trim();
   };
 
+  // ✅ BASE QTY (FUTURE CART USE)
+  const getBaseQty = (item: string) => {
+    const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
+    if (!match) return null;
+
+    return {
+      qty: Number(match[1]),
+      unit: match[2],
+    };
+  };
+
+  // ✅ DYNAMIC QTY (UI ONLY)
+  const getDynamicQty = (item: string) => {
+    const name = item.split("–")[0].trim();
+
+    // 🔥 FIX: default me qty hide
+    if (!totalGuests) return name;
+
+    const base = getBaseQty(item);
+    if (!base) return name;
+
+    const newQty = Math.round((base.qty * totalGuests) / 20);
+
+    return `${name} – ${newQty} ${base.unit}`;
+  };
+
   const toggleItem = (category: string, item: string) => {
     const LIMIT = getLimit(category);
 
@@ -47,7 +75,6 @@ const MenuDetailPage = () => {
         };
       }
 
-      /* ✅ FIX: PLAN MODE ME LIMIT REMOVE */
       if (mode === "order" && current.length >= LIMIT) return prev;
 
       return {
@@ -63,6 +90,12 @@ const MenuDetailPage = () => {
   });
 
   const handleAddToCart = () => {
+    if (!totalGuests) {
+      setShowError(true);
+      setTimeout(() => setShowError(false), 2000);
+      return;
+    }
+
     if (!allSelected) {
       setShowError(true);
       setTimeout(() => setShowError(false), 2000);
@@ -76,6 +109,7 @@ const MenuDetailPage = () => {
       name: pkg?.name,
       price: pkg?.price,
       selectedItems,
+      guests // ✅ IMPORTANT (cart ke liye)
     };
 
     const updatedCart = [...existingCart, newItem];
@@ -103,7 +137,7 @@ const MenuDetailPage = () => {
       {showError && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
           <div className="bg-black text-white px-5 py-3 rounded-full shadow text-sm">
-            Please select required dishes first
+            Please complete selection
           </div>
         </div>
       )}
@@ -148,6 +182,44 @@ const MenuDetailPage = () => {
           <p className="text-white/70 mt-3">
             {pkg.previewItems.join(", ")}
           </p>
+
+        </div>
+      </div>
+
+      {/* ✅ GUEST SELECT (ADDED CLEANLY) */}
+      <div className="py-10">
+        <div className="container mx-auto px-4 max-w-5xl">
+
+          <div className="bg-white border-2 border-orange-300 p-6 rounded-xl shadow-sm">
+
+            <label className="text-sm mb-2 block text-gray-700 font-medium">
+              Total Guests
+            </label>
+
+            <select
+              className="h-12 w-full rounded-lg border border-orange-400 px-3 focus:ring-2 focus:ring-orange-400"
+              value={guests}
+              onChange={(e) => setGuests(e.target.value)}
+            >
+              <option value="">Select Guests</option>
+
+              {Array.from({ length: 36 }, (_, i) => {
+                const num = i + 15;
+                return (
+                  <option key={num} value={num}>
+                    {num} guests
+                  </option>
+                );
+              })}
+            </select>
+
+            {!guests && (
+              <p className="text-xs text-gray-400 mt-2">
+                Select guests to see quantity
+              </p>
+            )}
+
+          </div>
 
         </div>
       </div>
@@ -198,8 +270,7 @@ const MenuDetailPage = () => {
                                 : "bg-white hover:border-orange-400 hover:bg-orange-50"
                             }`}
                         >
-                          {selected && <span className="w-2 h-2 bg-white rounded-full"></span>}
-                          {item}
+                          {getDynamicQty(item)}
                         </button>
                       );
 
@@ -227,7 +298,7 @@ const MenuDetailPage = () => {
 
       </div>
 
-      {/* ✅ CTA FIX */}
+      {/* CTA */}
       <div className="fixed bottom-20 left-0 right-0 px-4 z-50">
 
         {mode === "plan" ? (
@@ -244,12 +315,14 @@ const MenuDetailPage = () => {
           <button
             onClick={handleAddToCart}
             className={`w-full h-14 rounded-xl text-lg font-medium
-            ${allSelected
+            ${allSelected && totalGuests
                 ? "bg-orange-500 text-white"
                 : "bg-gray-200 text-gray-500"
               }`}
           >
-            {allSelected ? "Save & Add to Cart" : "Select dishes to continue"}
+            {allSelected && totalGuests
+              ? "Save & Add to Cart"
+              : "Complete selection"}
           </button>
         )}
 
