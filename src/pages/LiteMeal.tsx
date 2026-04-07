@@ -264,7 +264,7 @@ ${remark ? `please mention any special instructions: ${remark}` : ""}
             className="w-full border p-4 rounded-xl"
           />
           <input
-  placeholder="Any special instructions (optional)"
+  placeholder="please mention any special instructions"
   onChange={(e)=>setRemark(e.target.value)}
   className="w-full border p-4 rounded-xl"
 />
