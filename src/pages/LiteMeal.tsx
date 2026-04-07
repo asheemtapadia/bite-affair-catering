@@ -127,7 +127,7 @@ Lachha Paratha (${rotiQty} pcs)
 Tandoori Roti (${rotiQty} pcs)
 
 🥗 Raita & Salad: Complimentary
-${remark ? `please mention any special instructions: ${remark}` : ""}
+please mention any special instructions: ${remark || "None"}
 
 💰 Total: ₹${total}`
     );
@@ -263,8 +263,8 @@ ${remark ? `please mention any special instructions: ${remark}` : ""}
             onChange={(e)=>setPhone(e.target.value.replace(/[^0-9]/g, ""))}
             className="w-full border p-4 rounded-xl"
           />
-          <input
-  placeholder="please mention any special instructions"
+<input
+  placeholder="please mention any special instructions (optional)"
   onChange={(e)=>setRemark(e.target.value)}
   className="w-full border p-4 rounded-xl"
 />
