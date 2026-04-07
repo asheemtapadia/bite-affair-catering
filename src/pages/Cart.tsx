@@ -47,7 +47,22 @@ setCart(updated);
 localStorage.setItem("cart", JSON.stringify(updated));
 };
 
-/* ✅ FIXED TOTAL (item-wise guests) */
+/* ✅ NEW: DYNAMIC QTY (SAME LOGIC AS MENU) */
+const getDynamicQty = (item: string, guests: number) => {
+  if (!guests) return item.split("–")[0];
+
+  const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
+  if (!match) return item;
+
+  const baseQty = Number(match[1]);
+  const unit = match[2];
+
+  const newQty = Math.round((baseQty * guests) / 20);
+
+  return `${item.split("–")[0]} – ${newQty} ${unit}`;
+};
+
+/* ✅ TOTAL */
 const total = cart.reduce((sum,item)=> {
   return sum + (Number(item.price) * Number(item.guests || 15));
 },0);
@@ -67,7 +82,9 @@ const message = cart.map((item) => {
     ? Object.entries(item.selectedItems)
         .map(([cat, items]: any) => {
           const cleanCat = cat.replace(/\(.*?\)/g, "").trim();
-          return `• ${cleanCat}: ${items.join(", ")}`;
+          return `• ${cleanCat}: ${items
+            .map((dish:string)=> getDynamicQty(dish, Number(item.guests || 15)))
+            .join(", ")}`;
         })
         .join("\n")
     : "";
@@ -145,12 +162,10 @@ return (
                 ₹{item.price} / person
               </p>
 
-              {/* ✅ SHOW CORRECT GUEST */}
               <p className="text-sm text-gray-500 mt-2">
                 👥 {item.guests || 15} guests
               </p>
 
-              {/* ✅ SUBTOTAL FIX */}
               <p className="text-sm text-orange-500 mt-2 font-medium">
                 ₹{Number(item.price) * Number(item.guests || 15)} total
               </p>
@@ -174,7 +189,8 @@ return (
                               key={dish}
                               className="px-3 py-1.5 text-xs bg-orange-50 text-orange-600 rounded-full border border-orange-100"
                             >
-                              {dish}
+                              {/* ✅ ONLY CHANGE HERE */}
+                              {getDynamicQty(dish, Number(item.guests || 15))}
                             </span>
                           ))}
                         </div>
@@ -211,7 +227,6 @@ return (
 
       <div className="mt-12 bg-white p-8 rounded-3xl border border-gray-100 shadow-[0_25px_80px_rgba(0,0,0,0.08)]">
 
-        {/* TOTAL */}
         <div className="flex justify-between items-center mb-8">
           <span className="text-lg font-medium">Total</span>
           <span className="text-2xl font-bold text-orange-500">
@@ -219,22 +234,15 @@ return (
           </span>
         </div>
 
-        {/* FORM (UNCHANGED) */}
         <div className="space-y-5">
 
           <input placeholder="First Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} className="w-full border p-4 rounded-xl"/>
-
           <input placeholder="Address" value={address} onChange={(e)=>setAddress(e.target.value)} className="w-full border p-4 rounded-xl"/>
-
           <input placeholder="Apartment" value={apartment} onChange={(e)=>setApartment(e.target.value)} className="w-full border p-4 rounded-xl"/>
-
           <input placeholder="City" value={city} onChange={(e)=>setCity(e.target.value)} className="w-full border p-4 rounded-xl"/>
-
           <input placeholder="State" value={userState} onChange={(e)=>setUserState(e.target.value)} className="w-full border p-4 rounded-xl"/>
-
-          <input type="tel" inputMode="numeric" placeholder="PIN Code" value={pin} maxLength={6} onChange={(e)=>setPin(e.target.value)} className="w-full border p-4 rounded-xl"/>
-
-          <input type="tel" inputMode="numeric" placeholder="Phone" value={phone} maxLength={10} onChange={(e)=>setPhone(e.target.value)} className="w-full border p-4 rounded-xl"/>
+          <input type="tel" placeholder="PIN Code" value={pin} maxLength={6} onChange={(e)=>setPin(e.target.value)} className="w-full border p-4 rounded-xl"/>
+          <input type="tel" placeholder="Phone" value={phone} maxLength={10} onChange={(e)=>setPhone(e.target.value)} className="w-full border p-4 rounded-xl"/>
 
           <div>
             <p className="text-sm mb-1">Delivery Date</p>
