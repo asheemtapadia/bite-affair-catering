@@ -8,7 +8,7 @@ const Cart = () => {
 
 const [cart,setCart] = useState<any[]>([]);
 
-// ✅ FIELDS
+// FIELDS
 const [firstName,setFirstName] = useState("");
 const [address,setAddress] = useState("");
 const [apartment,setApartment] = useState("");
@@ -48,28 +48,46 @@ setCart(updated);
 localStorage.setItem("cart", JSON.stringify(updated));
 };
 
-/* ✅ TOTAL (PER ITEM GUESTS) */
+/* TOTAL */
 const total = cart.reduce((sum,item)=> {
   return sum + (Number(item.price) * Number(item.guests || 0));
 },0);
 
-/* ✅ NEW: TIME RULE (5 HOURS) */
-const getMinTime = () => {
-  if (!date) return "";
+/* TIME SLOTS */
+const timeSlots = [
+"09:00 AM","10:00 AM","11:00 AM","12:00 PM",
+"01:00 PM","02:00 PM","03:00 PM","04:00 PM",
+"05:00 PM","06:00 PM","07:00 PM","08:00 PM","09:00 PM"
+];
+
+/* 4:30 RULE */
+const isAfterCutoff = () => {
+  const now = new Date();
+  return now.getHours() > 16 || (now.getHours() === 16 && now.getMinutes() >= 30);
+};
+
+/* SLOT DISABLE */
+const isSlotDisabled = (slot:string) => {
+  if (!date) return true;
 
   const now = new Date();
   const selectedDate = new Date(date);
 
+  const [timeStr, period] = slot.split(" ");
+  let [hours, minutes] = timeStr.split(":").map(Number);
+
+  if (period === "PM" && hours !== 12) hours += 12;
+  if (period === "AM" && hours === 12) hours = 0;
+
+  const slotTime = new Date(selectedDate);
+  slotTime.setHours(hours, minutes, 0, 0);
+
   if (selectedDate.toDateString() === now.toDateString()) {
-    const min = new Date(now.getTime() + 5 * 60 * 60 * 1000);
-
-    const hh = String(min.getHours()).padStart(2, "0");
-    const mm = String(min.getMinutes()).padStart(2, "0");
-
-    return `${hh}:${mm}`;
+    const minTime = new Date(now.getTime() + 5 * 60 * 60 * 1000);
+    return slotTime < minTime;
   }
 
-  return "";
+  return false;
 };
 
 const whatsappOrder = () => {
@@ -79,6 +97,12 @@ if(!firstName || !address || !city || !userState || !pin || !phone || !date || !
     description: "All fields are required before placing order",
   });
   return;
+}
+
+let extraNote = "";
+
+if(isAfterCutoff()){
+  extraNote = "\n⚠️ Orders placed after 4:30 PM will be delivered next day.";
 }
 
 const message = cart.map((item) => {
@@ -122,6 +146,7 @@ ${city}, ${userState} - ${pin}
 ⏰ Time: ${time}
 
 💰 Total: ₹${total}
+${extraNote}
 
 Please confirm.`
 );
@@ -140,18 +165,12 @@ return (
       Your Cart
     </h1>
 
-    {cart.length === 0 && (
-      <p className="text-muted-foreground">
-        Your cart is empty.
-      </p>
-    )}
-
     <div className="space-y-6">
 
       {cart.map((item)=>(
         <div
           key={item.id}
-          className="bg-white p-6 rounded-3xl border border-gray-100 shadow-[0_25px_70px_rgba(0,0,0,0.08)] backdrop-blur"
+          className="bg-white p-6 rounded-3xl border border-gray-100 shadow"
         >
 
           <div className="flex justify-between items-start">
@@ -165,18 +184,17 @@ return (
                 ₹{item.price} / person
               </p>
 
-              {/* ✅ GUESTS SHOW */}
-              <p className="text-sm text-blue-500 mt-2">
+              <p className="text-sm text-blue-600 mt-2">
                 👥 {item.guests} guests
               </p>
 
-              {/* SUBTOTAL */}
               <p className="text-sm text-orange-500 mt-2 font-medium">
                 ₹{Number(item.price) * Number(item.guests || 0)} total
               </p>
 
               <div className="mt-3 h-[1px] bg-gray-100"></div>
 
+              {/* ✅ IMPORTANT: SAME QTY FROM MENU */}
               {item.selectedItems && (
                 <div className="mt-4 space-y-4">
                   {Object.entries(item.selectedItems).map(([cat, items]: any) => {
@@ -216,8 +234,8 @@ return (
           </div>
 
           <textarea
-            placeholder="Special request (spice level, timing, extras...)"
-            className="w-full border border-gray-200 rounded-xl p-4 text-sm mt-5 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            placeholder="Special request"
+            className="w-full border border-gray-200 rounded-xl p-4 text-sm mt-5"
             value={item.request || ""}
             onChange={(e)=>updateRequest(item.id,e.target.value)}
           />
@@ -229,56 +247,62 @@ return (
 
     {cart.length > 0 && (
 
-      <div className="mt-12 bg-white p-8 rounded-3xl border border-gray-100 shadow-[0_25px_80px_rgba(0,0,0,0.08)]">
+      <div className="mt-12 bg-white p-8 rounded-3xl border">
 
-        {/* TOTAL */}
         <div className="flex justify-between items-center mb-8">
-          <span className="text-lg font-medium">Total</span>
+          <span>Total</span>
           <span className="text-2xl font-bold text-orange-500">
             ₹{total}
           </span>
         </div>
 
-        {/* FORM */}
         <div className="space-y-5">
 
           <input placeholder="First Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} className="w-full border p-4 rounded-xl"/>
-
           <input placeholder="Address" value={address} onChange={(e)=>setAddress(e.target.value)} className="w-full border p-4 rounded-xl"/>
-
           <input placeholder="Apartment" value={apartment} onChange={(e)=>setApartment(e.target.value)} className="w-full border p-4 rounded-xl"/>
-
           <input placeholder="City" value={city} onChange={(e)=>setCity(e.target.value)} className="w-full border p-4 rounded-xl"/>
-
           <input placeholder="State" value={userState} onChange={(e)=>setUserState(e.target.value)} className="w-full border p-4 rounded-xl"/>
+          <input placeholder="PIN Code" value={pin} onChange={(e)=>setPin(e.target.value)} className="w-full border p-4 rounded-xl"/>
+          <input placeholder="Phone" value={phone} onChange={(e)=>setPhone(e.target.value)} className="w-full border p-4 rounded-xl"/>
 
-          <input type="tel" inputMode="numeric" placeholder="PIN Code" value={pin} maxLength={6} onChange={(e)=>setPin(e.target.value)} className="w-full border p-4 rounded-xl"/>
-
-          <input type="tel" inputMode="numeric" placeholder="Phone" value={phone} maxLength={10} onChange={(e)=>setPhone(e.target.value)} className="w-full border p-4 rounded-xl"/>
-
+          {/* DATE */}
           <div>
-            <p className="text-sm mb-1">Delivery Date</p>
             <input 
-              type="date" 
-              value={date} 
-              min={new Date().toISOString().split("T")[0]} 
-              onChange={(e)=>{
-                setDate(e.target.value);
-                setTime(""); // reset time
-              }} 
+              type="date"
+              value={date}
+              min={new Date().toISOString().split("T")[0]}
+              onChange={(e)=>{ setDate(e.target.value); setTime(""); }}
               className="w-full border p-4 rounded-xl"
             />
+
+            {isAfterCutoff() && (
+              <p className="text-xs text-red-500 mt-1">
+                Orders after 4:30 PM will be delivered next day
+              </p>
+            )}
           </div>
 
+          {/* TIME */}
           <div>
-            <p className="text-sm mb-1">Delivery Time</p>
-            <input 
-              type="time" 
-              value={time} 
-              min={getMinTime()} 
-              onChange={(e)=>setTime(e.target.value)} 
+            <select
+              value={time}
+              onChange={(e)=>setTime(e.target.value)}
               className="w-full border p-4 rounded-xl"
-            />
+            >
+              <option value="">
+                {isAfterCutoff()
+                  ? "Select time (next day delivery)"
+                  : "Select (5 hrs lead time applies)"}
+              </option>
+
+              {timeSlots.map((slot)=>(
+                <option key={slot} value={slot} disabled={isSlotDisabled(slot)}>
+                  {slot}
+                </option>
+              ))}
+            </select>
+
             <p className="text-xs text-gray-400 mt-1">
               Minimum 5 hours advance booking required
             </p>
@@ -289,7 +313,7 @@ return (
         <div className="mt-6">
           <button
             onClick={whatsappOrder}
-            className="w-full py-4 rounded-xl text-white text-base font-medium bg-gradient-to-r from-orange-500 to-orange-600 shadow-lg active:scale-[0.98] transition-all"
+            className="w-full py-4 rounded-xl text-white bg-orange-500"
           >
             Order on WhatsApp
           </button>
