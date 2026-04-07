@@ -126,8 +126,7 @@ ${city}, ${userState} - ${pin}
 Lachha Paratha (${rotiQty} pcs)
 Tandoori Roti (${rotiQty} pcs)
 
-🥗 Raita & Salad: Complimentary
-please mention any special instructions: ${remark || "None"}
+🥗 Raita & Salad: Complimentary${remark ? `Special instructions: ${remark}` : ""}
 
 💰 Total: ₹${total}`
     );
@@ -266,7 +265,7 @@ please mention any special instructions: ${remark || "None"}
 <input
   placeholder="please mention any special instructions (optional)"
   onChange={(e)=>setRemark(e.target.value)}
-  className="w-full border p-4 rounded-xl"
+  className="w-full border p-3 text-sm rounded-xl placeholder:text-xs"
 />
 
           <div>
