@@ -53,16 +53,19 @@ const MenuDetailPage = () => {
     return `${item.split("–")[0]} – ${newQty} ${unit}`;
   };
 
+  // ✅ FIXED toggleItem
   const toggleItem = (category: string, item: string) => {
     const LIMIT = getLimit(category);
 
     setSelectedItems((prev: any) => {
-      const current = prev[category] || [];
+      const current = Array.isArray(prev[category]) ? prev[category] : [];
 
-      if (current.includes(item)) {
+      const finalItem = guests ? getDynamicQty(item) : item;
+
+      if (current.includes(finalItem)) {
         return {
           ...prev,
-          [category]: current.filter((i: string) => i !== item),
+          [category]: current.filter((i: string) => i !== finalItem),
         };
       }
 
@@ -70,7 +73,7 @@ const MenuDetailPage = () => {
 
       return {
         ...prev,
-        [category]: [...current, item],
+        [category]: [...current, finalItem],
       };
     });
   };
@@ -180,7 +183,7 @@ const MenuDetailPage = () => {
         </div>
       </div>
 
-      {/* ✅ SUBTLE GUEST SECTION (NO BOUNCE) */}
+      {/* GUEST */}
       <div className="py-10">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="bg-white border-2 border-orange-300 p-6 rounded-xl shadow-sm">
@@ -190,7 +193,7 @@ const MenuDetailPage = () => {
             </label>
 
             <select
-              className="h-12 w-full rounded-lg border border-orange-400 px-3 focus:ring-2 focus:ring-orange-400"
+              className="h-12 w-full rounded-lg border border-orange-400 px-3"
               value={guests}
               onChange={(e) => setGuests(e.target.value)}
             >
@@ -235,7 +238,8 @@ const MenuDetailPage = () => {
 
                     {cat.items.map((item) => {
 
-                      const selected = selectedItems[cat.name]?.includes(item);
+                      const finalItem = guests ? getDynamicQty(item) : item;
+                      const selected = selectedItems[cat.name]?.includes(finalItem);
                       const disabled = !selected && count >= limit;
 
                       return (
@@ -243,7 +247,7 @@ const MenuDetailPage = () => {
                           key={item}
                           onClick={() => toggleItem(cat.name, item)}
                           disabled={mode === "order" ? disabled : false}
-                          className={`px-4 py-2 rounded-full text-sm border flex items-center gap-2
+                          className={`px-4 py-2 rounded-full text-sm border
                           ${selected
                               ? "bg-orange-500 text-white"
                               : disabled
@@ -251,7 +255,7 @@ const MenuDetailPage = () => {
                                 : "bg-white hover:border-orange-400"
                             }`}
                         >
-                          {guests ? getDynamicQty(item) : item}
+                          {finalItem}
                         </button>
                       );
 
