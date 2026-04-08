@@ -106,7 +106,6 @@ const getTimeSlots = () => {
 
 // 🔥 AUTO TIME FIX
 useEffect(() => {
-useEffect(() => {
   if (!date) return;
 
   const now = new Date();
@@ -114,7 +113,7 @@ useEffect(() => {
 
   let targetDate = new Date(date);
 
-  // 🔥 4:30 PM FIX (NO EMPTY SLOT ISSUE)
+  // 🔥 4:30 PM FIX
   if (date === today) {
     if (now.getHours() > 16 || (now.getHours() === 16 && now.getMinutes() >= 30)) {
       targetDate.setDate(now.getDate() + 1);
