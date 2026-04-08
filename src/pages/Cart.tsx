@@ -24,20 +24,21 @@ const [date,setDate] = useState("");
 const [time,setTime] = useState("");
 
 useEffect(() => {
-  window.scrollTo({ top: 0 });
-
   const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
 
   if (Array.isArray(savedCart)) setCart(savedCart);
   else if (savedCart) setCart([savedCart]);
-
 }, []);
 
-// REMOVE
+// ✅ REMOVE FIX (FULL RESET + ICON UPDATE)
 const removeItem = (id:number) => {
-const updated = cart.filter((item) => item.id !== id);
-setCart(updated);
-localStorage.setItem("cart", JSON.stringify(updated));
+  const updated = cart.filter((item) => item.id !== id);
+
+  setCart(updated);
+  localStorage.setItem("cart", JSON.stringify(updated));
+
+  // 🔥 IMPORTANT
+  window.dispatchEvent(new Event("cartUpdated"));
 };
 
 // TOTAL
@@ -45,7 +46,7 @@ const total = cart.reduce((sum,item)=> {
   return sum + (Number(item.price) * Number(item.guests));
 },0);
 
-// 🔥 QTY FIX (FROM MENUDATA)
+// 🔥 QTY (UNCHANGED)
 const getItemQty = (dish: string, guests:number) => {
 
   let baseItem = "";
@@ -73,51 +74,62 @@ const getItemQty = (dish: string, guests:number) => {
   return `${dish} – ${newQty} ${unit}`;
 };
 
-// 🔥 TIME SLOTS (ALWAYS AVAILABLE + AUTO EARLIEST)
+// ✅ TIME SLOTS FIX (9AM–9PM + 5HR)
 const getTimeSlots = () => {
+  if(!date) return [];
+
   const slots:string[] = [];
   const now = new Date();
 
   for(let h=9; h<=21; h++){
-    slots.push(`${h}:00`);
+
+    const slot = new Date();
+    slot.setHours(h,0,0,0);
+
+    const diff = (slot.getTime() - now.getTime())/(1000*60*60);
+
+    if(date === new Date().toISOString().split("T")[0]){
+      if(diff < 5) continue;
+    }
+
+    slots.push(
+      slot.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"})
+    );
   }
 
   return slots;
 };
 
-// 🔥 AUTO EARLIEST TIME
+// ✅ AUTO LOGIC (4:30 + 5HR)
 useEffect(() => {
   if(!date) return;
 
   const now = new Date();
-  const selected = new Date(date);
-
   const today = new Date().toISOString().split("T")[0];
 
   // 4:30 rule
   if(date === today){
-    const hr = now.getHours();
-    const min = now.getMinutes();
-
-    if(hr > 16 || (hr === 16 && min >= 30)){
-      toast.info("Orders after 4:30 PM will be delivered next day");
+    if(now.getHours() > 16 || (now.getHours() === 16 && now.getMinutes() >= 30)){
+      toast.info("⚠️ After 4:30 PM → Delivery next day");
       return;
     }
   }
 
-  // 5 hr rule → auto suggest
+  // 5 hr suggestion
   const future = new Date(now.getTime() + (5 * 60 * 60 * 1000));
-
   let hr = future.getHours();
 
   if(hr < 9) hr = 9;
   if(hr > 21) hr = 21;
 
-  const suggested = `${hr}:00`;
+  const suggested = new Date();
+  suggested.setHours(hr,0,0,0);
 
-  setTime(suggested);
+  const formatted = suggested.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
 
-  toast.success(`Earliest delivery time: ${suggested}`);
+  setTime(formatted);
+
+  toast.success(`Earliest delivery: ${formatted}`);
 
 },[date]);
 
@@ -159,7 +171,6 @@ const message = cart.map((item) => {
 
 ${dishes}
 
-👥 ${item.guests} guests
 💰 ₹${Number(item.price) * Number(item.guests)}`;
 }).join("\n\n");
 
@@ -191,25 +202,31 @@ return (
 
 <div className="container mx-auto px-4 pt-28 pb-40 max-w-3xl">
 
-{/* BACK */}
 <button onClick={()=>navigate(-1)} className="mb-6 text-sm text-gray-500">
 ← Back
 </button>
 
 <h1 className="text-4xl font-serif mb-8">Your Cart</h1>
 
+{/* ✅ EMPTY CART FIX */}
+{cart.length === 0 ? (
+  <div className="text-center text-gray-500 py-20">
+    Your cart is empty
+  </div>
+) : (
+<>
 {cart.map((item)=>(
 <div key={item.id} className="bg-white p-6 rounded-2xl border mb-6 relative">
 
-{/* REMOVE TOP LEFT */}
+{/* ✅ REMOVE UI FIX */}
 <button
 onClick={()=>removeItem(item.id)}
-className="absolute top-4 left-4 text-red-500 text-xs font-semibold"
+className="absolute top-4 left-4 text-red-600 bg-red-50 border border-red-200 px-3 py-1 rounded-full text-sm font-semibold"
 >
 ✕ Remove
 </button>
 
-<h3 className="text-xl font-semibold mt-4">{item.name}</h3>
+<h3 className="text-xl font-semibold mt-6">{item.name}</h3>
 
 <p className="text-sm text-gray-500">
 ₹{item.price} / person
@@ -220,7 +237,6 @@ className="absolute top-4 left-4 text-red-500 text-xs font-semibold"
 </p>
 
 {/* MENU */}
-{item.selectedItems && (
 <div className="mt-4">
 {Object.entries(item.selectedItems).map(([cat, items]: any) => {
 const cleanCat = cat.replace(/\(.*?\)/g, "").trim();
@@ -240,12 +256,14 @@ return (
 );
 })}
 </div>
-)}
 
 </div>
 ))}
+</>
+)}
 
-{/* FORM */}
+{/* ✅ FORM ONLY WHEN CART EXISTS */}
+{cart.length > 0 && (
 <div className="bg-white p-6 rounded-2xl border">
 
 <div className="flex justify-between mb-4">
@@ -276,7 +294,6 @@ placeholder="Phone"
 className="w-full border p-3 mb-2"/>
 
 {/* DATE */}
-<p className="text-sm mb-1">Delivery Date</p>
 <input
 type="date"
 value={date}
@@ -285,21 +302,23 @@ onChange={(e)=>setDate(e.target.value)}
 className="w-full border p-3 mb-2"
 />
 
-<p className="text-xs text-gray-500 mb-3">
-Orders placed after 4:30 PM will be delivered next day
+<p className="text-xs text-gray-500 mb-2">
+After 4:30 PM → next day delivery
 </p>
 
 {/* TIME */}
-<p className="text-sm mb-1">Delivery Time</p>
 <select value={time} onChange={(e)=>setTime(e.target.value)} className="w-full border p-3 mb-2">
-<option value="">Select time</option>
+<option value="">
+{date ? "Select time" : "Select date first"}
+</option>
+
 {getTimeSlots().map((t)=>(
 <option key={t}>{t}</option>
 ))}
 </select>
 
 <p className="text-xs text-gray-500">
-Minimum 5 hours preparation time required
+Minimum 5 hours preparation time
 </p>
 
 <button
@@ -310,6 +329,7 @@ Order on WhatsApp
 </button>
 
 </div>
+)}
 
 </div>
 
