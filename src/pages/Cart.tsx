@@ -106,32 +106,40 @@ const getTimeSlots = () => {
 
 // 🔥 AUTO TIME FIX
 useEffect(() => {
-  if(!date) return;
+useEffect(() => {
+  if (!date) return;
 
   const now = new Date();
   const today = new Date().toISOString().split("T")[0];
 
-  if(date === today){
-    if(now.getHours() > 16 || (now.getHours() === 16 && now.getMinutes() >= 30)){
-      toast.info("Delivery will be next day (after 4:30 PM)");
-      return;
+  let targetDate = new Date(date);
+
+  // 🔥 4:30 PM FIX (NO EMPTY SLOT ISSUE)
+  if (date === today) {
+    if (now.getHours() > 16 || (now.getHours() === 16 && now.getMinutes() >= 30)) {
+      targetDate.setDate(now.getDate() + 1);
+      toast.info("Next day delivery slots applied");
     }
   }
 
+  // 🔥 5 HOURS RULE
   const future = new Date(now.getTime() + (5 * 60 * 60 * 1000));
   let hr = future.getHours();
 
-  if(hr < 9) hr = 9;
-  if(hr > 21) hr = 21;
+  if (hr < 9) hr = 9;
+  if (hr > 21) hr = 9;
 
-  const suggested = new Date();
-  suggested.setHours(hr,0,0,0);
+  const suggested = new Date(targetDate);
+  suggested.setHours(hr, 0, 0, 0);
 
-  const formatted = suggested.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+  const formatted = suggested.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  });
 
   setTime(formatted);
 
-},[date]);
+}, [date]);
 
 // ORDER
 const whatsappOrder = () => {
