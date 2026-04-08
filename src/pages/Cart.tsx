@@ -77,27 +77,39 @@ const getItemQty = (dish: string, guests:number) => {
   return `${dish} – ${newQty} ${unit}`;
 };
 
-// 🔥 TIME SLOTS FIX
+// 🔥 TIME SLOTS FIX (FINAL WORKING)
 const getTimeSlots = () => {
-  if(!date) return [];
+  if (!date) return [];
 
-  const slots:string[] = [];
+  const slots: string[] = [];
   const now = new Date();
-  const selectedDate = new Date(date);
+  const today = new Date().toISOString().split("T")[0];
 
-  for(let h=9; h<=21; h++){
+  let selectedDate = new Date(date);
+
+  // 🔥 4:30 PM ke baad → next day slots
+  if (date === today) {
+    if (now.getHours() > 16 || (now.getHours() === 16 && now.getMinutes() >= 30)) {
+      selectedDate.setDate(selectedDate.getDate() + 1);
+    }
+  }
+
+  for (let h = 9; h <= 21; h++) {
 
     const slot = new Date(selectedDate);
-    slot.setHours(h,0,0,0);
+    slot.setHours(h, 0, 0, 0);
 
-    const diff = (slot.getTime() - now.getTime())/(1000*60*60);
-
-    if(date === new Date().toISOString().split("T")[0]){
-      if(diff < 5) continue;
+    // 🔥 same day → 5 hr rule
+    if (date === today) {
+      const diff = (slot.getTime() - now.getTime()) / (1000 * 60 * 60);
+      if (diff < 5) continue;
     }
 
     slots.push(
-      slot.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"})
+      slot.toLocaleTimeString([], {
+        hour: "numeric",
+        minute: "2-digit",
+      })
     );
   }
 
