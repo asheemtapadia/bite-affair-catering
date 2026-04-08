@@ -234,10 +234,11 @@ return (
 
 {/* ✅ REMOVE FIX UI */}
 <button
-onClick={()=>removeItem(item.id)}
-className="absolute top-4 left-4 flex items-center gap-1 text-red-600 border border-red-200 bg-red-50 px-4 py-1.5 rounded-full text-sm font-medium"
+  onClick={() => removeItem(item.id)}
+  className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-white shadow-sm border border-gray-200 text-red-500 hover:bg-red-50 hover:border-red-200 active:scale-95 transition-all duration-200"
 >
-✕ Remove
+  <span className="text-lg leading-none">✕</span>
+  <span className="text-xs font-semibold">Remove</span>
 </button>
 
 <h3 className="text-xl font-semibold mt-6">{item.name}</h3>
