@@ -24,21 +24,24 @@ const [date,setDate] = useState("");
 const [time,setTime] = useState("");
 
 useEffect(() => {
+  window.scrollTo({ top: 0 });
+
   const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
 
   if (Array.isArray(savedCart)) setCart(savedCart);
   else if (savedCart) setCart([savedCart]);
+
 }, []);
 
-// ✅ REMOVE FIX (FULL RESET + ICON UPDATE)
+// 🔥 REMOVE FIX
 const removeItem = (id:number) => {
   const updated = cart.filter((item) => item.id !== id);
 
   setCart(updated);
   localStorage.setItem("cart", JSON.stringify(updated));
 
-  // 🔥 IMPORTANT
-  window.dispatchEvent(new Event("cartUpdated"));
+  // header sync
+  window.dispatchEvent(new Event("storage"));
 };
 
 // TOTAL
@@ -74,16 +77,17 @@ const getItemQty = (dish: string, guests:number) => {
   return `${dish} – ${newQty} ${unit}`;
 };
 
-// ✅ TIME SLOTS FIX (9AM–9PM + 5HR)
+// 🔥 TIME SLOTS FIX
 const getTimeSlots = () => {
   if(!date) return [];
 
   const slots:string[] = [];
   const now = new Date();
+  const selectedDate = new Date(date);
 
   for(let h=9; h<=21; h++){
 
-    const slot = new Date();
+    const slot = new Date(selectedDate);
     slot.setHours(h,0,0,0);
 
     const diff = (slot.getTime() - now.getTime())/(1000*60*60);
@@ -100,22 +104,20 @@ const getTimeSlots = () => {
   return slots;
 };
 
-// ✅ AUTO LOGIC (4:30 + 5HR)
+// 🔥 AUTO TIME FIX
 useEffect(() => {
   if(!date) return;
 
   const now = new Date();
   const today = new Date().toISOString().split("T")[0];
 
-  // 4:30 rule
   if(date === today){
     if(now.getHours() > 16 || (now.getHours() === 16 && now.getMinutes() >= 30)){
-      toast.info("⚠️ After 4:30 PM → Delivery next day");
+      toast.info("Delivery will be next day (after 4:30 PM)");
       return;
     }
   }
 
-  // 5 hr suggestion
   const future = new Date(now.getTime() + (5 * 60 * 60 * 1000));
   let hr = future.getHours();
 
@@ -128,8 +130,6 @@ useEffect(() => {
   const formatted = suggested.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
 
   setTime(formatted);
-
-  toast.success(`Earliest delivery: ${formatted}`);
 
 },[date]);
 
@@ -171,6 +171,7 @@ const message = cart.map((item) => {
 
 ${dishes}
 
+👥 ${item.guests} guests
 💰 ₹${Number(item.price) * Number(item.guests)}`;
 }).join("\n\n");
 
@@ -208,20 +209,14 @@ return (
 
 <h1 className="text-4xl font-serif mb-8">Your Cart</h1>
 
-{/* ✅ EMPTY CART FIX */}
-{cart.length === 0 ? (
-  <div className="text-center text-gray-500 py-20">
-    Your cart is empty
-  </div>
-) : (
-<>
+{/* CART ITEMS */}
 {cart.map((item)=>(
 <div key={item.id} className="bg-white p-6 rounded-2xl border mb-6 relative">
 
-{/* ✅ REMOVE UI FIX */}
+{/* ✅ REMOVE FIX UI */}
 <button
 onClick={()=>removeItem(item.id)}
-className="absolute top-4 left-4 text-red-600 bg-red-50 border border-red-200 px-3 py-1 rounded-full text-sm font-semibold"
+className="absolute top-4 left-4 flex items-center gap-1 text-red-600 border border-red-200 bg-red-50 px-4 py-1.5 rounded-full text-sm font-medium"
 >
 ✕ Remove
 </button>
@@ -236,7 +231,7 @@ className="absolute top-4 left-4 text-red-600 bg-red-50 border border-red-200 px
 ₹{Number(item.price) * Number(item.guests)}
 </p>
 
-{/* MENU */}
+{item.selectedItems && (
 <div className="mt-4">
 {Object.entries(item.selectedItems).map(([cat, items]: any) => {
 const cleanCat = cat.replace(/\(.*?\)/g, "").trim();
@@ -256,13 +251,12 @@ return (
 );
 })}
 </div>
+)}
 
 </div>
 ))}
-</>
-)}
 
-{/* ✅ FORM ONLY WHEN CART EXISTS */}
+{/* ✅ FORM ONLY IF CART EXISTS */}
 {cart.length > 0 && (
 <div className="bg-white p-6 rounded-2xl border">
 
@@ -293,7 +287,7 @@ onChange={(e)=>setPhone(e.target.value.replace(/\D/g,""))}
 placeholder="Phone"
 className="w-full border p-3 mb-2"/>
 
-{/* DATE */}
+<p className="text-sm mb-1">Delivery Date</p>
 <input
 type="date"
 value={date}
@@ -302,23 +296,20 @@ onChange={(e)=>setDate(e.target.value)}
 className="w-full border p-3 mb-2"
 />
 
-<p className="text-xs text-gray-500 mb-2">
-After 4:30 PM → next day delivery
+<p className="text-xs text-gray-500 mb-3">
+Orders after 4:30 PM → next day delivery
 </p>
 
-{/* TIME */}
+<p className="text-sm mb-1">Delivery Time</p>
 <select value={time} onChange={(e)=>setTime(e.target.value)} className="w-full border p-3 mb-2">
-<option value="">
-{date ? "Select time" : "Select date first"}
-</option>
-
+<option value="">Select time</option>
 {getTimeSlots().map((t)=>(
 <option key={t}>{t}</option>
 ))}
 </select>
 
 <p className="text-xs text-gray-500">
-Minimum 5 hours preparation time
+Minimum 5 hours preparation time required
 </p>
 
 <button
