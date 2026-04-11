@@ -60,7 +60,7 @@ const Footer = () => {
           </a>
 
           <a
-            href="https://instagram.com/yourhandle"
+            href="https://instagram.com/bite_affair"
             target="_blank"
             className="flex items-center gap-2 text-pink-400 hover:text-pink-300 transition"
           >
