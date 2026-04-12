@@ -6,7 +6,7 @@ import { Leaf, Drumstick, ShoppingCart } from "lucide-react";
 
 const MenuCards = () => {
 
-  const [typeFilter, setTypeFilter] = useState<"veg" | "nonveg">("veg");
+  const [typeFilter, setTypeFilter] = useState<"all" | "veg" | "nonveg">("all");
   const [priceFilter, setPriceFilter] = useState("all");
 
   /* ✅ POPUP + HIGHLIGHT STATE */
