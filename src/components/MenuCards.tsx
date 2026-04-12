@@ -55,39 +55,54 @@ const MenuCards = () => {
 
             <div className="flex flex-wrap justify-center gap-4 mb-8">
 
-              <button
-                onClick={() => setTypeFilter("veg")}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                  typeFilter === "veg"
-                    ? "bg-green-600 text-white shadow-lg scale-105"
-                    : "bg-white border border-gray-200 text-gray-600"
-                }`}
-              >
-                🥦 Veg
-              </button>
+  {/* ALL */}
+  <button
+    onClick={() => setTypeFilter("all")}
+    className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+      typeFilter === "all"
+        ? "bg-black text-white shadow-lg scale-105"
+        : "bg-white border border-gray-200 text-gray-600"
+    }`}
+  >
+    🔘 All
+  </button>
 
-              <button
-                onClick={() => setTypeFilter("nonveg")}
-                className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                  typeFilter === "nonveg"
-                    ? "bg-red-500 text-white shadow-lg scale-105"
-                    : "bg-white border border-gray-200 text-gray-600"
-                }`}
-              >
-                🍗 Non-Veg
-              </button>
+  {/* VEG */}
+  <button
+    onClick={() => setTypeFilter("veg")}
+    className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+      typeFilter === "veg"
+        ? "bg-green-600 text-white shadow-lg scale-105"
+        : "bg-white border border-gray-200 text-gray-600"
+    }`}
+  >
+    🥦 Veg
+  </button>
 
-              <select
-                value={priceFilter}
-                onChange={(e) => setPriceFilter(e.target.value)}
-                className="px-5 py-2 rounded-full border text-sm shadow-sm"
-              >
-                <option value="all">All Prices</option>
-                <option value="under500">Under ₹500</option>
-                <option value="500to900">₹500 – ₹900</option>
-              </select>
+  {/* NON VEG */}
+  <button
+    onClick={() => setTypeFilter("nonveg")}
+    className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+      typeFilter === "nonveg"
+        ? "bg-red-500 text-white shadow-lg scale-105"
+        : "bg-white border border-gray-200 text-gray-600"
+    }`}
+  >
+    🍗 Non-Veg
+  </button>
 
-            </div>
+  {/* PRICE */}
+  <select
+    value={priceFilter}
+    onChange={(e) => setPriceFilter(e.target.value)}
+    className="px-5 py-2 rounded-full border text-sm shadow-sm"
+  >
+    <option value="all">All Prices</option>
+    <option value="under500">Under ₹500</option>
+    <option value="500to900">₹500 – ₹900</option>
+  </select>
+
+</div>
 
           </div>
         </ScrollReveal>
