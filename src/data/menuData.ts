@@ -104,10 +104,10 @@ const breads = [
 
 /* ✅ DESSERTS */
 const desserts = [
-  "Gulab Jamun – 30 pc",
-  "Rasgulla – 30 pc",
+  "Gulab Jamun – 40 pc",
+  "Rasgulla – 40 pc",
   "Kheer – 2 kg",
-  "Brownie",
+  "Brownie – 40 pc",
 ];
 
 /* ✅ VEG STRUCTURE */
