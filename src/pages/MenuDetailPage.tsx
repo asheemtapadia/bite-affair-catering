@@ -38,20 +38,26 @@ const MenuDetailPage = () => {
 
   // ✅ FIX (NO QTY UNTIL GUEST SELECTED)
   const getDynamicQty = (item: string) => {
-    const name = item.split("–")[0].trim();
+  const name = item.split("–")[0].trim();
 
-    if (!totalGuests) return name;
+  if (!totalGuests) return name;
 
-    const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
-    if (!match) return name;
+  const match = item.match(/(\d+)\s*(pc|kg|ltr)/i);
+  if (!match) return name;
 
-    const baseQty = Number(match[1]);
-    const unit = match[2];
+  const baseQty = Number(match[1]);
+  const unit = match[2].toLowerCase();
 
-    const newQty = Math.round((baseQty * totalGuests) / 20);
+  let newQty;
 
-    return `${name} – ${newQty} ${unit}`;
-  };
+  if (unit === "pc") {
+    newQty = Math.round((baseQty * totalGuests) / 20);
+  } else {
+    newQty = ((baseQty * totalGuests) / 20).toFixed(1);
+  }
+
+  return `${name} – ${newQty} ${unit}`;
+};
 
   // ✅ FIX (STORE CLEAN NAME)
   const toggleItem = (category: string, item: string) => {
