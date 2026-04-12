@@ -80,7 +80,8 @@ if (unit === "pc") {
   newQty = Math.round(newQty * 10) / 10;
 }
 
-return `${dish} – ${newQty} ${unit}`;
+return `${dish} – ${newQty} ${unit}`; 
+};
 
 // 🔥 TIME SLOTS FIX (FINAL WORKING)
 const getTimeSlots = () => {
