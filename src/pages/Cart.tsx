@@ -66,16 +66,21 @@ const getItemQty = (dish: string, guests:number) => {
 
   if (!baseItem) return dish;
 
-  const match = baseItem.match(/(\d+)\s*(pc|kg|ltr)/i);
-  if (!match) return dish;
+const match = baseItem.match(/(\d+(\.\d+)?)\s*(pc|kg|ltr)/i);
+if (!match) return dish;
 
-  const baseQty = Number(match[1]);
-  const unit = match[2];
+const baseQty = Number(match[1]);
+const unit = match[3].toLowerCase();
 
-  const newQty = Math.round((baseQty * guests) / 20);
+let newQty = (baseQty * guests) / 20;
 
-  return `${dish} – ${newQty} ${unit}`;
-};
+if (unit === "pc") {
+  newQty = Math.round(newQty);
+} else {
+  newQty = Math.round(newQty * 10) / 10;
+}
+
+return `${dish} – ${newQty} ${unit}`;
 
 // 🔥 TIME SLOTS FIX (FINAL WORKING)
 const getTimeSlots = () => {
